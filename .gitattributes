@@ -1,1 +1,1 @@
-*.js,*.cshtml linguist-detectable=false
+*.js,*.cshtml,*.json,*.xml linguist-detectable=false
