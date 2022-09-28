@@ -10,7 +10,7 @@ Gestion de congés en opensource
 - Différents types de congés (congés payés, événements familiaux, enfants malades, récupérations, sans solde, absences temporaires)
 - Validation par le responsable des congés posés et notification par emails
 
-![](https://github.com/DevElkami/MesConges/blob/master/screen.png)
+![](https://github.com/DevElkami/MesConges/blob/main/screen.png)
 
 Etapes pour configurer l'application:
 1. Ouvrez le fichier src/appsettings.json
