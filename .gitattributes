@@ -1,2 +1,1 @@
-*.js linguist-detectable=false
-*.cshtml linguist-detectable=false
+*.js,*.cshtml linguist-detectable=false
