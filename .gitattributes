@@ -1,1 +1,1 @@
-*.js,*.cshtml,*.json,*.xml linguist-detectable=false
+src/wwwroot/ -linguist-detectable
