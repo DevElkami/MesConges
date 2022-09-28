@@ -2,3 +2,4 @@
 *.cshtml -linguist-detectable
 *.json -linguist-detectable
 *.css -linguist-detectable
+*.html -linguist-detectable
