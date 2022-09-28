@@ -3,3 +3,4 @@
 *.json -linguist-detectable
 *.css -linguist-detectable
 *.html -linguist-detectable
+*.less -linguist-detectable
