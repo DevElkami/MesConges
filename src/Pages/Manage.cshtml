@@ -1,0 +1,203 @@
+﻿@page
+@model WebApplicationConges.Pages.ManageModel
+
+@section Header
+    {
+    <link href='~/lib/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
+    <link href='~/lib/fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+}
+
+@{
+    ViewData["Title"] = "Manage";
+}
+<h3>Gestion des congés de votre équipe</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#manage0">Les demandes en cours</a></li>
+    <li><a data-toggle="tab" href="#manage1">Les membres de votre service</a></li>
+    <li><a data-toggle="tab" href="#manage2">Planning de votre équipe</a></li>
+    <li><a data-toggle="tab" href="#manage3">Supprimer une demande</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="manage0" class="tab-pane fade in active">
+        @if (Model.CongesInProgress.Count() <= 0)
+        {
+            <br />
+            <p>Aucune demande de congé à valider</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            String last = null;
+                        }
+                        @for (int j = 0; j < Model.CongesInProgress.Count; j++)
+                        {
+                            if (last != @Model.CongesInProgress[j].User.Name)
+                            {
+                                <tr class="user_separator">
+                                    <td>@Model.CongesInProgress[j].User.FamilyName</td>
+                                    <td>@Model.CongesInProgress[j].User.Surname</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                last = @Model.CongesInProgress[j].User.Name;
+                            }
+                            <tr>
+                                @Html.HiddenFor(x => Model.CongesInProgress[j].Id)
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(Model.CongesInProgress[j])</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].BeginDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].EndDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(Model.CongesInProgress[j])</td>
+                                <td>
+                                    <button class="btn btn-success" type="submit" asp-page-handler="Accept" asp-route-id="@Model.CongesInProgress[j].Id"><i class="fa fa-check fa-lg"></i> Accepter</button>
+                                    <button class="btn btn-danger" type="submit" asp-page-handler="Refuse" asp-route-id="@Model.CongesInProgress[j].Id"><i class="fa fa-times fa-lg"></i> Refuser</button>
+                                    <input class="form-control" asp-for="@Model.CongesInProgress[j].Motif" type="text" placeholder="Motif du refus" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" type="submit" asp-page-handler="AcceptAll"><i class="fa fa-check fa-lg"></i> Accepter tout</button>
+            </form>
+        }
+    </div>
+
+    <div id="manage1" class="tab-pane fade">
+        @if (Model.Members.Count() <= 0)
+        {
+            <br />
+            <p>Personne dans votre service pour le moment</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < Model.Members.Count; j++)
+                        {
+                            <tr>
+                                <td>@Model.Members[j].FamilyName</td>
+                                <td>@Model.Members[j].Surname</td>
+                                <td>@Model.Members[j].Email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+    </div>
+
+    <div id="manage2" class="tab-pane fade">
+        <br />
+        <div id='calendar'></div>
+    </div>
+
+    <div id="manage3" class="tab-pane fade">
+        @if (Model.CongesToDelete.Count() <= 0)
+        {
+            <br />
+            <p>Aucune demande de congé à supprimer.</p>
+        }
+        else
+        {
+            <br />
+            <p>Les demandes de congés à supprimer.</p>
+
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            String last = null;
+                        }
+                        @for (int j = 0; j < Model.CongesToDelete.Count; j++)
+                        {
+                            if (last != @Model.CongesToDelete[j].User.Name)
+                            {
+                                <tr class="user_separator">
+                                    <td>@Model.CongesToDelete[j].User.FamilyName</td>
+                                    <td>@Model.CongesToDelete[j].User.Surname</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                last = @Model.CongesToDelete[j].User.Name;
+                            }
+                            <tr>
+                                @Html.HiddenFor(x => Model.CongesToDelete[j].Id)
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(Model.CongesToDelete[j])</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesToDelete[j].BeginDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesToDelete[j].EndDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(Model.CongesToDelete[j])</td>
+                                <td>
+                                    <button class="btn btn-danger" type="submit" asp-page-handler="Delete" asp-route-id="@Model.CongesToDelete[j].Id"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                                    <button class="btn btn-danger" type="submit" asp-page-handler="CancelDelete" asp-route-id="@Model.CongesToDelete[j].Id"><i class="fa fa-times fa-lg"></i> Refuser d'annuler</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src='~/lib/fullcalendar/lib/moment.min.js'></script>
+    <script src='~/lib/fullcalendar/lib/jquery.min.js'></script>
+    <script src='~/lib/fullcalendar/fullcalendar.min.js'></script>
+    <script src='~/lib/fullcalendar/locale/fr.js'></script>
+
+    <script>
+        $(function () {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                locale: 'fr',
+                buttonIcons: true, // show the prev/next text
+                weekNumbers: false,
+                navLinks: true, // can click day/week names to navigate views
+                editable: false,
+                weekends: false,
+                eventLimit: true, // allow "more" link when too many events
+                events: [@Html.Raw(Model.Calendar)],
+                timeFormat: 'HH:mm',
+                displayEventEnd: true
+            });
+        });
+    </script>
+}

@@ -1,0 +1,90 @@
+﻿@using WebApplicationConges.Data;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>@ViewData["Title"] - Gestion des congés</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+
+    @RenderSection("Header", required: false)
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Basculer</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-page="/Index" class="navbar-brand">
+                    <span><img src="~/images/logo.png" width="48" title="Gestion des congés" alt="Gestion des congés" /> Gestion des congés</span>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a asp-page="/Index"><i class="fa fa-home fa-lg"></i> Accueil</a>
+                    </li>
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        @if (HttpContextAccessor.HttpContext.User.IsInRole("admin"))
+                        {
+                            <li>
+                                <a asp-page="/Admin"><i class="fa fa-cog fa-lg"></i> Administration</a>
+                            </li>
+                        }
+                    }
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        @if (HttpContextAccessor.HttpContext.User.IsInRole("manager"))
+                        {
+                            <li><a asp-page="/Manage"><i class="fa fa-users fa-lg"></i> Gérer l'équipe</a></li>
+                        }
+                    }
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        @if (HttpContextAccessor.HttpContext.User.IsInRole("drh"))
+                        {
+                            <li><a asp-page="/RH/Compta"><i class="fa fa-users fa-lg"></i> Ressources humaines</a></li>
+                        }
+                    }
+                    <li><a asp-page="/Calendar"><i class="fa fa-calendar fa-lg"></i> Calendrier</a></li>
+                    <li><a asp-page="/About"><i class="fa fa-info fa-lg"></i> A propos</a></li>
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-page="/Account/SignedOut"><i class="fa fa-sign-out fa-lg"></i> Se déconnecter</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>@Toolkit.Copyright</p>
+        </footer>
+    </div>
+
+    <environment names="Development,Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

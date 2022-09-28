@@ -1,0 +1,171 @@
+﻿@page
+@model WebApplicationConges.Pages.Conges.CreateModel
+
+@section Header
+    {
+    <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="~/lib/jquery-ui/jquery.timepicker.min.css">
+}
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h3>Demande de congé</h3>
+<br />
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form role="form" method="post">
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <input type="text" readonly class="form-control labelConge" value="Type de demande">
+        </div>
+        <div class="col-sm-2">
+            @Html.DropDownListFor(x => Model.CgType, new SelectList(Model.CgTypes, "Value", "Key"), htmlAttributes: new { @class = "form-control", id = "CgType", @onchange = "CallChangefunc(this.value)" })
+            <span asp-validation-for="CgType" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <input type="text" readonly class="form-control labelConge" value="Début">
+        </div>
+        <div class="col-sm-2">
+            <input asp-for="DateBegin" type="text" id="datepickerBegin" class="form-control" placeholder="Début de vos congés" />
+            <span asp-validation-for="DateBegin" class="text-danger"></span>
+        </div>
+        <div id="am">
+            <div class="col-sm-2">
+                <input type="text" readonly class="form-control labelConge" value="Commence le">
+            </div>
+            <div class="col-sm-2">
+                @Html.DropDownListFor(x => Model.IntervalTypeBegin, new SelectList(Model.IntervalTypes, "Value", "Key"), htmlAttributes: new { @class = "form-control", id = "BeginInterval" })
+            </div>
+        </div>
+        <div id="hourBegin">
+            <div class="col-sm-1">
+                <input type="text" readonly class="form-control labelConge" value="de">
+            </div>
+            <div class="col-sm-1">
+                <input id="InputHourBegin" asp-for="HourBegin" type="text" class="form-control" placeholder="Heure">
+                <span asp-validation-for="HourBegin" class="text-danger"></span>
+            </div>
+        </div>
+        <div id="hourEnd">
+            <div class="col-sm-1">
+                <input type="text" readonly class="form-control labelConge" value="à">
+            </div>
+            <div class="col-sm-1">
+                <input id="InputHourEnd" asp-for="HourEnd" type="text" class="form-control" placeholder="Heure">
+                <span asp-validation-for="HourEnd" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div id="pm" class="form-group row">
+        <div class="col-sm-2">
+            <input type="text" readonly class="form-control labelConge" value="Fin">
+        </div>
+        <div class="col-sm-2">
+            <input asp-for="DateEnd" type="text" id="datepickerEnd" class="form-control" placeholder="Fin de vos congés" />
+            <span asp-validation-for="DateEnd" class="text-danger"></span>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" readonly class="form-control labelConge" value="Termine le">
+        </div>
+        <div class="col-sm-2">
+            @Html.DropDownListFor(x => Model.IntervalTypeEnd, new SelectList(Model.IntervalTypes, "Value", "Key"), htmlAttributes: new { @class = "form-control", id = "EndInterval" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div id="divmotif">
+            <div class="col-sm-2">
+                <input type="text" readonly class="form-control labelConge" value="Motif">
+            </div>
+            <div class="col-sm-6">
+                <input id="InputMotifRecup" asp-for="Motif" type="text" class="form-control">
+                <span asp-validation-for="Motif" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-default">Poser</button>
+        </div>
+    </div>
+
+    <div>
+        <input type="text" readonly class="form-control labelConge" value="(*) Plus de précisions selon les types de congés:">
+        <input type="text" readonly class="form-control labelConge" value="- Vous devez d'abord écouler vos congés payés avant de poser des congés sans solde.">
+        <input type="text" readonly class="form-control labelConge" value="- Les congés pour événements familiaux ne sont accordés que sur justificatif.">
+        <input type="text" readonly class="form-control labelConge" value="- Les journées 'Enfants malades' sont encadrées: consultez les R.H. avant d'en déposer.">
+    </div>
+</form>
+
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/jquery-ui/datepicker-fr.js"></script>
+    <script src="~/lib/jquery-ui/jquery.timepicker.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#hourBegin").hide();
+            $("#hourEnd").hide();
+            $("#divmotif").hide();
+
+            $.datepicker.setDefaults($.datepicker.regional["fr"]);
+            $("#datepickerBegin").datepicker();
+            $("#datepickerEnd").datepicker();
+
+            $('#InputHourBegin').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 15,
+                minTime: '8',
+                maxTime: '18',
+                startTime: '08',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: false
+            });
+
+            $('#InputHourEnd').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 15,
+                minTime: '8',
+                maxTime: '18',
+                startTime: '08',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: false
+            });
+        });
+
+        function CallChangefunc(val) {
+            if (val == 3) {
+                $("#hourBegin").show();
+                $("#hourEnd").show();
+                $("#am").hide();
+                $("#pm").hide();
+                $("#datepickerEnd").hide();
+            }
+            else {
+                $("#hourBegin").hide();
+                $("#hourEnd").hide();
+                $("#am").show();
+                $("#pm").show();
+                $("#datepickerEnd").show();
+            }
+
+            if ((val == 2) || (val == 3)) {
+                $("#divmotif").show();
+            }
+            else {
+                $("#divmotif").hide();
+            }
+        }
+    </script>
+}

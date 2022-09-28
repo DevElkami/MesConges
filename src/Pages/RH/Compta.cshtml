@@ -1,0 +1,285 @@
+﻿@page
+@model WebApplicationConges.Pages.RH.ComptaModel
+
+@section Header
+    {
+    <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css">
+    <style>
+        .ui-datepicker-calendar {
+            display: none;
+        }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "RH";
+}
+
+<h3>Gestion des congés</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#cg0">Les exports</a></li>
+    <li><a data-toggle="tab" href="#cg1">Les congés du mois</a></li>
+    <li><a data-toggle="tab" href="#cg2">Tous les congés</a></li>
+    <li><a data-toggle="tab" href="#cg3">Exporter les données</a></li>
+    <li><a data-toggle="tab" href="#cg4">Absences des managers</a></li>
+    <li><a data-toggle="tab" href="#cg5">Absences temporaires (15j glissants)</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="cg0" class="tab-pane fade in active">
+        @if (Model.ExportColl.Count() <= 0)
+        {
+            <br />
+            <p>Aucun export réalisé pour le moment</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date de l'export</th>
+                            <th>Lien</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < Model.ExportColl.Count; j++)
+                        {
+                            <tr>
+                                <td>@Model.ExportColl[j].Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td>
+                                    <a href="@Model.ExportColl[j].Key" download>@System.IO.Path.GetFileName(Model.ExportColl[j].Key)</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+    </div>
+
+    <div id="cg1" class="tab-pane fade">
+        @if (Model.CongesInProgress.Count() <= 0)
+        {
+            <br />
+            <p>Aucune demande de congé en cours pour ce mois</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            String last = null;
+                        }
+                        @for (int j = 0; j < Model.CongesInProgress.Count; j++)
+                        {
+                            if ((Model.CongesInProgress[j].BeginDate.Month != DateTime.Now.Month) || (Model.CongesInProgress[j].BeginDate.Year != DateTime.Now.Year))
+                            {
+                                continue;
+                            }
+
+                            if (last != @Model.CongesInProgress[j].User.Name)
+                            {
+                                <tr class="user_separator">
+                                    <td>@Model.CongesInProgress[j].User.FamilyName</td>
+                                    <td>@Model.CongesInProgress[j].User.Surname</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                last = @Model.CongesInProgress[j].User.Name;
+                            }
+                            <tr>
+                                @Html.HiddenFor(x => Model.CongesInProgress[j].Id)
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(Model.CongesInProgress[j])</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].BeginDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].EndDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(Model.CongesInProgress[j])</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+    </div>
+
+    <div id="cg2" class="tab-pane fade">
+        @if (Model.CongesInProgress.Count() <= 0)
+        {
+            <br />
+            <p>Aucune demande de congé en cours</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            String last = null;
+                        }
+                        @for (int j = 0; j < Model.CongesInProgress.Count; j++)
+                        {
+                            if (last != @Model.CongesInProgress[j].User.Name)
+                            {
+                                <tr class="user_separator">
+                                    <td>@Model.CongesInProgress[j].User.FamilyName</td>
+                                    <td>@Model.CongesInProgress[j].User.Surname</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                last = @Model.CongesInProgress[j].User.Name;
+                            }
+                            <tr>
+                                @Html.HiddenFor(x => Model.CongesInProgress[j].Id)
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(Model.CongesInProgress[j])</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].BeginDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].EndDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(Model.CongesInProgress[j])</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+    </div>
+
+    <div id="cg3" class="tab-pane fade">
+        <br />
+        <form class="form-inline" role="form" method="post">
+            <div class="form-group">
+                <label asp-for="DateEnd">Exporter jusqu'au mois (inclus) de &nbsp;</label>
+                <input class="form-control" asp-for="DateEnd" type="text" id="datepickerEnd" placeholder="Date d'export" />
+            </div>
+            <button type="submit" class="btn btn-primary">Exporter</button>
+        </form>
+    </div>
+
+    <div id="cg4" class="tab-pane fade">
+        <br />
+        <form role="form" method="post">
+            <p>Il est possible, en cas d'absence d'un manager et lorsqu'une demande de congé doit être signée dans l'urgence, de le faire à sa place.</p>
+            <a class="btn btn-default" asp-page="/RH/Manage">Valider des congés</a>
+        </form>
+    </div>
+
+    <div id="cg5" class="tab-pane fade">
+        @if (Model.AbsenceTemporaires.Count() <= 0)
+        {
+            <br />
+            <p>Aucune absence temporaire en cours</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                            <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            String last = null;
+                        }
+                        @for (int j = 0; j < Model.AbsenceTemporaires.Count; j++)
+                        {
+                            if ((Model.AbsenceTemporaires[j].BeginDate.Month != DateTime.Now.Month) || (Model.AbsenceTemporaires[j].BeginDate.Year != DateTime.Now.Year))
+                            {
+                                continue;
+                            }
+
+                            if (last != @Model.AbsenceTemporaires[j].User.Name)
+                            {
+                                <tr class="user_separator">
+                                    <td>@Model.AbsenceTemporaires[j].User.FamilyName</td>
+                                    <td>@Model.AbsenceTemporaires[j].User.Surname</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                last = @Model.AbsenceTemporaires[j].User.Name;
+                            }
+                            <tr>
+                                @Html.HiddenFor(x => Model.AbsenceTemporaires[j].Id)
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(Model.AbsenceTemporaires[j])</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.AbsenceTemporaires[j].BeginDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.AbsenceTemporaires[j].EndDate)</td>
+                                <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(Model.AbsenceTemporaires[j])</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+    </div>
+</div>
+
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <environment names="Development,Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+        <script src="~/lib/jquery-ui/datepicker-fr.js"></script>
+        <script>
+            $(function () {
+                $.datepicker.setDefaults($.datepicker.regional["fr"]);
+                $("#datepickerEnd").datepicker(
+                    {
+                        dateFormat: "mm/yy",
+                        changeMonth: true,
+                        changeYear: true,
+                        showButtonPanel: true,
+                        onClose: function (dateText, inst) {
+
+
+                            function isDonePressed() {
+                                return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
+                            }
+
+                            if (isDonePressed()) {
+                                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                                $(this).datepicker('setDate', new Date(year, month, 1)).trigger('change');
+
+                                $('.date-picker').focusout()//Added to remove focus from datepicker input box on selecting date
+                            }
+                        },
+                        beforeShow: function (input, inst) {
+
+                            inst.dpDiv.addClass('month_year_datepicker')
+
+                            if ((datestr = $(this).val()).length > 0) {
+                                year = datestr.substring(datestr.length - 4, datestr.length);
+                                month = datestr.substring(0, 2);
+                                $(this).datepicker('option', 'defaultDate', new Date(year, month - 1, 1));
+                                $(this).datepicker('setDate', new Date(year, month - 1, 1));
+                                $(".ui-datepicker-calendar").hide();
+                            }
+                        }
+                    });
+            });
+        </script>
+    </environment>
+}
+

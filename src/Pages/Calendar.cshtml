@@ -1,0 +1,47 @@
+﻿@page
+@model WebApplicationConges.Pages.CalendarModel
+
+@section Header
+    {
+    <link href='~/lib/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
+    <link href='~/lib/fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+}
+
+@{
+    ViewData["Title"] = "Calendrier";
+}
+
+<h3>Calendrier</h3>
+<br />
+
+<div id='calendar'></div>
+
+@section Scripts
+    {
+    <script src='~/lib/fullcalendar/lib/moment.min.js'></script>
+    <script src='~/lib/fullcalendar/lib/jquery.min.js'></script>
+    <script src='~/lib/fullcalendar/fullcalendar.min.js'></script>
+    <script src='~/lib/fullcalendar/locale/fr.js'></script>
+
+    <script>
+        $(function () {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                locale: 'fr',
+                buttonIcons: true, // show the prev/next text
+                weekNumbers: false,
+                navLinks: true, // can click day/week names to navigate views
+                editable: false,
+                weekends: false,
+                eventLimit: true, // allow "more" link when too many events
+                events: [@Html.Raw(Model.Calendar)],
+                timeFormat: 'HH:mm',
+                displayEventEnd: true
+            });
+        });
+    </script>
+}

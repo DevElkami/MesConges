@@ -1,0 +1,148 @@
+﻿@page
+@model WebApplicationConges.Pages.AdminModel
+@{
+    ViewData["Title"] = "Administration";
+}
+<h3>Administration</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#services">Services</a></li>
+    <li><a data-toggle="tab" href="#users">Utilisateurs</a></li>
+    <li><a data-toggle="tab" href="#clean">Divers</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="services" class="tab-pane fade in active">
+        @if (Model.Services.Count() <= 0)
+        {
+            <p>Aucun service existant.</p>
+            <a asp-page="./Services/Create">Créer un service</a>
+        }
+        else
+        {
+            <br />
+            <a asp-page="./Services/Create">Créer un service</a>
+            <br />
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Manager</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var service in Model.Services)
+                        {
+                            <tr>
+                                <td>@service.Name</td>
+                                <td>@service.Description</td>
+                                <td>@service.Manager?.User.Name</td>
+                                <td>
+                                    <a class="btn btn-default" asp-page="./Services/Edit" asp-route-id="@service.Id"><i class="fa fa-edit fa-lg"></i> Editer</a>
+                                    <button class="btn btn-default" type="submit" asp-page-handler="DeleteService" asp-route-id="@service.Id"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+            <a asp-page="./Services/Create">Créer un service</a>
+        }
+    </div>
+
+    <div id="users" class="tab-pane fade">
+        <br />
+        <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+        <br />
+        <form method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Service</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Users.Count(); i++)
+                    {
+                        <tr>
+                            <td>@Model.Users[i].Name</td>
+                            <td>@Model.Users[i].Email</td>
+                            <td>@Model.Users[i].Service?.Name</td>
+                            <td>
+                                <a class="btn btn-default" asp-page="./Users/Edit" asp-route-id="@Model.Users[i].Email"><i class="fa fa-edit fa-lg"></i> Editer</a>
+                                <button class="btn btn-default" type="submit" asp-page-handler="DeleteUser" asp-route-id="@Model.Users[i].Email"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+        <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+    </div>
+
+    <div id="clean" class="tab-pane fade">
+        <br />
+        @if (Model.FilesCount > 0)
+        {
+            <p>Il y a @Model.FilesCount fichier(s) à purger.</p>
+            <form method="post">
+                <button class="btn btn-default" type="submit" asp-page-handler="CleanExport"><i class="fa fa-recycle fa-lg"></i> Purger</button>
+            </form>
+        }
+        else
+        {
+            <p>Aucun fichier à purger.</p>
+        }
+
+        @if (Model.OldAbsenceTemporaires.Count() <= 0)
+        {
+            <br />
+            <p>Aucune absence temporaire à purger</p>
+        }
+        else
+        {
+            <br />
+            <p>Il y a @Model.OldAbsenceTemporaires.Count() absences temporaires à purger (plus vielles de @Toolkit.IntervalAbsenceTemporaire().TotalDays)</p>
+            <form method="post">
+                <button class="btn btn-default" type="submit" asp-page-handler="CleanAbsTemp"><i class="fa fa-recycle fa-lg"></i> Purger</button>
+            </form>
+        }
+
+        @if (Model.OldConges.Count() <= 0)
+        {
+            <br />
+            <p>Aucun congé à purger</p>
+        }
+        else
+        {
+            <br />
+            <p>Il y a @Model.OldConges.Count() congés à purge (plus vieux de @Toolkit.IntervalCongeOld().TotalDays).</p>
+            <form method="post">
+                <button class="btn btn-default" type="submit" asp-page-handler="CleanConge"><i class="fa fa-recycle fa-lg"></i> Purger</button>
+            </form>
+        }
+
+        <br />
+        <p>Envoyer un email pour tester le système SMTP.</p>
+        <form method="post">
+            <button class="btn btn-default" type="submit" asp-page-handler="TestEmail"><i class="fa fa-envelope fa-lg"></i> Test</button>
+        </form>
+
+        <br />
+        <p>Remise à zéro du cache.</p>
+        <form method="post">
+            <button class="btn btn-default" type="submit" asp-page-handler="ResetCache"><i class="fa fa-trash-o fa-lg"></i> Reset</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

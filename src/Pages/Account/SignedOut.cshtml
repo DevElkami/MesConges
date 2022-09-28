@@ -1,0 +1,22 @@
+﻿@page
+@model SignedOutModel
+@{
+    ViewData["Title"] = "Déconnexion";
+}
+<h3>@ViewData["Title"]</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+<p>
+    Vous êtes déconnecté avec succès. Vous allez être redirigé vers la page d'accueil. <i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>
+</p>
+
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <environment names="Development,Staging,Production">
+        <script>
+            $(function () {
+                setInterval(function () { location.href = '@Model.ReturnUrl'; }, 3000);
+            });
+        </script>
+    </environment>
+}

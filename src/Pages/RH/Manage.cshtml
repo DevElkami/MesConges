@@ -1,0 +1,89 @@
+﻿@page
+@model WebApplicationConges.Pages.RH.ManageModel
+@{
+    ViewData["Title"] = "RH - Gestion des congés";
+}
+<h3>Gestion des congés: cas d'une demande urgente et en l'absence du manager.</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<ul class="nav nav-tabs">
+    @for (int i = 0; i < Model.Services.Count; i++)
+    {
+        var href = "#service" + i.ToString();
+        var classActive = "";
+        if (i == 0)
+        {
+            classActive = "active";
+        }
+
+        <li class="@classActive"><a data-toggle="tab" href="@href">@Model.Services[i].Key.Name</a></li>
+    }
+</ul>
+
+<div class="tab-content">
+    @for (int i = 0; i < Model.Services.Count; i++)
+    {
+        var href = "service" + i.ToString();
+        var classActive = "tab-pane fade";
+        if (i == 0)
+        {
+            classActive = "tab-pane fade in active";
+        }
+
+        <div id="@href" class="@classActive">
+            @if (Model.Services[i].Value.Count <= 0)
+            {
+                <br />
+                <p>Aucune demande en cours pour ce service.</p>
+            }
+            else
+            {
+                <form method="post">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                String last = null;
+                            }
+                            @for (int j = 0; j < Model.Services[i].Value.Count; j++)
+                            {
+                                if (last != @Model.Services[i].Value[j].User.Name)
+                                {
+                                    <tr class="user_separator">
+                                        <td>@Model.Services[i].Value[j].User.FamilyName</td>
+                                        <td>@Model.Services[i].Value[j].User.Surname</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    last = @Model.Services[i].Value[j].User.Name;
+                                }
+                                <tr>
+                                    @Html.HiddenFor(x => Model.Services[i].Value[j].Id)
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(Model.Services[i].Value[j])</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.Services[i].Value[j].BeginDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.Services[i].Value[j].EndDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(Model.Services[i].Value[j])</td>
+                                    <td>
+                                        <button class="btn btn-success" type="submit" asp-page-handler="Accept" asp-route-id="@Model.Services[i].Value[j].Id"><i class="fa fa-check fa-lg"></i> Accepter</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+}

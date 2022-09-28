@@ -1,0 +1,48 @@
+﻿@page
+@model WebApplicationConges.Pages.Users.ImportModel
+@{
+    ViewData["Title"] = "Gestion des utilisateurs";
+}
+<h3>Import depuis le ldap et modification en masse</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+@if (Model.Users.Count() <= 0)
+{
+    <p>Aucun utilisateur. Vérifiez votre config LDAP.</p>
+}
+else
+{
+    <p>Les utilisateurs</p>
+    <form method="post">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Service</th>
+                    <th>Actif</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Users.Count(); i++)
+                {
+                    <tr>
+                        @Html.HiddenFor(x => Model.Users[i].Email)
+                        @Html.HiddenFor(x => Model.Users[i].FamilyName)
+                        @Html.HiddenFor(x => Model.Users[i].Name)
+                        @Html.HiddenFor(x => Model.Users[i].Surname)
+                        <td>@Model.Users[i].Name</td>
+                        <td>@Model.Users[i].Email</td>
+                        <td>@Html.DropDownListFor(modelItem => Model.Users[i].ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "form-control", id = "ServiceId" })</td>
+                        <td>@Html.EditorFor(modelItem => Model.Users[i].Imported)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button type="submit">Mettre à jour</button>
+    </form>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
