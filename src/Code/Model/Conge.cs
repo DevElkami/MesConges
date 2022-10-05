@@ -77,10 +77,10 @@ namespace WebApplicationConges.Model
             conge.CanDeleted = this.CanDeleted;
 
             if (!String.IsNullOrEmpty(this.Motif))
-                conge.Motif = String.Copy(this.Motif);
+                conge.Motif = new String(this.Motif);
 
             if (!String.IsNullOrEmpty(this.UserId))
-                conge.UserId = String.Copy(this.UserId);
+                conge.UserId = new String(this.UserId);
 
             return conge;
         }
