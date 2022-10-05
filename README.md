@@ -14,7 +14,7 @@ Gestion de congés en opensource (Blazor / ASP.NET Core 5)
 
 Etapes pour configurer l'application:
 1. Ouvrez le fichier src/appsettings.json
-2. ConnectionString: Indiquez la bonne chaine de connexion à la base de données
+2. ConnectionString: Indiquez la bonne chaine de connexion à la base de données (qui doit être existante et s'appeler "conges")
 3. DbName: Nom de la base de données
 4. Renseignez votre domaine et indiquez les emails pour le ou les admins, les emails pour le ou les DRH (Admins, Drh, Domain)
 5. Paramètrez votre serveur LDAP (LdapServer, LdapBase, etc)
