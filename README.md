@@ -1,5 +1,5 @@
 # MesConges
-Gestion de congés en opensource
+Gestion de congés en opensource (Blazor / ASP.NET Core 5)
 
 - Gestion des services (un seul responsable par service)
 - Import rapide des utilisateurs depuis le LDAP
@@ -20,4 +20,8 @@ Etapes pour configurer l'application:
 5. Paramètrez votre serveur LDAP (LdapServer, LdapBase, etc)
 6. Paramètrez votre chaine de connexion au serveur SMTP (SmtpServer). Exemple: votresociete.mail.protection.outlook.com
 
-Note: Déploiement sur serveur IIS très simple (fichier zip)
+Déploiement possible sur :
+- Azure
+- Docker
+- IIS
+- Via fichier zip (Profil par défaut)
