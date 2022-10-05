@@ -1,4 +1,4 @@
-﻿using Novell.Directory.Ldap;
+using Novell.Directory.Ldap;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,11 +15,11 @@ namespace WebApplicationConges
                 cn.Connect(Toolkit.Configuration[Toolkit.ConfigEnum.LdapServer.ToString()], int.Parse(Toolkit.Configuration[Toolkit.ConfigEnum.LdapPort.ToString()]));
                 cn.Bind(Toolkit.Configuration[Toolkit.ConfigEnum.Domain.ToString()] + login, password);
 
-                LdapSearchQueue searchQueue = cn.Search(Toolkit.Configuration[Toolkit.ConfigEnum.LdapBase.ToString()], LdapConnection.SCOPE_SUB, $"(sAMAccountName={login})",
+                LdapSearchQueue searchQueue = cn.Search(Toolkit.Configuration[Toolkit.ConfigEnum.LdapBase.ToString()], LdapConnection.ScopeSub, $"(sAMAccountName={login})",
                     new string[] { "*" }, false, null as LdapSearchQueue);
 
                 LdapMessage message;
-                while ((message = searchQueue.getResponse()) != null)
+                while ((message = searchQueue.GetResponse()) != null)
                 {
                     if (message is LdapSearchResult searchResult)
                     {
@@ -43,11 +43,11 @@ namespace WebApplicationConges
                 cn.Connect(Toolkit.Configuration[Toolkit.ConfigEnum.LdapServer.ToString()], int.Parse(Toolkit.Configuration[Toolkit.ConfigEnum.LdapPort.ToString()]));
                 cn.Bind(Toolkit.Configuration[Toolkit.ConfigEnum.Domain.ToString()] + login, password);
 
-                LdapSearchQueue searchQueue = cn.Search(Toolkit.Configuration[Toolkit.ConfigEnum.LdapBase.ToString()], LdapConnection.SCOPE_SUB, "(sAMAccountName=*)",
+                LdapSearchQueue searchQueue = cn.Search(Toolkit.Configuration[Toolkit.ConfigEnum.LdapBase.ToString()], LdapConnection.ScopeSub, "(sAMAccountName=*)",
                     new string[] { "*" }, false, null as LdapSearchQueue);
 
                 LdapMessage message;
-                while ((message = searchQueue.getResponse()) != null)
+                while ((message = searchQueue.GetResponse()) != null)
                 {
                     if (message is LdapSearchResult searchResult)
                     {
@@ -56,7 +56,7 @@ namespace WebApplicationConges
                         // On filtre pour ne récupérer que les comptes actifs
                         if (!String.IsNullOrEmpty(Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilterName.ToString()]))
                         {
-                            if ((entry.getAttribute(Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilterName.ToString()]) == null) || (entry.getAttribute(Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilterName.ToString()]).StringValue != Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilterValue.ToString()]))
+                            if ((entry.GetAttribute(Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilterName.ToString()]) == null) || (entry.GetAttribute(Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilterName.ToString()]).StringValue != Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilterValue.ToString()]))
                                 continue;
                         }
 
@@ -75,12 +75,12 @@ namespace WebApplicationConges
         private static User Convert(LdapEntry entry)
         {
             User ldapUser = new User();
-            if ((entry.getAttribute("MAIL") != null) && (entry.getAttribute("SN") != null) && (entry.getAttribute("DISPLAYNAME") != null) && (entry.getAttribute("GIVENNAME") != null))
+            if ((entry.GetAttribute("MAIL") != null) && (entry.GetAttribute("SN") != null) && (entry.GetAttribute("DISPLAYNAME") != null) && (entry.GetAttribute("GIVENNAME") != null))
             {
-                ldapUser.Email = entry.getAttribute("MAIL").StringValue;
-                ldapUser.FamilyName = entry.getAttribute("SN").StringValue;
-                ldapUser.Name = entry.getAttribute("DISPLAYNAME").StringValue;
-                ldapUser.Surname = entry.getAttribute("GIVENNAME").StringValue;
+                ldapUser.Email = entry.GetAttribute("MAIL").StringValue;
+                ldapUser.FamilyName = entry.GetAttribute("SN").StringValue;
+                ldapUser.Name = entry.GetAttribute("DISPLAYNAME").StringValue;
+                ldapUser.Surname = entry.GetAttribute("GIVENNAME").StringValue;
                 return ldapUser;
             }
 
