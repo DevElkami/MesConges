@@ -13,9 +13,9 @@ namespace WebApplicationConges.Pages
 {
     public class AdminModel : PageModel
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public AdminModel(IHostingEnvironment hostingEnvironment)
+        public AdminModel(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
