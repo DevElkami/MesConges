@@ -21,10 +21,10 @@ namespace WebApplicationConges.Pages.RH
     public class ComptaModel : PageModel
     {
         private readonly ILogger<ComptaModel> _logger;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private const String ExcelCongeFormat = "dd/MM/yyyy HH:mm";
 
-        public ComptaModel(ILogger<ComptaModel> logger, IHostingEnvironment hostingEnvironment)
+        public ComptaModel(ILogger<ComptaModel> logger, IWebHostEnvironment hostingEnvironment)
         {
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
