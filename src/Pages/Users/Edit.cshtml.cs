@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Security.Application;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -46,14 +44,7 @@ namespace WebApplicationConges.Pages.Users
         public IActionResult OnPostAsync()
         {
             try
-            {
-                User.Name = Sanitizer.GetSafeHtmlFragment(User.Name);
-                User.FamilyName = Sanitizer.GetSafeHtmlFragment(User.FamilyName);
-                User.Surname = Sanitizer.GetSafeHtmlFragment(User.Surname);
-                User.PhoneNumber = Sanitizer.GetSafeHtmlFragment(User.PhoneNumber);
-                User.Description = Sanitizer.GetSafeHtmlFragment(User.Description);
-                User.Login = Sanitizer.GetSafeHtmlFragment(User.Login);
-                User.Matricule = Sanitizer.GetSafeHtmlFragment(User.Matricule);
+            {                
                 Db.Instance.DataBase.UserRepository.Update(User);
             }
             catch (Exception except)

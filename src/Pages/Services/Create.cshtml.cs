@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Security.Application;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -40,9 +39,7 @@ namespace WebApplicationConges.Pages.Services
         public IActionResult OnPostAsync()
         {
             try
-            {
-                Service.Name = Sanitizer.GetSafeHtmlFragment(Service.Name);
-                Service.Description = Sanitizer.GetSafeHtmlFragment(Service.Description);
+            {                
                 Db.Instance.DataBase.ServiceRepository.Insert(Service);
             }
             catch (Exception except)

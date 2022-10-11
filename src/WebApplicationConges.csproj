@@ -21,7 +21,6 @@
     <None Remove="wwwroot\Export\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AntiXSS" Version="4.3.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="EPPlus" Version="6.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />

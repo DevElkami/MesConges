@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationConges.Model
 {
@@ -7,6 +8,9 @@ namespace WebApplicationConges.Model
     {
         public long Id { get; set; }
         public String UserId { get; set; }
+
+        [RegularExpression(@"[A-Za-z0-9 .]*")]
+        [MaxLength(150)]
         public String Motif { get; set; }
 
         public enum StateEnum

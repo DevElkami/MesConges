@@ -8,7 +8,7 @@ namespace WebApplicationConges
 {
     public class Ldap
     {
-        public static async Task<User> ConnectToLdap(String login, String password)
+        public static User ConnectToLdap(String login, String password)
         {
             using (var cn = new LdapConnection())
             {

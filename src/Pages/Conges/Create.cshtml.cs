@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Microsoft.Security.Application;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,6 +30,8 @@ namespace WebApplicationConges.Pages.Conges
         public String DateEnd { get; set; }
 
         [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@"[A-Za-z0-9 .]*")]
+        [MaxLength(150)]
         [BindProperty]
         public String Motif { get; set; }
 
@@ -175,7 +176,7 @@ namespace WebApplicationConges.Pages.Conges
                 // Envoie d'un mail au responsable pour l'avertir
                 String body = Toolkit.Configuration[Toolkit.ConfigEnum.SmtpReplyBody.ToString()];
                 if (!String.IsNullOrEmpty(Motif))
-                    body += " - Motif: " + Sanitizer.GetSafeHtmlFragment(Motif);
+                    body += " - Motif: " + Motif;
 
                 Toolkit.SendEmail(
                     current.Email,

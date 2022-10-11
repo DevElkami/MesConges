@@ -34,9 +34,12 @@ namespace WebApplicationConges.Pages.Account
         public class InputModel
         {
             [Required]
+            [RegularExpression(@"[A-Za-z0-9_.-]*")]
+            [MaxLength(50)]
             public String Login { get; set; }
 
             [Required]
+            [MaxLength(50)]
             [DataType(DataType.Password)]
             public String Password { get; set; }
         }
@@ -58,7 +61,7 @@ namespace WebApplicationConges.Pages.Account
 
             if (ModelState.IsValid)
             {
-                User user = await AuthenticateUser(Input.Login, Input.Password);
+                User user = AuthenticateUser(Input.Login, Input.Password);
                 if (user == null)
                 {
                     ModelState.AddModelError(String.Empty, "Mauvais login ou mauvais mot de passe.");
@@ -127,11 +130,11 @@ namespace WebApplicationConges.Pages.Account
             return Page();
         }
 
-        private async Task<User> AuthenticateUser(String login, String password)
+        private User AuthenticateUser(String login, String password)
         {
             try
             {
-                User ldapUser = await Ldap.ConnectToLdap(login, password);
+                User ldapUser = Ldap.ConnectToLdap(login, password);
                 if (ldapUser != null)
                 {
                     User user = Db.Instance.DataBase.UserRepository.Get(ldapUser.Email);

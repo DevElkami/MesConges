@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Security.Application;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -89,12 +88,8 @@ namespace WebApplicationConges.Pages.Services
 
                 // Mise à jour descriptif ou nom
                 Service oldService = Db.Instance.DataBase.ServiceRepository.Get((int)Service.Id);
-                if ((oldService.Name != Service.Name) || (oldService.Description != Service.Description))
-                {
-                    Service.Name = Sanitizer.GetSafeHtmlFragment(Service.Name);
-                    Service.Description = Sanitizer.GetSafeHtmlFragment(Service.Description);
-                    Db.Instance.DataBase.ServiceRepository.Update(Service);
-                }
+                if ((oldService.Name != Service.Name) || (oldService.Description != Service.Description))                                   
+                    Db.Instance.DataBase.ServiceRepository.Update(Service);               
             }
             catch (Exception except)
             {
