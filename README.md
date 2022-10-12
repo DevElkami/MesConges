@@ -1,4 +1,4 @@
-# MesConges
+# Mes congés
 Gestion de congés en opensource (Blazor / ASP.NET Core 5)
 
 - Gestion des services (un seul responsable par service)
