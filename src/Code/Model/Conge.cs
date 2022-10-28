@@ -9,7 +9,7 @@ namespace WebApplicationConges.Model
         public long Id { get; set; }
         public String UserId { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9 .]*")]
+        [RegularExpression("[^<>:='\"]*")]
         [MaxLength(150)]
         public String Motif { get; set; }
 

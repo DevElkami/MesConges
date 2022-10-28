@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
 namespace WebApplicationConges.Pages.Users
 {
-    public class EditModel : PageModel
+    public class CreateModel : PageModel
     {
         [BindProperty]
         public new User User { get; set; }
@@ -51,7 +52,7 @@ namespace WebApplicationConges.Pages.Users
                 if ((Connect.UserAccess.Instance is Connect.DbConnection) && !String.IsNullOrEmpty(Password))
                     User.HashPwd = Toolkit.CreateSHAHash(Password);
 
-                Db.Instance.DataBase.UserRepository.Update(User);
+                Db.Instance.DataBase.UserRepository.Insert(User);
             }
             catch (Exception except)
             {

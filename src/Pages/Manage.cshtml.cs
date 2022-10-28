@@ -218,11 +218,14 @@ namespace WebApplicationConges.Pages
                     // Dans le cas d'un congé déjà exporté en compta, il faut avertir la DRH pour qu'elle fasse une régulation
                     if (congeDeleted.IsExported)
                     {
-                        Toolkit.SendEmail(
-                            Model.User.Admins.FirstOrDefault(), // L'email de l'admin
-                            Model.User.Drh.Where(x => !x.Contains("m.reignier")).FirstOrDefault(), // Qui écrit à la DRH
-                            "App des congés - Problème d'annulation",
-                            "Le congé de " + congeDeleted.UserId + " vient d'être annulé, mais il était déjà exporté en compta: il va falloir faire une régulation.");
+                        foreach (User drh in Db.Instance.GetDrh())
+                        {
+                            Toolkit.SendEmail(
+                                Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminEmail.ToString()], // L'email de l'admin qui écrit à la DRH
+                                drh.Email,
+                                "App des congés - Problème d'annulation",
+                                "Le congé de " + congeDeleted.UserId + " vient d'être annulé, mais il était déjà exporté en compta: il va falloir faire une régulation.");
+                        }
                     }
                 }
                 else

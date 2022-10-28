@@ -63,9 +63,14 @@ namespace WebApplicationConges.Data
 
         public void Init(String connectionString, String dataBaseName)
         {
-            MySqlBase.ConnectionString = connectionString;
-            MySqlBase.DB_NAME = dataBaseName;
-            DataBase = new MySqlBase();
+            if (Toolkit.Configuration[Toolkit.ConfigEnum.DbType.ToString()] == "mysql")
+            {
+                MySqlBase.ConnectionString = connectionString;
+                MySqlBase.DB_NAME = dataBaseName;
+                DataBase = new MySqlBase();
+            }
+            else
+                DataBase = new SQLiteBase();
 
             DataBase.Init();
         }
@@ -78,13 +83,21 @@ namespace WebApplicationConges.Data
 
         public User BeautifyUser(User user)
         {
-            user.IsAdmin = User.Admins.Contains(user.Email);
-            user.IsDrh = User.Drh.Contains(user.Email);
             user.IsManager = Db.Instance.DataBase.ManagerRepository.Get(user.Email) != null;
             user.Service = Db.Instance.DataBase.ServiceRepository.Get(user.ServiceId);
             user.Manager = Db.Instance.DataBase.ManagerRepository.GetByServiceId(user.ServiceId);
 
             return user;
+        }
+
+        public List<User> GetDrh()
+        {
+            return Db.Instance.DataBase.UserRepository.GetDrh();
+        }
+
+        public List<User> GetAdmin()
+        {
+            return Db.Instance.DataBase.UserRepository.GetAdmin();
         }
     }
 }

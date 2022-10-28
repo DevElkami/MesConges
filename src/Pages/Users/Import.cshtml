@@ -20,21 +20,26 @@ else
                     <th>Email</th>
                     <th>Service</th>
                     <th>Actif</th>
+                    <th>DRH</th>
+                    <th>Admin</th>
                 </tr>
             </thead>
             <tbody>
                 @for (var i = 0; i < Model.Users.Count(); i++)
                 {
-                    <tr>
-                        @Html.HiddenFor(x => Model.Users[i].Email)
-                        @Html.HiddenFor(x => Model.Users[i].FamilyName)
-                        @Html.HiddenFor(x => Model.Users[i].Name)
-                        @Html.HiddenFor(x => Model.Users[i].Surname)
-                        <td>@Model.Users[i].Name</td>
-                        <td>@Model.Users[i].Email</td>
-                        <td>@Html.DropDownListFor(modelItem => Model.Users[i].ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "form-control", id = "ServiceId" })</td>
-                        <td>@Html.EditorFor(modelItem => Model.Users[i].Imported)</td>
-                    </tr>
+                <tr>
+                    @Html.HiddenFor(x => Model.Users[i].Email)
+                    @Html.HiddenFor(x => Model.Users[i].Login)
+                    @Html.HiddenFor(x => Model.Users[i].FamilyName)
+                    @Html.HiddenFor(x => Model.Users[i].Name)
+                    @Html.HiddenFor(x => Model.Users[i].Surname)
+                    <td>@Model.Users[i].Name</td>
+                    <td>@Model.Users[i].Email</td>
+                    <td>@Html.DropDownListFor(modelItem => Model.Users[i].ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "form-control", id = "ServiceId" })</td>
+                    <td>@Html.EditorFor(modelItem => Model.Users[i].Imported)</td>
+                    <td>@Html.EditorFor(modelItem => Model.Users[i].IsDrh)</td>
+                    <td>@Html.EditorFor(modelItem => Model.Users[i].IsAdmin)</td>
+                </tr>
                 }
             </tbody>
         </table>

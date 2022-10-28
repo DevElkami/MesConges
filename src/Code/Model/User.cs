@@ -9,31 +9,37 @@ namespace WebApplicationConges.Model
         [Required]
         [EmailAddress]
         [MaxLength(50)]
+        [RegularExpression("[^<>:='\"]*")]
         public String Email { get; set; }
+
+        [MaxLength(64)]
+        public String HashPwd { get; set; }
+
         public int ServiceId { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9 _.-]*")]
-        [MaxLength(70)]
+        [RegularExpression("[^<>:='\"]*")]
+        [MaxLength(50)]
         public String Name { get; set; }
         public DateTime DateCreate { get; set; } = DateTime.Now;
 
-        [RegularExpression(@"[A-Za-z0-9 _.-]*")]
-        [MaxLength(70)]
+        [RegularExpression("[^<>:='\"]*")]
+        [MaxLength(50)]
         public String Surname { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9 _.-]*")]
-        [MaxLength(70)]
+        [RegularExpression("[^<>:='\"]*")]
+        [MaxLength(50)]
         public String FamilyName { get; set; }
 
         [Phone]
         [MaxLength(20)]
+        [RegularExpression("[^<>:='\"]*")]
         public String PhoneNumber { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9 _.-]*")]
+        [RegularExpression("[^<>:='\"]*")]
         [MaxLength(200)]
         public String Description { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9 _.-]*")]
+        [RegularExpression("[^<>:='\"]*")]
         [MaxLength(30)]
         public String Matricule { get; set; }
         public DateTime LastConnection { get; set; } = DateTime.Now;
@@ -44,7 +50,7 @@ namespace WebApplicationConges.Model
         public Manager Manager { get; set; }
 
         [Required]
-        [RegularExpression(@"[A-Za-z0-9_.-]*")]
+        [RegularExpression("[^<>:='\"]*")]
         [MaxLength(50)]
         public String Login { get; set; }
         public bool IsManager { get; set; }
@@ -52,10 +58,6 @@ namespace WebApplicationConges.Model
         public bool IsAdmin { get; set; }
         public Service Service { get; set; }
         public bool Imported { get; set; } = false;
-
-        static public List<String> Admins = null;
-
-        static public List<String> Drh = null;
 
         public override string ToString()
         {

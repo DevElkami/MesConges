@@ -7,11 +7,11 @@ namespace WebApplicationConges.Model
     {
         public long Id { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9 _.-]*")]
+        [RegularExpression("[^<>:='\"]*")]
         [MaxLength(70)]
         public String Name { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9 _.-]*")]
+        [RegularExpression("[^<>:='\"]*")]
         [MaxLength(200)]
         public String Description { get; set; }
         public Manager Manager { get; set; }

@@ -9,7 +9,7 @@ namespace WebApplicationConges
         public static void Main(string[] args)
         {
             Toolkit.InitConfiguration();
-            Db.Instance.Init(Toolkit.Configuration[Toolkit.ConfigEnum.ConnectionString.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.DbName.ToString()]);
+            Db.Instance.Init(Toolkit.Configuration[Toolkit.ConfigEnum.DbConnectionString.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.DbName.ToString()]);
 
             BuildWebHost(args).Run();
         }

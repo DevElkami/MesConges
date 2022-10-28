@@ -36,7 +36,7 @@ namespace WebApplicationConges.Data
 
         public static String GetQuerySelectById()
         {
-            return SELECT + " FROM " + GetTableName() + " WHERE id = @serviceId";
+            return SELECT + " FROM " + GetTableName() + " WHERE id = @id";
         }
 
         public static String GetQueryInsert()

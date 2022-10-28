@@ -30,7 +30,7 @@ namespace WebApplicationConges.Pages.Conges
         public String DateEnd { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@"[A-Za-z0-9 .]*")]
+        [RegularExpression("[^<>:='\"]*")]
         [MaxLength(150)]
         [BindProperty]
         public String Motif { get; set; }

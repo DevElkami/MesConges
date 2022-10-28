@@ -1,4 +1,4 @@
-# MesConges
+# Mes congés
 Gestion de congés en opensource (Blazor / ASP.NET Core 5)
 
 - Gestion des services (un seul responsable par service)
@@ -10,19 +10,28 @@ Gestion de congés en opensource (Blazor / ASP.NET Core 5)
 - Différents types de congés (congés payés, événements familiaux, enfants malades, récupérations, sans solde, absences temporaires)
 - Validation par le responsable des congés posés et notification par emails
 
-![](https://github.com/DevElkami/MesConges/blob/main/screen.png)
-
 Etapes pour configurer l'application:
 1. Ouvrez le fichier src/appsettings.json
-2. ConnectionString: Indiquez la bonne chaine de connexion à la base de données (qui doit être existante et s'appeler "conges")
-                     Pour docker, utiliser host.docker.internal à la place de localhost
-3. DbName: Nom de la base de données
-4. Renseignez votre domaine et indiquez les emails pour le ou les admins, les emails pour le ou les DRH (Admins, Drh, Domain)
-5. Paramètrez votre serveur LDAP (LdapServer, LdapBase, etc)
-6. Paramètrez votre chaine de connexion au serveur SMTP (SmtpServer). Exemple: votresociete.mail.protection.outlook.com
-
-Déploiement possible sur :
+2. Configurez l'application:
+  "AppAdminLogin": 		-> Login du gestionnaire de l'application
+  "AppAdminPwd": 		-> Mot de passe du gestionnaire de l'application
+  "AppAdminEmail": 		-> Email du gestionnaire de l'application
+  "DbType": 			-> Type de base de donnée souhaitée (sqlite ou mysql)
+  "DbName": 			-> Nom de la base de donnée (uniquement mysql)
+  "DbConnectionString": -> Chaine de connexion à la base de donnée (uniquement mysql)
+  "ExportDir": 			-> Nom du répertoire des export
+  "Ldap": 				-> Activation du LDAP
+  "LdapConnectionString"-> Chaine de connexion du LDAP 
+  "LdapFilter": 		-> Filtre du LDAP
+  "SmtpServer": 		-> Nom ou ip du serveur de mail
+3. Déployez. Déploiement possible sur:
 - Azure
 - Docker
 - IIS
 - Via fichier zip (Profil par défaut)
+
+![](https://github.com/DevElkami/MesConges/blob/main/calendrier.png)
+![](https://github.com/DevElkami/MesConges/blob/main/ldap.png)
+![](https://github.com/DevElkami/MesConges/blob/main/rh.png)
+![](https://github.com/DevElkami/MesConges/blob/main/service.png)
+![](https://github.com/DevElkami/MesConges/blob/main/screen.png)

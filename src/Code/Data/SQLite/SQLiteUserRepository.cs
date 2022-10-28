@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace WebApplicationConges.Data
 {
-    public class MySqlUserRepository : MySqlBase, IUserRepository
+    public class SQLiteUserRepository : SQLiteBase, IUserRepository
     {
         public int Order { get { return 2; } }
 
@@ -15,7 +15,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 return new List<User>(cnn.Query<User>(Data.UserRepository.GetQueryAll(), null));
             }
         }
@@ -25,7 +24,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 return new List<User>(cnn.Query<User>(Data.UserRepository.GetQuerySelectByService(), new { serviceId }));
             }
         }
@@ -35,7 +33,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 return cnn.Query<User>(Data.UserRepository.GetQuerySelectByEmail(), new { email }).FirstOrDefault();
             }
         }
@@ -45,7 +42,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 return cnn.Query<User>(Data.UserRepository.GetQuerySelectByLoginAndHash(), new { login, hash }).FirstOrDefault();
             }
         }
@@ -56,7 +52,6 @@ namespace WebApplicationConges.Data
                 using (var cnn = DbConnection())
                 {
                     cnn.Open();
-                    cnn.Execute(@"use " + DB_NAME);
                     return new List<User>(cnn.Query<User>(Data.UserRepository.GetQuerySelectDrh(), null));
                 }
             }
@@ -68,7 +63,6 @@ namespace WebApplicationConges.Data
                 using (var cnn = DbConnection())
                 {
                     cnn.Open();
-                    cnn.Execute(@"use " + DB_NAME);
                     return new List<User>(cnn.Query<User>(Data.UserRepository.GetQuerySelectAdmin(), null));
                 }
             }
@@ -79,7 +73,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 cnn.Query<dynamic>(Data.UserRepository.GetQueryInsert(), user);
             }
         }
@@ -89,7 +82,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 cnn.Query<dynamic>(Data.UserRepository.GetQueryUpdate(), user);
             }
         }
@@ -99,7 +91,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 cnn.Query<dynamic>(Data.UserRepository.GetQueryDelete(), user);
             }
         }
@@ -110,7 +101,6 @@ namespace WebApplicationConges.Data
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"use " + DB_NAME);
                 cnn.Execute(@"create TABLE IF NOT EXISTS " + Data.UserRepository.TABLE_NAME + @"
                       (
                         email varchar(50) not null primary key,

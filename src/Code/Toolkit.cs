@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using WebApplicationConges.Model;
 
 namespace WebApplicationConges
@@ -16,14 +17,15 @@ namespace WebApplicationConges
 
         public enum ConfigEnum
         {
+            AppAdminLogin,
+            AppAdminPwd,
+            AppAdminEmail,
+            DbType,
             DbName,
-            ConnectionString,
-            Domain,
-            LdapServer,
-            LdapPort,
-            LdapBase,
-            LdapFilterName,
-            LdapFilterValue,
+            DbConnectionString,
+            Ldap,
+            LdapConnectionString,
+            LdapFilter,
             SmtpServer,
             SmtpReplyText,
             SmtpReplySubject,
@@ -47,9 +49,7 @@ namespace WebApplicationConges
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
             Configuration = builder.Build();
 
-            User.Admins = new List<string>(Configuration.GetSection("Admins").GetChildren().Select(x => x.Value).ToArray());
-            User.Drh = new List<string>(Configuration.GetSection("Drh").GetChildren().Select(x => x.Value).ToArray());
-
+            // Add extra holidays
             PublicHolidays = new List<string>(Configuration.GetSection("PublicHolidays").GetChildren().Select(x => x.Value).ToArray());
         }
 
@@ -237,6 +237,15 @@ namespace WebApplicationConges
             }
 
             return calendar;
+        }
+
+        public static string CreateSHAHash(string phrase)
+        {
+            SHA512Managed HashTool = new SHA512Managed();
+            Byte[] PhraseAsByte = System.Text.Encoding.UTF8.GetBytes(string.Concat(phrase));
+            Byte[] EncryptedBytes = HashTool.ComputeHash(PhraseAsByte);
+            HashTool.Clear();
+            return Convert.ToBase64String(EncryptedBytes);
         }
     }
 }

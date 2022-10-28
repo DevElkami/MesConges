@@ -38,28 +38,19 @@
                     <li>
                         <a asp-page="/Index"><i class="fa fa-home fa-lg"></i> Accueil</a>
                     </li>
-                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("admin"))
                     {
-                        @if (HttpContextAccessor.HttpContext.User.IsInRole("admin"))
-                        {
-                            <li>
-                                <a asp-page="/Admin"><i class="fa fa-cog fa-lg"></i> Administration</a>
-                            </li>
-                        }
+                        <li>
+                            <a asp-page="/Admin"><i class="fa fa-cog fa-lg"></i> Administration</a>
+                        </li>
                     }
-                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("manager"))
                     {
-                        @if (HttpContextAccessor.HttpContext.User.IsInRole("manager"))
-                        {
-                            <li><a asp-page="/Manage"><i class="fa fa-users fa-lg"></i> Gérer l'équipe</a></li>
-                        }
+                         <li><a asp-page="/Manage"><i class="fa fa-users fa-lg"></i> Gérer l'équipe</a></li>
                     }
-                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("drh"))
                     {
-                        @if (HttpContextAccessor.HttpContext.User.IsInRole("drh"))
-                        {
-                            <li><a asp-page="/RH/Compta"><i class="fa fa-users fa-lg"></i> Ressources humaines</a></li>
-                        }
+                        <li><a asp-page="/RH/Compta"><i class="fa fa-users fa-lg"></i> Ressources humaines</a></li>
                     }
                     <li><a asp-page="/Calendar"><i class="fa fa-calendar fa-lg"></i> Calendrier</a></li>
                     <li><a asp-page="/About"><i class="fa fa-info fa-lg"></i> A propos</a></li>

@@ -26,7 +26,7 @@ namespace WebApplicationConges.Pages.Users
                 User admin = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 if (admin.IsAdmin)
                 {
-                    Users = Ldap.GetLdapUsers(admin.Login, HttpContext.User.Claims.FirstOrDefault(c => c.Type == "adminextra")?.Value).OrderBy(u => u.Name).ToList();
+                    Users = Connect.UserAccess.Instance.GetUsers().OrderBy(u => u.Name).ToList();
                     foreach (User user in Users)
                     {
                         User dbUser = Db.Instance.DataBase.UserRepository.Get(user.Email);
@@ -39,7 +39,7 @@ namespace WebApplicationConges.Pages.Users
                         }
                     }
 
-                    Services = Db.Instance.DataBase.ServiceRepository.GetAll().OrderBy(s => s.Name).ToList();                    
+                    Services = Db.Instance.DataBase.ServiceRepository.GetAll().OrderBy(s => s.Name).ToList();
                 }
                 else
                     return RedirectToPage("/Index");
@@ -57,7 +57,7 @@ namespace WebApplicationConges.Pages.Users
         {
             if (!ModelState.IsValid)
                 return Page();
-
+            
             try
             {
                 foreach (User user in Users)

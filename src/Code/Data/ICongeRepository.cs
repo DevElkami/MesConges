@@ -41,22 +41,22 @@ namespace WebApplicationConges.Data
 
         public static String GetQuerySelectByUserIdAndState()
         {
-            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @UserId and state = @state";
+            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @userId and state = @state";
         }
 
         public static String GetQuerySelectByUserIdStateIsExported()
         {
-            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @UserId and state = @state and isExported = @isExported";
+            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @userId and state = @state and isExported = @isExported";
         }
 
         public static String GetQuerySelectByUserIdStateCanDeleted()
         {
-            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @UserId and state = @state and canDeleted = @canDeleted";
+            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @userId and state = @state and canDeleted = @canDeleted";
         }
 
         public static String GetQuerySelectByUserIdStateTypeAndDate()
         {
-            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @UserId and state = @state and cgtype = @cgtype and dbegin BETWEEN @beginPeriode AND @endPeriode";
+            return SELECT + " FROM " + GetTableName() + " WHERE user_id = @userId and state = @state and cgtype = @cgType and dbegin BETWEEN @beginPeriode AND @endPeriode";
         }
 
         public static String GetQuerySelectById()

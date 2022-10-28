@@ -7,3 +7,4 @@
 /src/.vs
 *.user
 /.vs
+/src/data.sqlite

@@ -34,7 +34,7 @@ namespace WebApplicationConges.Pages.Account
         public class InputModel
         {
             [Required]
-            [RegularExpression(@"[A-Za-z0-9_.-]*")]
+            [RegularExpression("[^<>:='\"]*")]
             [MaxLength(50)]
             public String Login { get; set; }
 
@@ -132,21 +132,45 @@ namespace WebApplicationConges.Pages.Account
 
         private User AuthenticateUser(String login, String password)
         {
+            // Cas de l'admin local => Tous les droits
+            Func<User> CheckLocalAdminCredential = () =>
+            {
+                try
+                {
+                    if ((login == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminLogin.ToString()]) && (password == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminPwd.ToString()]))
+                    {
+                        User user = new User();
+                        user.FamilyName = Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminLogin.ToString()];
+                        user.Email = Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminEmail.ToString()];
+                        user.IsAdmin = true;
+                        user.IsDrh = true;
+                        return user;
+                    }
+                }
+                catch (Exception except)
+                {
+                    _logger.LogError(except.Message);
+                }
+
+                return null;
+            };
+
             try
             {
-                User ldapUser = Ldap.ConnectToLdap(login, password);
-                if (ldapUser != null)
+                // App administrator login
+                User currentUser = CheckLocalAdminCredential();
+                if (currentUser != null)
+                    return currentUser;
+
+                // Other login (ldap, database)
+                currentUser = Connect.UserAccess.Instance.Connect(login, password);
+                if (currentUser != null)
                 {
-                    User user = Db.Instance.DataBase.UserRepository.Get(ldapUser.Email);
-                    if ((user == null) && Model.User.Admins.Contains(ldapUser.Email))
-                    {
-                        ldapUser.IsAdmin = true;
-                        return ldapUser;
-                    }
-                    else if ((user == null) && !Model.User.Admins.Contains(ldapUser.Email))
-                        return null;
-                    else
+                    User user = Db.Instance.DataBase.UserRepository.Get(currentUser.Email);
+                    if (user != null)
                         return Db.Instance.BeautifyUser(user);
+                    else
+                        return null;
                 }
             }
             catch (Exception except)
@@ -154,7 +178,7 @@ namespace WebApplicationConges.Pages.Account
                 _logger.LogError(except.Message);
             }
 
-            return null;
+            return CheckLocalAdminCredential();
         }
     }
 }

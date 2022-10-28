@@ -56,7 +56,14 @@
 
     <div id="users" class="tab-pane fade">
         <br />
-        <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+        @if (Connect.UserAccess.Instance is Connect.DbConnection)
+        {
+            <a asp-page="./Users/Create">Gérer les utilisateurs</a>
+        }
+        @if (Connect.UserAccess.Instance is Connect.LdapConnection)
+        {
+            <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+        }
         <br />
         <form method="post">
             <table class="table">
@@ -84,7 +91,14 @@
                 </tbody>
             </table>
         </form>
-        <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+         @if (Connect.UserAccess.Instance is Connect.DbConnection)
+        {
+            <a asp-page="./Users/Create">Gérer les utilisateurs</a>
+        }
+        @if (Connect.UserAccess.Instance is Connect.LdapConnection)
+        {
+            <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+        }
     </div>
 
     <div id="clean" class="tab-pane fade">
