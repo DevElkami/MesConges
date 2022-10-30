@@ -1,5 +1,5 @@
 # Mes congés
-Gestion de congés en opensource (Blazor / ASP.NET Core 5)
+Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 
 - Gestion des services (un seul responsable par service)
 - Import rapide des utilisateurs depuis le LDAP
