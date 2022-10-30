@@ -241,7 +241,7 @@ namespace WebApplicationConges
 
         public static string CreateSHAHash(string phrase)
         {
-            SHA512Managed HashTool = new SHA512Managed();
+            SHA512 HashTool = SHA512.Create();
             Byte[] PhraseAsByte = System.Text.Encoding.UTF8.GetBytes(string.Concat(phrase));
             Byte[] EncryptedBytes = HashTool.ComputeHash(PhraseAsByte);
             HashTool.Clear();

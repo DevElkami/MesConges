@@ -8,3 +8,8 @@
 *.user
 /.vs
 /src/data.sqlite
+/src/TestProject/obj/Debug/net6.0
+/src/TestProject/obj
+/src/TestProject/bin/Debug/net6.0
+/TestProject/bin/Debug/net6.0
+/TestProject/obj

@@ -133,7 +133,7 @@ namespace WebApplicationConges.Pages.Account
         private User AuthenticateUser(String login, String password)
         {
             // Cas de l'admin local => Tous les droits
-            Func<User> CheckLocalAdminCredential = () =>
+            var CheckLocalAdminCredential = () =>
             {
                 try
                 {
