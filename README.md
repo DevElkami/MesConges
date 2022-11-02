@@ -16,7 +16,7 @@ Etapes pour configurer l'application:
 2. Configurez l'application:
 
   - AppAdminLogin	        -> Login du gestionnaire de l'application
-  - AppAdminPwd		        -> Mot de passe du gestionnaire de l'application
+  - AppAdminPwd		        -> Mot de passe du gestionnaire de l'application (SHA 512 encodé en base 64)
   - AppAdminEmail		      -> Email du gestionnaire de l'application
   - DbType 			          -> Type de base de donnée souhaitée (sqlite ou mysql)
   - DbName 			          -> Nom de la base de donnée (uniquement mysql)
