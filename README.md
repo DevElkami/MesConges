@@ -25,7 +25,7 @@ Etapes pour configurer l'application:
   - Ldap         				  -> Activation du LDAP
   - LdapConnectionString  -> Chaine de connexion du LDAP
   - LdapFilter 		        -> Filtre du LDAP
-  - SmtpServer 		        -> Nom ou ip du serveur de mail
+  - SmtpServer 		        -> Nom ou ip du serveur de mail (Serveur SMTP anonyme seulement: aucun compte requis)
   
 3. Déployez. Déploiement possible sur:
 - Azure
