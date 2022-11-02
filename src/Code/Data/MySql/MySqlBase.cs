@@ -24,6 +24,11 @@ namespace WebApplicationConges.Data
             // Nothing here
         }
 
+        public void Backup(string fullpath)
+        {
+
+        }
+
         public void Init()
         {
             // Création de la db

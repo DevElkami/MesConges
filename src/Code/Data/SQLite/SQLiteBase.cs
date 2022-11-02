@@ -25,12 +25,28 @@ namespace WebApplicationConges.Data
             // Nothing here
         }
 
+        public void Backup(string fullpath)
+        {
+            using (var cnn = DbConnection())
+            {
+                cnn.Open();
+
+                using (var backup = new SqliteConnection("Data Source=" + fullpath))
+                {
+                    (cnn as SqliteConnection).BackupDatabase(backup);
+                    backup.Close();
+                }
+
+                cnn.Close();
+            }
+        }
+
         public void Init()
         {
             // Création de la db
             using (var cnn = DbConnection())
             {
-                cnn.Open();                
+                cnn.Open();
                 cnn.Close();
             }
 

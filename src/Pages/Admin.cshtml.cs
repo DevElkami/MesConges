@@ -35,6 +35,8 @@ namespace WebApplicationConges.Pages
 
         public int FilesCount { get; set; } = 0;
 
+        public List<KeyValuePair<String, DateTime>> BackupColl { get; set; }
+
         [TempData]
         public String ErrorMessage { get; set; }
 
@@ -85,6 +87,21 @@ namespace WebApplicationConges.Pages
                 if (Directory.Exists(exportPath))
                     FilesCount = Directory.GetFiles(exportPath).Length;
 
+                BackupColl = new List<KeyValuePair<String, DateTime>>();
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
+                if (Directory.Exists(backupPath))
+                {
+                    foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
+                    {
+                        String fileName = Path.GetFileName(filePath);
+                        String backupDir = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value + HttpContext.Request.PathBase;
+                        backupDir += "/" + Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()] + "/" + fileName;
+                        BackupColl.Add(new KeyValuePair<String, DateTime>(backupDir, System.IO.File.GetCreationTime(filePath)));
+                    }
+                }
+
+                BackupColl = BackupColl.OrderByDescending(o => o.Value).ToList();
+
                 return Page();
             }
             else
@@ -127,6 +144,43 @@ namespace WebApplicationConges.Pages
                 }
                 else
                     Db.Instance.DataBase.UserRepository.Delete(new User() { Email = id });
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostBackupAsync()
+        {
+            try
+            {
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
+                Directory.CreateDirectory(backupPath);
+                Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.sqlite"));                
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostCleanBackupAsync()
+        {
+            try
+            {
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);                
+                if (Directory.Exists(backupPath))
+                {
+                    foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
             }
             catch (Exception except)
             {

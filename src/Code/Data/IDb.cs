@@ -11,6 +11,7 @@ namespace WebApplicationConges.Data
     {
         DbConnection DbConnection();
         void Init();
+        void Backup(string fullpath);
         void Reset();
         IUserRepository UserRepository { get; }
         IManagerRepository ManagerRepository { get; }

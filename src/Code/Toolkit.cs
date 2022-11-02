@@ -41,7 +41,8 @@ namespace WebApplicationConges
             SmtpCancelAcceptBody,
             SmtpManagerCancelSubject,
             SmtpManagerCancelBody,
-            ExportDir
+            ExportDir,
+            BackupBdd
         }
 
         public static void InitConfiguration()
