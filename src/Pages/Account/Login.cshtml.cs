@@ -137,7 +137,8 @@ namespace WebApplicationConges.Pages.Account
             {
                 try
                 {
-                    if ((login == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminLogin.ToString()]) && (password == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminPwd.ToString()]))
+                    if ((login == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminLogin.ToString()]) && 
+                        (Toolkit.CreateSHAHash(password) == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminPwd.ToString()]))
                     {
                         User user = new User();
                         user.FamilyName = Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminLogin.ToString()];
