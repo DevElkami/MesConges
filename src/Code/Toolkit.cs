@@ -13,7 +13,7 @@ namespace WebApplicationConges
 {
     public static class Toolkit
     {
-        public static String Copyright { get { return "yourCompagny © " + DateTime.Now.Year.ToString(); } }
+        public static String Copyright { get { return "CGI Formation © " + DateTime.Now.Year.ToString(); } }
 
         public enum ConfigEnum
         {
