@@ -1,6 +1,9 @@
 ﻿using Dapper;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO.Compression;
+using System.IO;
 
 namespace WebApplicationConges.Data
 {
@@ -11,7 +14,7 @@ namespace WebApplicationConges.Data
 
         public System.Data.Common.DbConnection DbConnection()
         {
-            return new MySql.Data.MySqlClient.MySqlConnection(ConnectionString);
+            return new MySqlConnection(ConnectionString);
         }
 
         public IUserRepository UserRepository { get { return new MySqlUserRepository(); } }
@@ -22,6 +25,31 @@ namespace WebApplicationConges.Data
         public void Reset()
         {
             // Nothing here
+        }
+
+        public void Backup(string fullpath)
+        {
+            using (var cnn = DbConnection())
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = cnn as MySqlConnection;
+                        cnn.Open();
+                        mb.ExportToFile(fullpath);
+                        cnn.Close();
+                    }
+                }
+            }
+
+            using var archive = ZipFile.Open(Path.ChangeExtension(fullpath, "zip"), ZipArchiveMode.Create);
+            {
+                archive.CreateEntryFromFile(fullpath, Path.GetFileName(fullpath), CompressionLevel.Optimal);
+            }
+
+            // Keep only zip file
+            File.Delete(fullpath);
         }
 
         public void Init()

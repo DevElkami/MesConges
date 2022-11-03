@@ -1,4 +1,5 @@
 ﻿@page
+@using WebApplicationConges.Data
 @model WebApplicationConges.Pages.AdminModel
 @{
     ViewData["Title"] = "Administration";
@@ -9,6 +10,7 @@
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#services">Services</a></li>
     <li><a data-toggle="tab" href="#users">Utilisateurs</a></li>
+    <li><a data-toggle="tab" href="#bdd">BDD</a></li>
     <li><a data-toggle="tab" href="#clean">Divers</a></li>
 </ul>
 
@@ -91,7 +93,7 @@
                 </tbody>
             </table>
         </form>
-         @if (Connect.UserAccess.Instance is Connect.DbConnection)
+        @if (Connect.UserAccess.Instance is Connect.DbConnection)
         {
             <a asp-page="./Users/Create">Gérer les utilisateurs</a>
         }
@@ -99,6 +101,48 @@
         {
             <a asp-page="./Users/Import">Gérer les utilisateurs</a>
         }
+    </div>
+
+    <div id="bdd" class="tab-pane fade">
+        <br />
+        <p>Gestion des sauvegardes de la base de donnée.</p>
+        @if (Model.BackupColl.Count() <= 0)
+        {
+            <br />
+            <p>Aucune sauvegarde de la base de donnée réalisée pour le moment</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Lien</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < Model.BackupColl.Count; j++)
+                        {
+                            <tr>
+                                <td>@Model.BackupColl[j].Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td>
+                                    <a href="@Model.BackupColl[j].Key" download>@System.IO.Path.GetFileName(Model.BackupColl[j].Key)</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+
+        <br />
+
+        <form method="post" class="form-inline">
+            <button class="btn btn-default" type="submit" asp-page-handler="CleanBackup"><i class="fa fa-recycle fa-lg"></i> Purger</button>
+            <button class="btn btn-default" type="submit" asp-page-handler="Backup"><i class="fa fa-file-zipper fa-lg"></i>Sauvegarder</button>
+        </form>
+
     </div>
 
     <div id="clean" class="tab-pane fade">
@@ -158,5 +202,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

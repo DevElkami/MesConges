@@ -2,6 +2,8 @@
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 
 namespace WebApplicationConges.Data
 {
@@ -25,12 +27,40 @@ namespace WebApplicationConges.Data
             // Nothing here
         }
 
+        public void Backup(string fullpath)
+        {
+            using (var cnn = DbConnection())
+            {
+                cnn.Open();
+
+                // Backup in "live"
+                using (var backup = new SqliteConnection("Data Source=" + fullpath))
+                {
+                    (cnn as SqliteConnection).BackupDatabase(backup);
+                    backup.Close();
+                }
+
+                cnn.Close();
+
+                // To avoid error message " ... used by another process"
+                SqliteConnection.ClearAllPools();
+
+                using var archive = ZipFile.Open(Path.ChangeExtension(fullpath, "zip"), ZipArchiveMode.Create);
+                {
+                    archive.CreateEntryFromFile(fullpath, Path.GetFileName(fullpath), CompressionLevel.Optimal);
+                }
+
+                // Keep only zip file
+                File.Delete(fullpath);
+            }
+        }
+
         public void Init()
         {
             // Création de la db
             using (var cnn = DbConnection())
             {
-                cnn.Open();                
+                cnn.Open();
                 cnn.Close();
             }
 
