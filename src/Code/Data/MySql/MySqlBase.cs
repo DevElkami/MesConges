@@ -29,6 +29,7 @@ namespace WebApplicationConges.Data
 
         public void Backup(string fullpath)
         {
+            fullpath = Path.ChangeExtension(fullpath, "sql");
             using (var cnn = DbConnection())
             {
                 using (MySqlCommand cmd = new MySqlCommand())
