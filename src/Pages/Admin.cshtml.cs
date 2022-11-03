@@ -159,7 +159,7 @@ namespace WebApplicationConges.Pages
             {
                 String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
                 Directory.CreateDirectory(backupPath);
-                Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.sqlite"));
+                Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));                
             }
             catch (Exception except)
             {

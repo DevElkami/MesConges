@@ -29,6 +29,7 @@ namespace WebApplicationConges.Data
 
         public void Backup(string fullpath)
         {
+            fullpath = Path.ChangeExtension(fullpath, "sqlite");
             using (var cnn = DbConnection())
             {
                 cnn.Open();
