@@ -2,13 +2,16 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using NuGet.Protocol.Plugins;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebApplicationConges.Code.SignalR;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -52,12 +55,20 @@ namespace WebApplicationConges.Pages.Account
             // Clear the existing external cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
+            Toolkit.Connection = new HubConnectionBuilder()
+            .WithUrl(new Uri($"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/CongesHub"))
+            .Build();            
+
+            await Toolkit.Connection.StartAsync();
+
+            //await Toolkit.Connection.InvokeAsync("Notify", "Coucou");
+
             ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            ReturnUrl = returnUrl;
+            ReturnUrl = returnUrl;            
 
             if (ModelState.IsValid)
             {

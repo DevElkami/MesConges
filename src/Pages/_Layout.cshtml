@@ -20,6 +20,14 @@
     @RenderSection("Header", required: false)
 </head>
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <ul id="messagesList" />
+            </div>
+        </div>
+    </div>
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -73,7 +81,9 @@
     <environment names="Development,Staging,Production">
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>        
+        <script src="~/js/signalr-subscribe.js"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)

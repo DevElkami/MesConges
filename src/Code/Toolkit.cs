@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ namespace WebApplicationConges
     public static class Toolkit
     {
         public static String Copyright { get { return "yourCompagny © " + DateTime.Now.Year.ToString(); } }
+        public static HubConnection Connection { get; set; }
 
         public enum ConfigEnum
         {
@@ -43,7 +45,7 @@ namespace WebApplicationConges
             Configuration = builder.Build();
 
             // Add extra holidays
-            PublicHolidays = new List<string>(Configuration.GetSection("PublicHolidays").GetChildren().Select(x => x.Value).ToArray());
+            PublicHolidays = new List<string>(Configuration.GetSection("PublicHolidays").GetChildren().Select(x => x.Value).ToArray());                        
         }
 
         private static List<string> PublicHolidays { get; set; } = new List<string>();
