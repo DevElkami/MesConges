@@ -53,7 +53,7 @@ namespace WebApplicationConges.Data
         {
             return "UPDATE " + GetTableName() + " set appadminlogin = @AppAdminLogin, appadminpwd = @AppAdminPwd, appadminemail = @AppAdminEmail," +
                 "ldap = @Ldap, ldapconnectionstring = @LdapConnectionString, ldapfilter  = @LdapFilter," +
-                "smtpserver = @SmtpServer, smtpport = @SmtpPort, ssl = @SSl, smtptargetname = @SmtpTargetName, smtpdefaultcredentialenabled = @SmtpDefaultCredentialEnabled," +
+                "smtp = @Smtp, smtpserver = @SmtpServer, smtpport = @SmtpPort, ssl = @SSl, smtptargetname = @SmtpTargetName, smtpdefaultcredentialenabled = @SmtpDefaultCredentialEnabled," +
                 "direxport = @DirExport, dirbackupbdd = @DirBackupBdd," +
                 "vapidsubject = @VAPIDSubject, vapidpublickey = @VAPIDPublicKey, vapidprivatekey = @VAPIDPrivateKey"
                 ;
