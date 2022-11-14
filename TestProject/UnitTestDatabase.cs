@@ -31,8 +31,8 @@ namespace TestProject
             Service service = Db.Instance.DataBase.ServiceRepository.GetAll().FirstOrDefault();
 #pragma warning restore CS8600 // Conversion de littéral ayant une valeur null ou d'une éventuelle valeur null en type non-nullable.
             Assert.IsNotNull(service);
-            
-            User user = new ();
+
+            User user = new();
             user.Name = TEST_PATTERN + "TestUser";
             user.Email = user.Name + "@mstest.com";
             user.HashPwd = Toolkit.CreateSHAHash(user.Email);
@@ -52,6 +52,12 @@ namespace TestProject
         public void TestMethodService()
         {
             Assert.IsTrue(Db.Instance.DataBase.ServiceRepository.GetAll().Count > 0);
+        }
+
+        [TestMethod]
+        public void TestMethodConfig()
+        {
+            Assert.IsNotNull(Db.Instance.DataBase.ConfigRepository.Get());
         }
 
         [TestCleanup]

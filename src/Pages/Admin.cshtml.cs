@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -19,6 +21,21 @@ namespace WebApplicationConges.Pages
         {
             _hostingEnvironment = hostingEnvironment;
         }
+
+        [BindProperty]
+        [DataType(DataType.Password)]        
+        public String CurrentPassword { get; set; }
+
+        [BindProperty]
+        [DataType(DataType.Password)]        
+        public String NewPassword { get; set; }
+
+        [DataType(DataType.Password)]        
+        [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et sa conformation doivent être les mêmes.")]
+        public String ConfirmPassword { get; set; }
+
+        [BindProperty]
+        public Config MyConfig { get; set; }
 
         [BindProperty]
         public List<Service> Services { get; set; }
@@ -44,6 +61,8 @@ namespace WebApplicationConges.Pages
         {
             if (!String.IsNullOrEmpty(ErrorMessage))
                 ModelState.AddModelError(String.Empty, ErrorMessage);
+
+            MyConfig = Db.Instance.DataBase.ConfigRepository.Get();
 
             User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
             if (currentUser.IsAdmin)
@@ -144,6 +163,29 @@ namespace WebApplicationConges.Pages
                 }
                 else
                     Db.Instance.DataBase.UserRepository.Delete(new User() { Email = id });
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+        
+        public IActionResult OnPostUpdateConfigAsync()
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(NewPassword))
+                {
+                    if (Toolkit.CreateSHAHash(CurrentPassword) != Db.Instance.DataBase.ConfigRepository.Get().AppAdminPwd)
+                    {
+                        ErrorMessage = "Le mot de passe courant n'est pas le bon";
+                        return RedirectToPage();
+                    }
+                    MyConfig.AppAdminPwd = Toolkit.CreateSHAHash(NewPassword);
+                }
+                Db.Instance.DataBase.ConfigRepository.Update(MyConfig);
             }
             catch (Exception except)
             {

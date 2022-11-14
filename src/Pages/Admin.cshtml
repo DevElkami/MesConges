@@ -8,14 +8,50 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#services">Services</a></li>
+    <li class="active"><a data-toggle="tab" href="#config">Configuration</a></li>
+    <li><a data-toggle="tab" href="#services">Services</a></li>
     <li><a data-toggle="tab" href="#users">Utilisateurs</a></li>    
     <li><a data-toggle="tab" href="#bdd">BDD</a></li>    
-    <li><a data-toggle="tab" href="#clean">Divers</a></li>
+    <li><a data-toggle="tab" href="#clean">Divers</a></li>    
 </ul>
 
 <div class="tab-content">
-    <div id="services" class="tab-pane fade in active">
+    <div id="config" class="tab-pane fade in active"> 
+        <br />
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="MyConfig.AppAdminLogin">Login</label>
+                <input asp-for="MyConfig.AppAdminLogin" type="text" class="form-control" placeholder="Login" maxlength="49" readonly />
+                <span asp-validation-for="MyConfig.AppAdminLogin" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CurrentPassword">Mot de passe actuel</label>
+                <input asp-for="CurrentPassword" class="form-control" placeholder="Mot de passe actuel" maxlength="49" />
+                <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewPassword">Nouveau mot de passe</label>
+                <input asp-for="NewPassword" class="form-control" placeholder="Nouveau mot de passe" maxlength="49" />
+                <span asp-validation-for="NewPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword">Nouveau mot de passe (confirmation)</label>
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Nouveau mot de passe" maxlength="49" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MyConfig.AppAdminEmail">Email</label>
+                <input asp-for="MyConfig.AppAdminEmail" type="text" class="form-control" placeholder="Email" maxlength="49" />
+                <span asp-validation-for="MyConfig.AppAdminEmail" class="text-danger"></span>
+            </div>
+                                                
+            <button class="btn btn-default" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>                            
+        </form>        
+    </div>
+
+    <div id="services" class="tab-pane fade">
         @if (Model.Services.Count() <= 0)
         {
             <p>Aucun service existant.</p>
