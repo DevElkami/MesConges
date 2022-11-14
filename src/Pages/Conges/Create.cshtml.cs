@@ -178,7 +178,7 @@ namespace WebApplicationConges.Pages.Conges
                 if (!String.IsNullOrEmpty(Motif))
                     body += " - Motif: " + Motif;
 
-                Toolkit.SendEmail(
+                Toolkit.Notify(
                     current.Email,
                     current.Manager.Id,
                     Toolkit.Configuration[Toolkit.ConfigEnum.SmtpReplySubject.ToString()],

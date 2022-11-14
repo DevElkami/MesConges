@@ -1,4 +1,5 @@
 using System;
+using WebApplicationConges.Data;
 
 namespace WebApplicationConges.Connect
 {
@@ -18,12 +19,11 @@ namespace WebApplicationConges.Connect
                     {
                         if (instance == null)
                         {
-                            // Select LDAP connection or database connection
-                            String ldapStr = Toolkit.Configuration[Toolkit.ConfigEnum.Ldap.ToString()];
-                            if(String.IsNullOrEmpty(ldapStr) || !bool.TryParse(ldapStr, out _) || !bool.Parse(ldapStr))
-                                instance = new DbConnection();
-                            else
+                            // Select LDAP connection or database connection                                                       
+                            if(Db.Instance.DataBase.ConfigRepository.Get().Ldap)
                                 instance = new LdapConnection();
+                            else
+                                instance = new DbConnection();
                         }
                     }
                 }

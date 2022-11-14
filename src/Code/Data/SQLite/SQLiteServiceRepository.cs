@@ -27,12 +27,12 @@ namespace WebApplicationConges.Data
             }
         }
 
-        public void Insert(Service user)
+        public void Insert(Service service)
         {
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Query<dynamic>(Data.ServiceRepository.GetQueryInsert(), user);
+                cnn.Query<dynamic>(Data.ServiceRepository.GetQueryInsert(), service);
             }
         }
 

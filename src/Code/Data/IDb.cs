@@ -13,6 +13,7 @@ namespace WebApplicationConges.Data
         void Init();
         void Backup(string fullpath);
         void Reset();
+        IConfigRepository ConfigRepository { get; }
         IUserRepository UserRepository { get; }
         IManagerRepository ManagerRepository { get; }
         IServiceRepository ServiceRepository { get; }

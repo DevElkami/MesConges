@@ -82,20 +82,20 @@ namespace WebApplicationConges.Pages
                         }
                     }
                 }
-
-                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.ExportDir.ToString()]);
+                
+                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                     FilesCount = Directory.GetFiles(exportPath).Length;
 
                 BackupColl = new List<KeyValuePair<String, DateTime>>();
-                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 if (Directory.Exists(backupPath))
                 {
                     foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
                     {
                         String fileName = Path.GetFileName(filePath);
                         String backupDir = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value + HttpContext.Request.PathBase;
-                        backupDir += "/" + Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()] + "/" + fileName;
+                        backupDir += "/" + Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd + "/" + fileName;
                         BackupColl.Add(new KeyValuePair<String, DateTime>(backupDir, System.IO.File.GetCreationTime(filePath)));
                     }
                 }
@@ -157,7 +157,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 Directory.CreateDirectory(backupPath);
                 Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));                
             }
@@ -173,7 +173,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);                
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);                
                 if (Directory.Exists(backupPath))
                 {
                     foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
@@ -194,7 +194,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.ExportDir.ToString()]);
+                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                 {
                     foreach (String filePath in Directory.GetFiles(exportPath).OrderBy(f => f))
@@ -264,7 +264,7 @@ namespace WebApplicationConges.Pages
             try
             {
                 User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                Toolkit.SendEmail(currentUser.Email, currentUser.Email, "Ceci est un test", "Pour vérifier si les emails sont bien envoyés.");
+                Toolkit.Notify(currentUser.Email, currentUser.Email, "Ceci est un test", "Pour vérifier si les emails sont bien envoyés.");
             }
             catch (Exception except)
             {

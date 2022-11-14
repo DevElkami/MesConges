@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
 namespace WebApplicationConges.Connect
@@ -11,7 +12,7 @@ namespace WebApplicationConges.Connect
         public User Connect(String login, String password)
         {
             DirectoryEntry de = new
-                     (Toolkit.Configuration[Toolkit.ConfigEnum.LdapConnectionString.ToString()], login, password, AuthenticationTypes.Secure);
+                     (Db.Instance.DataBase.ConfigRepository.Get().LdapConnectionString, login, password, AuthenticationTypes.Secure);
 
             DirectorySearcher search = new(de)
             {
@@ -31,10 +32,10 @@ namespace WebApplicationConges.Connect
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Valider la compatibilité de la plateforme", Justification = "<En attente>")]
         public List<User> GetUsers()
         {
-            DirectoryEntry de = new(Toolkit.Configuration[Toolkit.ConfigEnum.LdapConnectionString.ToString()]);
+            DirectoryEntry de = new(Db.Instance.DataBase.ConfigRepository.Get().LdapConnectionString);
             DirectorySearcher search = new(de)
             {
-                Filter = Toolkit.Configuration[Toolkit.ConfigEnum.LdapFilter.ToString()]
+                Filter = Db.Instance.DataBase.ConfigRepository.Get().LdapFilter
             };
             search.SearchScope = SearchScope.Subtree;
 

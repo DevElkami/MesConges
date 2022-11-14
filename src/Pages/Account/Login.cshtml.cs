@@ -137,12 +137,12 @@ namespace WebApplicationConges.Pages.Account
             {
                 try
                 {
-                    if ((login == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminLogin.ToString()]) && 
-                        (Toolkit.CreateSHAHash(password) == Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminPwd.ToString()]))
+                    if ((login == Db.Instance.DataBase.ConfigRepository.Get().AppAdminLogin) &&
+                        (Toolkit.CreateSHAHash(password) == Db.Instance.DataBase.ConfigRepository.Get().AppAdminPwd))
                     {
                         User user = new User();
-                        user.FamilyName = Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminLogin.ToString()];
-                        user.Email = Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminEmail.ToString()];
+                        user.FamilyName = Db.Instance.DataBase.ConfigRepository.Get().AppAdminLogin;
+                        user.Email = Db.Instance.DataBase.ConfigRepository.Get().AppAdminEmail;
                         user.IsAdmin = true;
                         user.IsDrh = true;
                         return user;

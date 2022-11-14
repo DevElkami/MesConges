@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Cryptography;
+using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
 namespace WebApplicationConges
@@ -17,16 +18,9 @@ namespace WebApplicationConges
 
         public enum ConfigEnum
         {
-            AppAdminLogin,
-            AppAdminPwd,
-            AppAdminEmail,
             DbType,
             DbName,
             DbConnectionString,
-            Ldap,
-            LdapConnectionString,
-            LdapFilter,
-            SmtpServer,
             SmtpReplyText,
             SmtpReplySubject,
             SmtpReplyBody,
@@ -40,9 +34,7 @@ namespace WebApplicationConges
             SmtpCancelRefusedBody,
             SmtpCancelAcceptBody,
             SmtpManagerCancelSubject,
-            SmtpManagerCancelBody,
-            ExportDir,
-            BackupBdd
+            SmtpManagerCancelBody
         }
 
         public static void InitConfiguration()
@@ -88,22 +80,31 @@ namespace WebApplicationConges
             return description;
         }
 
-        public static void SendEmail(String mailFrom, String mailTo, String subject, String body)
+        public static void Notify(String mailFrom, String mailTo, String subject, String body)
         {
-            SmtpClient client = new SmtpClient(Toolkit.Configuration[Toolkit.ConfigEnum.SmtpServer.ToString()]);
-            MailAddress from = new MailAddress(mailFrom);
-            MailAddress to = new MailAddress(mailTo);
+            if (Db.Instance.DataBase.ConfigRepository.Get().Smtp)
+            {
+                SmtpClient client = new SmtpClient(Db.Instance.DataBase.ConfigRepository.Get().SmtpServer);
+                client.Port = Db.Instance.DataBase.ConfigRepository.Get().SmtpPort;
 
-            MailMessage message = new MailMessage(from, to);
+                MailAddress from = new MailAddress(mailFrom);
+                MailAddress to = new MailAddress(mailTo);
 
-            message.Body = body;
-            message.Body += Environment.NewLine;
-            message.BodyEncoding = System.Text.Encoding.UTF8;
+                MailMessage message = new MailMessage(from, to);
 
-            message.Subject = subject;
-            message.SubjectEncoding = System.Text.Encoding.UTF8;
+                message.Body = body;
+                message.Body += Environment.NewLine;
+                message.BodyEncoding = System.Text.Encoding.UTF8;
 
-            client.SendMailAsync(message);
+                message.Subject = subject;
+                message.SubjectEncoding = System.Text.Encoding.UTF8;
+
+                client.SendMailAsync(message);
+            }
+            else
+            {
+                // Signal R
+            }
         }
 
         public static String LayoutColumnDateBeginTitle() { return "Date de début"; }
