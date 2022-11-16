@@ -14,7 +14,7 @@ Etapes pour configurer l'application:
 1. Connectez-vous: login = administrator et mot de passe = holidays
 
 2. Paramétrez l'application (partie administration)
-  
+  ![](https://github.com/DevElkami/MesConges/blob/main/admin.png)
 3. Déployez. Déploiement possible sur:
 - Azure
 - Docker
