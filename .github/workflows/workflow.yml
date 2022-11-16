@@ -1,4 +1,4 @@
-name: Conges CI
+name: Push workflow (Build, test and generate docker)
 
 on:
   push:
