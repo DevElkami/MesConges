@@ -43,15 +43,7 @@
         }
      }
 </head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <ul id="messagesList" />
-            </div>
-        </div>
-    </div>
-
+<body>    
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -95,33 +87,34 @@
         </div>
     </nav>
     <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            @{
-                string userMail = "";
-                try
+        @{
+            string userMail = "";
+            try
+            {
+                System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
+                if (claim != null)
                 {
-                    System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
-                    if (claim != null)
-                    {
-                        User user = JsonConvert.DeserializeObject<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                        if (user != null)
-                            userMail = user.Email;
-                    }
-                }
-                catch(Exception)
-                {
-                    // Nothing: SignalR is not mandatory
+                    User user = JsonConvert.DeserializeObject<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                    if (user != null)
+                        userMail = user.Email;
                 }
             }
-            @Html.Hidden("usermail", userMail, new { @id = "usermail" })
-            <div class="alert alert-info alert-dismissible" id="SignalRDisplay" role="alert" style="display:none;">
-                <span id="SignalRMessage"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+            catch (Exception)
+            {
+                // Nothing: SignalR is not mandatory
+            }
+        }
+        
+        @Html.Hidden("usermail", userMail, new { @id = "usermail" })
+        <div class="alert alert-info alert-dismissible" id="SignalRDisplay" role="alert" style="display:none;margin-top:20px;">
+            <span id="SignalRMessage"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @RenderBody()
+        <hr />
+        <footer>            
             <p>@Toolkit.Copyright</p>
         </footer>
     </div>
