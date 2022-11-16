@@ -1,4 +1,7 @@
-﻿@using WebApplicationConges.Data;
+﻿@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@using WebApplicationConges.Data;
+@using WebApplicationConges.Model;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 
 <!DOCTYPE html>
@@ -74,6 +77,17 @@
         @RenderBody()
         <hr />
         <footer>
+            @{
+                string userMail = "";
+                System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
+                if (claim != null)
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                    if (user != null)
+                        userMail = user.Email;
+                }                
+            }
+            @Html.Hidden("usermail", userMail, new { @id = "usermail" })
             <div class="alert alert-info alert-dismissible" id="SignalRDisplay" role="alert" style="display:none;">
                 <span id="SignalRMessage"></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">

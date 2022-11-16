@@ -62,7 +62,7 @@ namespace WebApplicationConges.Pages.Account
             .Build();
 
             // SignalR start connection
-            await Toolkit.Connection.StartAsync();            
+            await Toolkit.Connection.StartAsync();
 
             ReturnUrl = returnUrl;
         }
@@ -73,7 +73,6 @@ namespace WebApplicationConges.Pages.Account
 
             if (ModelState.IsValid)
             {
-                Toolkit.Connection.InvokeAsync("Notify", "super@user.com", "moi@free.fr", "Un sujet", "un contenu");
                 User user = AuthenticateUser(Input.Login, Input.Password);
                 if (user == null)
                 {
