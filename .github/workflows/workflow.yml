@@ -2,9 +2,7 @@ name: Conges CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "${{ github.event.repository.default_branch }}" ]  
     
 env:
   DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
