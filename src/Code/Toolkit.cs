@@ -103,10 +103,9 @@ namespace WebApplicationConges
 
                 client.SendMailAsync(message);
             }
-            else
-            {
-                // Signal R
-            }
+
+            // SignalR
+            Toolkit.Connection.InvokeAsync("Notify", mailFrom, mailTo, subject, body);
         }
 
         public static String LayoutColumnDateBeginTitle() { return "Date de début"; }

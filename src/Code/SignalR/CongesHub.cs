@@ -6,9 +6,9 @@ namespace WebApplicationConges.Code.SignalR
 {
     public class CongesHub : Hub
     {        
-        public async Task Notify(String aMessage)
+        public async Task Notify(String mailFrom, String mailTo, String subject, String body)
         {
-            await this.Clients.All.SendAsync("Notification", aMessage);
+            await this.Clients.All.SendAsync("Notification", mailFrom, mailTo, subject, body);
         }
     }
 }

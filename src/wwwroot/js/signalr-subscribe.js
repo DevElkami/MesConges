@@ -3,10 +3,10 @@ var connection = new signalR.HubConnectionBuilder()
     .build(); 
 
 if (connection != null) {
-    connection.on("Notification", function (message) {
-        var li = document.createElement("li");
-        document.getElementById("messagesList").appendChild(li);
-        li.textContent = message;
+    connection.on("Notification", function (mailFrom, mailTo, subject, body)
+    {
+        $("#SignalRMessage").text(body);
+        $("#SignalRDisplay").show();
     });
 
     connection.start();

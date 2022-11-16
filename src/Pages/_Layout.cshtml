@@ -74,6 +74,12 @@
         @RenderBody()
         <hr />
         <footer>
+            <div class="alert alert-info alert-dismissible" id="SignalRDisplay" role="alert" style="display:none;">
+                <span id="SignalRMessage"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <p>@Toolkit.Copyright</p>
         </footer>
     </div>
