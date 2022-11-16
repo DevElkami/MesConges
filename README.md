@@ -13,7 +13,7 @@ Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 Etapes pour configurer l'application:
 1. Connectez-vous: login = administrator et mot de passe = holidays
 
-2. Paramétrez l'application (partie administration)
+2. Paramétrez l'application
   ![](https://github.com/DevElkami/MesConges/blob/main/admin.png)
 3. Déployez. Déploiement possible sur:
 - Azure
