@@ -17,6 +17,8 @@ namespace WebApplicationConges.Data
             return new MySqlConnection(ConnectionString);
         }
 
+        public IConfigRepository ConfigRepository { get { return new MySqlConfigRepository(); } }
+
         public IUserRepository UserRepository { get { return new MySqlUserRepository(); } }
         public IServiceRepository ServiceRepository { get { return new MySqlServiceRepository(); } }
         public IManagerRepository ManagerRepository { get { return new MySqlManagerRepository(); } }

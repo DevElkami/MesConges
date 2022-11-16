@@ -124,7 +124,7 @@ namespace WebApplicationConges.Pages
                     Db.Instance.DataBase.CongeRepository.Update(conge);
 
                 // Envoie d'un mail au membre de l'équipe pour l'avertir que son congé est accepté                
-                Toolkit.SendEmail(mailFrom, conge.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpAcceptSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpAcceptBody.ToString()]);
+                Toolkit.Notify(mailFrom, conge.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpAcceptSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpAcceptBody.ToString()]);
                 Cache.Clear(CalendarModel.MAIN_CALENDAR_KEY);
             }
             else
@@ -183,7 +183,7 @@ namespace WebApplicationConges.Pages
 
                     // Envoie d'un mail au membre de l'équipe pour l'avertir que son congé est refusé
                     User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                    Toolkit.SendEmail(current.Email, congeRefuse.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpRefuseSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpRefuseBody.ToString()] + motif);
+                    Toolkit.Notify(current.Email, congeRefuse.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpRefuseSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpRefuseBody.ToString()] + motif);
                 }
                 else
                 {
@@ -211,7 +211,7 @@ namespace WebApplicationConges.Pages
 
                     // Envoie d'un mail au membre de l'équipe pour l'avertir que son congé est annulé
                     User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                    Toolkit.SendEmail(current.Email, congeDeleted.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpDeletedSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpDeletedBody.ToString()]);
+                    Toolkit.Notify(current.Email, congeDeleted.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpDeletedSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpDeletedBody.ToString()]);
 
                     Cache.Clear(CalendarModel.MAIN_CALENDAR_KEY);
 
@@ -220,8 +220,8 @@ namespace WebApplicationConges.Pages
                     {
                         foreach (User drh in Db.Instance.GetDrh())
                         {
-                            Toolkit.SendEmail(
-                                Toolkit.Configuration[Toolkit.ConfigEnum.AppAdminEmail.ToString()], // L'email de l'admin qui écrit à la DRH
+                            Toolkit.Notify(
+                                Db.Instance.DataBase.ConfigRepository.Get().AppAdminEmail, // L'email de l'admin qui écrit à la DRH
                                 drh.Email,
                                 "App des congés - Problème d'annulation",
                                 "Le congé de " + congeDeleted.UserId + " vient d'être annulé, mais il était déjà exporté en compta: il va falloir faire une régulation.");
@@ -255,7 +255,7 @@ namespace WebApplicationConges.Pages
 
                     // Envoie d'un mail au membre de l'équipe pour l'avertir que sa demande d'annulation de congé est refusé
                     User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                    Toolkit.SendEmail(current.Email, congeDeleted.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpCancelSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpCancelRefusedBody.ToString()]);
+                    Toolkit.Notify(current.Email, congeDeleted.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpCancelSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpCancelRefusedBody.ToString()]);
                 }
                 else
                 {

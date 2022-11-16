@@ -17,6 +17,8 @@ namespace WebApplicationConges.Data
             return new SqliteConnection("Data Source=data.sqlite");
         }
 
+        public IConfigRepository ConfigRepository { get { return new SQLiteConfigRepository(); } }
+
         public IUserRepository UserRepository { get { return new SQLiteUserRepository(); } }
         public IServiceRepository ServiceRepository { get { return new SQLiteServiceRepository(); } }
         public IManagerRepository ManagerRepository { get { return new SQLiteManagerRepository(); } }

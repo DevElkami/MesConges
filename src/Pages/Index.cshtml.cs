@@ -75,7 +75,7 @@ namespace WebApplicationConges.Pages
                     Db.Instance.DataBase.CongeRepository.Update(congeToCancel);
 
                     User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                    Toolkit.SendEmail(congeToCancel.UserId, current.Manager.Id, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpManagerCancelSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpManagerCancelBody.ToString()]);
+                    Toolkit.Notify(congeToCancel.UserId, current.Manager.Id, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpManagerCancelSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpManagerCancelBody.ToString()]);
                 }
             }
             catch (Exception except)

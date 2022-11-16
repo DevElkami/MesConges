@@ -78,14 +78,14 @@ namespace WebApplicationConges.Pages.RH
                 }
 
                 ExportColl = new List<KeyValuePair<String, DateTime>>();
-                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.ExportDir.ToString()]);
+                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                 {
                     foreach (String filePath in Directory.GetFiles(exportPath).OrderBy(f => f))
                     {
                         String fileName = Path.GetFileName(filePath);
                         String exportDir = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value + HttpContext.Request.PathBase;
-                        exportDir += "/" + Toolkit.Configuration[Toolkit.ConfigEnum.ExportDir.ToString()] + "/" + fileName;
+                        exportDir += "/" + Db.Instance.DataBase.ConfigRepository.Get().DirExport + "/" + fileName;
                         ExportColl.Add(new KeyValuePair<String, DateTime>(exportDir, System.IO.File.GetCreationTime(filePath)));
                     }
                 }
@@ -123,7 +123,7 @@ namespace WebApplicationConges.Pages.RH
                 // Les enregistrer sous format excel 
                 List<Conge> congesToFlag = new List<Conge>();
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.ExportDir.ToString()]);
+                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 Directory.CreateDirectory(exportPath);
                 using (ExcelPackage excel = new ExcelPackage())
                 {

@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -19,6 +21,21 @@ namespace WebApplicationConges.Pages
         {
             _hostingEnvironment = hostingEnvironment;
         }
+
+        [BindProperty]
+        [DataType(DataType.Password)]        
+        public String CurrentPassword { get; set; }
+
+        [BindProperty]
+        [DataType(DataType.Password)]        
+        public String NewPassword { get; set; }
+
+        [DataType(DataType.Password)]        
+        [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et sa conformation doivent être les mêmes.")]
+        public String ConfirmPassword { get; set; }
+
+        [BindProperty]
+        public Config MyConfig { get; set; }
 
         [BindProperty]
         public List<Service> Services { get; set; }
@@ -44,6 +61,8 @@ namespace WebApplicationConges.Pages
         {
             if (!String.IsNullOrEmpty(ErrorMessage))
                 ModelState.AddModelError(String.Empty, ErrorMessage);
+
+            MyConfig = Db.Instance.DataBase.ConfigRepository.Get();
 
             User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
             if (currentUser.IsAdmin)
@@ -82,20 +101,20 @@ namespace WebApplicationConges.Pages
                         }
                     }
                 }
-
-                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.ExportDir.ToString()]);
+                
+                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                     FilesCount = Directory.GetFiles(exportPath).Length;
 
                 BackupColl = new List<KeyValuePair<String, DateTime>>();
-                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 if (Directory.Exists(backupPath))
                 {
                     foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
                     {
                         String fileName = Path.GetFileName(filePath);
                         String backupDir = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value + HttpContext.Request.PathBase;
-                        backupDir += "/" + Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()] + "/" + fileName;
+                        backupDir += "/" + Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd + "/" + fileName;
                         BackupColl.Add(new KeyValuePair<String, DateTime>(backupDir, System.IO.File.GetCreationTime(filePath)));
                     }
                 }
@@ -153,48 +172,11 @@ namespace WebApplicationConges.Pages
             return RedirectToPage();
         }
 
-        public IActionResult OnPostBackupAsync()
-        {
-            try
-            {
-                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
-                Directory.CreateDirectory(backupPath);
-                Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));                
-            }
-            catch (Exception except)
-            {
-                ErrorMessage = except.Message;
-            }
-
-            return RedirectToPage();
-        }
-
-        public IActionResult OnPostCleanBackupAsync()
-        {
-            try
-            {
-                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.BackupBdd.ToString()]);
-                if (Directory.Exists(backupPath))
-                {
-                    foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-            }
-            catch (Exception except)
-            {
-                ErrorMessage = except.Message;
-            }
-
-            return RedirectToPage();
-        }
-
         public IActionResult OnPostCleanExportAsync()
         {
             try
             {
-                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Toolkit.Configuration[Toolkit.ConfigEnum.ExportDir.ToString()]);
+                String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                 {
                     foreach (String filePath in Directory.GetFiles(exportPath).OrderBy(f => f))
@@ -264,7 +246,7 @@ namespace WebApplicationConges.Pages
             try
             {
                 User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                Toolkit.SendEmail(currentUser.Email, currentUser.Email, "Ceci est un test", "Pour vérifier si les emails sont bien envoyés.");
+                Toolkit.Notify(currentUser.Email, currentUser.Email, "Ceci est un test", "Pour vérifier si les emails sont bien envoyés.");
             }
             catch (Exception except)
             {

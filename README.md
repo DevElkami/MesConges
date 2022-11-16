@@ -11,22 +11,10 @@ Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 - Validation par le responsable des congés posés et notification par emails
 
 Etapes pour configurer l'application:
-1. Ouvrez le fichier src/appsettings.json
+1. Connectez-vous: login = administrator et mot de passe = holidays
 
-2. Configurez l'application:
-
-  - AppAdminLogin	        -> Login du gestionnaire de l'application
-  - AppAdminPwd		        -> Mot de passe du gestionnaire de l'application (SHA 512 encodé en base 64)
-  - AppAdminEmail		      -> Email du gestionnaire de l'application
-  - DbType 			          -> Type de base de donnée souhaitée (sqlite ou mysql)
-  - DbName 			          -> Nom de la base de donnée (uniquement mysql)
-  - DbConnectionString    -> Chaine de connexion à la base de donnée (uniquement mysql)
-  - ExportDir      			  -> Nom du répertoire des export
-  - Ldap         				  -> Activation du LDAP
-  - LdapConnectionString  -> Chaine de connexion du LDAP
-  - LdapFilter 		        -> Filtre du LDAP
-  - SmtpServer 		        -> Nom ou ip du serveur de mail (Serveur SMTP anonyme seulement: aucun compte requis)
-  
+2. Paramétrez l'application
+  ![](https://github.com/DevElkami/MesConges/blob/main/admin.png)
 3. Déployez. Déploiement possible sur:
 - Azure
 - Docker

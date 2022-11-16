@@ -1,4 +1,8 @@
-﻿@using WebApplicationConges.Data;
+﻿@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Newtonsoft.Json;
+@using WebApplicationConges.Data;
+@using WebApplicationConges.Model;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 
 <!DOCTYPE html>
@@ -18,8 +22,28 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
 
     @RenderSection("Header", required: false)
+
+    @{
+        try
+        {
+            // SignalR build hub
+            if (Toolkit.Connection == null)
+            {
+                Toolkit.Connection = new HubConnectionBuilder()
+                .WithUrl(new Uri($"{HttpContextAccessor.HttpContext.Request.Scheme}://{HttpContextAccessor.HttpContext.Request.Host}{HttpContextAccessor.HttpContext.Request.PathBase}/CongesHub"))
+                .Build();
+
+                // SignalR start connection
+                await Toolkit.Connection.StartAsync();
+            }
+        }
+        catch (Exception)
+        {
+            // Nothing: SignalR is not mandatory
+        }
+     }
 </head>
-<body>
+<body>    
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -63,9 +87,34 @@
         </div>
     </nav>
     <div class="container body-content">
+        @{
+            string userMail = "";
+            try
+            {
+                System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
+                if (claim != null)
+                {
+                    User user = JsonConvert.DeserializeObject<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                    if (user != null)
+                        userMail = user.Email;
+                }
+            }
+            catch (Exception)
+            {
+                // Nothing: SignalR is not mandatory
+            }
+        }
+        
+        @Html.Hidden("usermail", userMail, new { @id = "usermail" })
+        <div class="alert alert-info alert-dismissible" id="SignalRDisplay" role="alert" style="display:none;margin-top:20px;">
+            <span id="SignalRMessage"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         @RenderBody()
         <hr />
-        <footer>
+        <footer>            
             <p>@Toolkit.Copyright</p>
         </footer>
     </div>
@@ -73,7 +122,9 @@
     <environment names="Development,Staging,Production">
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>        
+        <script src="~/js/signalr-subscribe.js"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
