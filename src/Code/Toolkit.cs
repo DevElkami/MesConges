@@ -45,7 +45,7 @@ namespace WebApplicationConges
             Configuration = builder.Build();
 
             // Add extra holidays
-            PublicHolidays = new List<string>(Configuration.GetSection("PublicHolidays").GetChildren().Select(x => x.Value).ToArray());                        
+            PublicHolidays = new List<string>(Configuration.GetSection("PublicHolidays").GetChildren().Select(x => x.Value).ToArray());
         }
 
         private static List<string> PublicHolidays { get; set; } = new List<string>();
@@ -104,8 +104,15 @@ namespace WebApplicationConges
                 client.SendMailAsync(message);
             }
 
-            // SignalR
-            Toolkit.Connection.InvokeAsync("Notify", mailFrom, mailTo, subject, body);
+            try
+            {
+                // SignalR
+                Toolkit.Connection.InvokeAsync("Notify", mailFrom, mailTo, subject, body);
+            }
+            catch (Exception)
+            {
+                // Nothing: SignalR is not mandatory
+            }
         }
 
         public static String LayoutColumnDateBeginTitle() { return "Date de début"; }

@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.SignalR.Client;
 @using Newtonsoft.Json;
 @using WebApplicationConges.Data;
 @using WebApplicationConges.Model;
@@ -21,6 +22,26 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
 
     @RenderSection("Header", required: false)
+
+    @{
+        try
+        {
+            // SignalR build hub
+            if (Toolkit.Connection == null)
+            {
+                Toolkit.Connection = new HubConnectionBuilder()
+                .WithUrl(new Uri($"{HttpContextAccessor.HttpContext.Request.Scheme}://{HttpContextAccessor.HttpContext.Request.Host}{HttpContextAccessor.HttpContext.Request.PathBase}/CongesHub"))
+                .Build();
+
+                // SignalR start connection
+                await Toolkit.Connection.StartAsync();
+            }
+        }
+        catch (Exception)
+        {
+            // Nothing: SignalR is not mandatory
+        }
+     }
 </head>
 <body>
     <div class="container">
@@ -79,13 +100,20 @@
         <footer>
             @{
                 string userMail = "";
-                System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
-                if (claim != null)
+                try
                 {
-                    User user = JsonConvert.DeserializeObject<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                    if (user != null)
-                        userMail = user.Email;
-                }                
+                    System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
+                    if (claim != null)
+                    {
+                        User user = JsonConvert.DeserializeObject<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                        if (user != null)
+                            userMail = user.Email;
+                    }
+                }
+                catch(Exception)
+                {
+                    // Nothing: SignalR is not mandatory
+                }
             }
             @Html.Hidden("usermail", userMail, new { @id = "usermail" })
             <div class="alert alert-info alert-dismissible" id="SignalRDisplay" role="alert" style="display:none;">

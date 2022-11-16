@@ -2,17 +2,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using NuGet.Protocol.Plugins;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WebApplicationConges.Code.SignalR;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -55,14 +51,6 @@ namespace WebApplicationConges.Pages.Account
 
             // Clear the existing external cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // SignalR build hub
-            Toolkit.Connection = new HubConnectionBuilder()
-            .WithUrl(new Uri($"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/CongesHub"))
-            .Build();
-
-            // SignalR start connection
-            await Toolkit.Connection.StartAsync();
 
             ReturnUrl = returnUrl;
         }
