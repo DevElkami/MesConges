@@ -35,5 +35,6 @@ jobs:
         with:
           context: ./src/
           push: true
-          tags: latest
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'cgi') }}
           labels: ${{ steps.meta.outputs.labels }}
