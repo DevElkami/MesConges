@@ -3,11 +3,11 @@ name: Create and publish a Docker image
 on:
   release:
     types: [published]
-    branches: ['main']
+    branches: ['cgi']
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: cgi-mesconges
 
 jobs:
   build-and-push-image:
