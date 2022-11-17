@@ -1,6 +1,6 @@
 var connection = new signalR.HubConnectionBuilder()
     .withUrl("/conges/CongesHub")
-    .build(); 
+    .build();
 
 if (connection != null)
 {
@@ -8,11 +8,17 @@ if (connection != null)
     {
         var currentMail = $('input#usermail').val()
         if (mailTo == currentMail)
-        {
+        {                        
             $("#SignalRMessage").text(subject + " - " + body);
             $("#SignalRDisplay").show();
+            FaviconNotification.add();
         }
     });
 
     connection.start();
+    FaviconNotification.init({ url: '/conges/favicon.ico'});
+}
+
+function onAlertClosePress() {    
+    FaviconNotification.remove();
 }
