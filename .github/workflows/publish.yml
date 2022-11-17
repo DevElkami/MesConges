@@ -4,7 +4,7 @@ on: [workflow_dispatch]
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: cgiconges
+  IMAGE_NAME: DevElkami/cgi-conges
 
 jobs:
   build-and-push-image:
