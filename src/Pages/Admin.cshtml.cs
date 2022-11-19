@@ -306,7 +306,7 @@ namespace WebApplicationConges.Pages
             try
             {
                 User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                Toolkit.Notify(currentUser.Email, currentUser.Email, "Ceci est un test", "Pour vérifier si les emails sont bien envoyés.");
+                Toolkit.Notify(Toolkit.NotifyTypeEnum.Test, currentUser.Email, currentUser.Email, "Ceci est un test", "Pour vérifier si les emails sont bien envoyés.");
             }
             catch (Exception except)
             {
