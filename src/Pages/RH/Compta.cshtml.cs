@@ -125,6 +125,8 @@ namespace WebApplicationConges.Pages.RH
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 Directory.CreateDirectory(exportPath);
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage excel = new ExcelPackage())
                 {
                     const String WorkSheetName = "Conges";
