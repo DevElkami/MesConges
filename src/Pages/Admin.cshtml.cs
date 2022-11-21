@@ -23,14 +23,14 @@ namespace WebApplicationConges.Pages
         }
 
         [BindProperty]
-        [DataType(DataType.Password)]        
+        [DataType(DataType.Password)]
         public String CurrentPassword { get; set; }
 
         [BindProperty]
-        [DataType(DataType.Password)]        
+        [DataType(DataType.Password)]
         public String NewPassword { get; set; }
 
-        [DataType(DataType.Password)]        
+        [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et sa conformation doivent être les mêmes.")]
         public String ConfirmPassword { get; set; }
 
@@ -101,7 +101,7 @@ namespace WebApplicationConges.Pages
                         }
                     }
                 }
-                
+
                 String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                     FilesCount = Directory.GetFiles(exportPath).Length;
@@ -171,7 +171,7 @@ namespace WebApplicationConges.Pages
 
             return RedirectToPage();
         }
-        
+
         public IActionResult OnPostUpdateConfigAsync()
         {
             try
@@ -201,7 +201,7 @@ namespace WebApplicationConges.Pages
             {
                 String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 Directory.CreateDirectory(backupPath);
-                Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));                
+                Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));
             }
             catch (Exception except)
             {
@@ -215,7 +215,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);                
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 if (Directory.Exists(backupPath))
                 {
                     foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
