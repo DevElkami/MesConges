@@ -22,6 +22,7 @@ if (connection != null)
             }*/
             switch (type)
             {
+                default:
                 case 0: hrefValue = "/conges/"; break;
                 case 1: hrefValue = "/conges/Manage/"; break;
                 case 2: hrefValue = "/conges/"; break;
@@ -29,9 +30,7 @@ if (connection != null)
                 case 4: hrefValue = "/conges/"; break;
                 case 5: hrefValue = "/conges/Manage/"; break;
                 case 6: hrefValue = "/conges/RH/Compta/"; break;
-            }
-
-            console.info("href=" + hrefValue);
+            }            
 
             $("#SignalRDisplay a").attr("href", hrefValue); 
             $("#SignalRSubject").text(subject);
