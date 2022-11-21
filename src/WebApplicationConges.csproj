@@ -13,6 +13,7 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+	<UserSecretsId>56909324091488943139</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="wwwroot\Export\**" />
