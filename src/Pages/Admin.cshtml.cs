@@ -172,6 +172,29 @@ namespace WebApplicationConges.Pages
             return RedirectToPage();
         }
 
+        public IActionResult OnPostUpdateConfigAsync()
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(NewPassword))
+                {
+                    if (Toolkit.CreateSHAHash(CurrentPassword) != Db.Instance.DataBase.ConfigRepository.Get().AppAdminPwd)
+                    {
+                        ErrorMessage = "Le mot de passe courant n'est pas le bon";
+                        return RedirectToPage();
+                    }
+                    MyConfig.AppAdminPwd = Toolkit.CreateSHAHash(NewPassword);
+                }
+                Db.Instance.DataBase.ConfigRepository.Update(MyConfig);
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+
         public IActionResult OnPostBackupAsync()
         {
             try
