@@ -30,7 +30,7 @@
             <input type="text" readonly class="form-control labelConge" value="Début">
         </div>
         <div class="col-sm-2">
-            <input asp-for="DateBegin" type="text" id="datepickerBegin" class="form-control" placeholder="Début de vos congés" />
+            <input asp-for="DateBegin" type="text" id="datepickerBegin" class="form-control" autocomplete="off" placeholder="Début de vos congés" />
             <span asp-validation-for="DateBegin" class="text-danger"></span>
         </div>
         <div id="am">
@@ -46,7 +46,7 @@
                 <input type="text" readonly class="form-control labelConge" value="de">
             </div>
             <div class="col-sm-1">
-                <input id="InputHourBegin" asp-for="HourBegin" type="text" class="form-control" placeholder="Heure">
+                <input id="InputHourBegin" asp-for="HourBegin" type="text" class="form-control" autocomplete="off" placeholder="Heure">
                 <span asp-validation-for="HourBegin" class="text-danger"></span>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 <input type="text" readonly class="form-control labelConge" value="à">
             </div>
             <div class="col-sm-1">
-                <input id="InputHourEnd" asp-for="HourEnd" type="text" class="form-control" placeholder="Heure">
+                <input id="InputHourEnd" asp-for="HourEnd" type="text" class="form-control" autocomplete="off" placeholder="Heure">
                 <span asp-validation-for="HourEnd" class="text-danger"></span>
             </div>
         </div>
@@ -65,7 +65,7 @@
             <input type="text" readonly class="form-control labelConge" value="Fin">
         </div>
         <div class="col-sm-2">
-            <input asp-for="DateEnd" type="text" id="datepickerEnd" class="form-control" placeholder="Fin de vos congés" />
+            <input asp-for="DateEnd" type="text" id="datepickerEnd" class="form-control" autocomplete="off" placeholder="Fin de vos congés" />
             <span asp-validation-for="DateEnd" class="text-danger"></span>
         </div>
         <div class="col-sm-2">
