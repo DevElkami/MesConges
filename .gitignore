@@ -8,7 +8,7 @@
 *.user
 /.vs
 /src/data.sqlite
-/TestProject/bin/
+/TestProject/bin
 /TestProject/obj
 /src/wwwroot/BackupDir
 /src/wwwroot/ExportDir

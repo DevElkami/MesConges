@@ -52,7 +52,7 @@ namespace WebApplicationConges.Pages
 
         public int FilesCount { get; set; } = 0;
 
-        public List<KeyValuePair<String, DateTime>> BackupColl { get; set; }
+        public List<KeyValuePair<String, DateTime>> BackupColl { get; set; } = new List<KeyValuePair<String, DateTime>>();
 
         [TempData]
         public String ErrorMessage { get; set; }
@@ -163,6 +163,43 @@ namespace WebApplicationConges.Pages
                 }
                 else
                     Db.Instance.DataBase.UserRepository.Delete(new User() { Email = id });
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostBackupAsync()
+        {
+            try
+            {
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
+                Directory.CreateDirectory(backupPath);
+                Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostCleanBackupAsync()
+        {
+            try
+            {
+                String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
+                if (Directory.Exists(backupPath))
+                {
+                    foreach (String filePath in Directory.GetFiles(backupPath).OrderBy(f => f))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
             }
             catch (Exception except)
             {
