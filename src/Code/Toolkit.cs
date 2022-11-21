@@ -82,7 +82,18 @@ namespace WebApplicationConges
             return description;
         }
 
-        public static void Notify(String mailFrom, String mailTo, String subject, String body)
+        public enum NotifyTypeEnum
+        {
+            Test = 0,               // Test
+            LeavePending = 1,       // Congés à valider
+            LeaveValidated = 2,     // Congés validés
+            LeaveRefused = 3,       // Congés refusés
+            LeaveCanceled = 4,      // Congés annulés
+            LeaveCancelPending = 5, // Congés à annuler
+            DrhActionNeeded = 6     // Action nécessaire de la DRH
+        }
+
+        public static void Notify(NotifyTypeEnum notifyType, String mailFrom, String mailTo, String subject, String body)
         {
             if (Db.Instance.DataBase.ConfigRepository.Get().Smtp)
             {
@@ -107,7 +118,7 @@ namespace WebApplicationConges
             try
             {
                 // SignalR
-                Toolkit.Connection.InvokeAsync("Notify", mailFrom, mailTo, subject, body);
+                Toolkit.Connection.InvokeAsync("Notify", (int)notifyType, mailFrom, mailTo, subject, body);
             }
             catch (Exception)
             {

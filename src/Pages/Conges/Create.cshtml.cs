@@ -21,15 +21,15 @@ namespace WebApplicationConges.Pages.Conges
             _logger = logger;
         }
 
-        [Required(AllowEmptyStrings = true)]
+        [Required(AllowEmptyStrings = true, ErrorMessage = "Veuillez indiquer une date de début")]
         [BindProperty]
         public String DateBegin { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
+        [Required(AllowEmptyStrings = true, ErrorMessage = "Veuillez indiquer une date de fin")]
         [BindProperty]
         public String DateEnd { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez indiquer un motif")]
         [RegularExpression("[^<>:='\"]*")]
         [MaxLength(150)]
         [BindProperty]
@@ -50,11 +50,11 @@ namespace WebApplicationConges.Pages.Conges
         public int IntervalTypeEnd { get; set; } = 1;
         #endregion
 
-        [Required(AllowEmptyStrings = true)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez indiquer une heure de début")]
         [BindProperty]
         public String HourBegin { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez indiquer une heure de fin")]
         [BindProperty]
         public String HourEnd { get; set; }
 
@@ -77,9 +77,6 @@ namespace WebApplicationConges.Pages.Conges
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return Page();
-
                 String parseDateFormat = "dd/MM/yyyy";
                 if (CgType == Model.Conge.CGTypeEnum.AbsenceTemporaire)
                 {
@@ -178,7 +175,7 @@ namespace WebApplicationConges.Pages.Conges
                 if (!String.IsNullOrEmpty(Motif))
                     body += " - Motif: " + Motif;
 
-                Toolkit.Notify(
+                Toolkit.Notify(Toolkit.NotifyTypeEnum.LeavePending,
                     current.Email,
                     current.Manager.Id,
                     Toolkit.Configuration[Toolkit.ConfigEnum.SmtpReplySubject.ToString()],

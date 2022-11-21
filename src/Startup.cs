@@ -57,9 +57,10 @@ namespace WebApplicationConges
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Error");                
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseAuthentication();

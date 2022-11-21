@@ -118,7 +118,7 @@
                             <tr>
                                 <td>@service.Name</td>
                                 <td>@service.Description</td>
-                                <td>@service.Manager?.User.Name</td>
+                                <td>@service.Manager?.User?.Name</td>
                                 <td>
                                     <a class="btn btn-default" asp-page="./Services/Edit" asp-route-id="@service.Id"><i class="fa fa-edit fa-lg"></i> Editer</a>
                                     <button class="btn btn-default" type="submit" asp-page-handler="DeleteService" asp-route-id="@service.Id"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
