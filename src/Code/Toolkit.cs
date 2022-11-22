@@ -43,9 +43,7 @@ namespace WebApplicationConges
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
             Configuration = builder.Build();            
-        }
-
-        public static List<string> PublicHolidays { get; set; } = new List<string>();
+        }        
 
         public static IConfigurationRoot Configuration { get; set; }
 
@@ -170,7 +168,7 @@ namespace WebApplicationConges
 
             // Plus élégants de modifier le fichier conf de l'application
             // que de mettre les dates en dur dans le code
-            foreach (String date in PublicHolidays)
+            foreach (String date in Db.Instance.DataBase.ConfigRepository.Get().ExtraDaysOff)
             {
                 if (DateTime.TryParseExact(date, "yyyyMMdd", FrenchCulture, DateTimeStyles.None, out _))
                     dataOutofOffice.Add(DateTime.ParseExact(date, "yyyyMMdd", FrenchCulture, DateTimeStyles.None));
