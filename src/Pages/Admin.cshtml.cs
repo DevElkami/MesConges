@@ -23,14 +23,14 @@ namespace WebApplicationConges.Pages
         }
 
         [BindProperty]
-        [DataType(DataType.Password)]        
+        [DataType(DataType.Password)]
         public String CurrentPassword { get; set; }
 
         [BindProperty]
-        [DataType(DataType.Password)]        
+        [DataType(DataType.Password)]
         public String NewPassword { get; set; }
 
-        [DataType(DataType.Password)]        
+        [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et sa conformation doivent être les mêmes.")]
         public String ConfirmPassword { get; set; }
 
@@ -101,7 +101,7 @@ namespace WebApplicationConges.Pages
                         }
                     }
                 }
-                
+
                 String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                     FilesCount = Directory.GetFiles(exportPath).Length;

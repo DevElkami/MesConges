@@ -60,6 +60,17 @@ namespace TestProject
             Assert.IsNotNull(Db.Instance.DataBase.ConfigRepository.Get());
         }
 
+        [TestMethod]
+        public void TestMethodBackup()
+        {
+            string backupFile = "bla56fds4fd487ty-data.tmp";
+            Db.Instance.DataBase.Backup(backupFile);
+            File.Delete(Path.ChangeExtension(backupFile, "zip"));
+
+            Assert.IsFalse(File.Exists(backupFile));
+            Assert.IsFalse(File.Exists(Path.ChangeExtension(backupFile, "zip")));
+        }
+
         [TestCleanup]
         public void TestMethodeDestroy()
         {

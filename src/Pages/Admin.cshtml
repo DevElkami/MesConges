@@ -86,6 +86,12 @@
                 <input asp-for="MyConfig.SmtpPort" type="number" class="form-control" />
                 <span asp-validation-for="MyConfig.SmtpPort" class="text-danger"></span>
             </div>
+            
+            <div class="form-group">
+                <label asp-for="MyConfig.FuturUse1">Jours supplémentaires de repos au format 'aaaammjj': 20221125,20230315,20230417</label>
+                <input asp-for="MyConfig.FuturUse1" type="text" class="form-control" autocomplete="off" />
+                <span asp-validation-for="MyConfig.FuturUse1" class="text-danger"></span>
+            </div>
                                                 
             <button class="btn btn-default" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>                            
         </form>        

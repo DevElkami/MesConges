@@ -28,7 +28,7 @@ namespace WebApplicationConges.Data
                                         ldap Ldap, ldapconnectionstring LdapConnectionString, ldapfilter LdapFilter,
                                         smtp Smtp, smtpserver SmtpServer, smtpport SmtpPort, ssl SSl, smtptargetname SmtpTargetName, smtpdefaultcredentialenabled SmtpDefaultCredentialEnabled,
                                         direxport DirExport, dirbackupbdd DirBackupBdd,
-                                        vapidsubject VAPIDSubject, vapidpublickey VAPIDPublicKey, vapidprivatekey VAPIDPrivateKey";
+                                        vapidsubject VAPIDSubject, vapidpublickey VAPIDPublicKey, vapidprivatekey VAPIDPrivateKey, futuruse1 FuturUse1";
 
         public static String GetQuerySelect()
         {
@@ -40,13 +40,13 @@ namespace WebApplicationConges.Data
             return @"INSERT INTO " + GetTableName() + " ( appadminlogin, appadminpwd, appadminemail, "+
                  "ldap, ldapconnectionstring, ldapfilter, " +
                  "smtp, smtpserver, smtpport, ssl, smtptargetname, smtpdefaultcredentialenabled, " + 
-                 "direxport, dirbackupbdd, " + 
-                 "vapidsubject, vapidpublickey, vapidprivatekey)" +
+                 "direxport, dirbackupbdd, " +
+                 "vapidsubject, vapidpublickey, vapidprivatekey, futuruse1)" +
                 " VALUES ( @AppAdminLogin, @AppAdminPwd, @AppAdminEmail, " +
                 "@Ldap, @LdapConnectionString, @LdapFilter, " +
                 "@Smtp, @SmtpServer, @SmtpPort, @SSl, @SmtpTargetName, @SmtpDefaultCredentialEnabled, " + 
-                "@DirExport, @DirBackupBdd, " + 
-                "@VAPIDSubject, @VAPIDPublicKey, @VAPIDPrivateKey )";
+                "@DirExport, @DirBackupBdd, " +
+                "@VAPIDSubject, @VAPIDPublicKey, @VAPIDPrivateKey, @FuturUse1 )";
         }
 
         public static String GetQueryUpdate()
@@ -55,7 +55,7 @@ namespace WebApplicationConges.Data
                 "ldap = @Ldap, ldapconnectionstring = @LdapConnectionString, ldapfilter  = @LdapFilter," +
                 "smtp = @Smtp, smtpserver = @SmtpServer, smtpport = @SmtpPort, ssl = @SSl, smtptargetname = @SmtpTargetName, smtpdefaultcredentialenabled = @SmtpDefaultCredentialEnabled," +
                 "direxport = @DirExport, dirbackupbdd = @DirBackupBdd," +
-                "vapidsubject = @VAPIDSubject, vapidpublickey = @VAPIDPublicKey, vapidprivatekey = @VAPIDPrivateKey"
+                "vapidsubject = @VAPIDSubject, vapidpublickey = @VAPIDPublicKey, vapidprivatekey = @VAPIDPrivateKey, futuruse1 = @FuturUse1"
                 ;
         }
     }

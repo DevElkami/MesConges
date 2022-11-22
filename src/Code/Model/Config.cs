@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationConges.Model
@@ -65,29 +66,53 @@ namespace WebApplicationConges.Model
         // Notification part
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         [RegularExpression("[^<>:='\"]*")]
-        [MaxLength(255)]
+        [MaxLength(254)]
         public String VAPIDSubject { get; set; }
 
         [RegularExpression("[^<>'\"]*")]
-        [MaxLength(255)]
+        [MaxLength(254)]
         public String VAPIDPublicKey { get; set; }
 
         [RegularExpression("[^<>'\"]*")]
-        [MaxLength(255)]
+        [MaxLength(254)]
         public String VAPIDPrivateKey { get; set; }
 
-        // Future use part
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        [MaxLength(255)]
+        // Extra holidays
+        [MaxLength(254)]
         public String FuturUse1 { get; set; }
 
-        [MaxLength(255)]
+        public List<String> ExtraDaysOff
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(FuturUse1))
+                    return new List<String>();
+                return new List<String>(FuturUse1.Split(','));
+            }
+            set
+            {
+                FuturUse1 = "";
+
+                if ((value != null) && (value.Count > 0))
+                {
+                    foreach (String date in value)
+                        FuturUse1 += (date + ",");
+
+                    FuturUse1 = FuturUse1.TrimEnd(trimChar: ',');
+                }
+            }
+        }
+
+        // Future use part
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////        
+
+        [MaxLength(254)]
         public String FuturUse2 { get; set; }
 
-        [MaxLength(255)]
+        [MaxLength(254)]
         public String FuturUse3 { get; set; }
 
-        [MaxLength(255)]
+        [MaxLength(254)]
         public String FuturUse4 { get; set; }
     }
 }
