@@ -42,13 +42,10 @@ namespace WebApplicationConges
         public static void InitConfiguration()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-            Configuration = builder.Build();
-
-            // Add extra holidays
-            PublicHolidays = new List<string>(Configuration.GetSection("PublicHolidays").GetChildren().Select(x => x.Value).ToArray());
+            Configuration = builder.Build();            
         }
 
-        private static List<string> PublicHolidays { get; set; } = new List<string>();
+        public static List<string> PublicHolidays { get; set; } = new List<string>();
 
         public static IConfigurationRoot Configuration { get; set; }
 
