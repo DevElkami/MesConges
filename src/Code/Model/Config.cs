@@ -81,20 +81,26 @@ namespace WebApplicationConges.Model
         [MaxLength(254)]
         public String FuturUse1 { get; set; }
 
-        public List<String> ExtraDaysOff 
-        { 
-            get 
-            { 
+        public List<String> ExtraDaysOff
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(FuturUse1))
+                    return new List<String>();
                 return new List<String>(FuturUse1.Split(','));
-            } 
-            set 
+            }
+            set
             {
                 FuturUse1 = "";
-                foreach (String date in value)                
-                    FuturUse1 += (date + ",");
 
-                FuturUse1 = FuturUse1.TrimEnd(trimChar: ',');
-            } 
+                if ((value != null) && (value.Count > 0))
+                {
+                    foreach (String date in value)
+                        FuturUse1 += (date + ",");
+
+                    FuturUse1 = FuturUse1.TrimEnd(trimChar: ',');
+                }
+            }
         }
 
         // Future use part
