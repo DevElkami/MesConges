@@ -11,7 +11,7 @@ Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 - Validation par le responsable des congés posés et notification par emails
 
 Déployez l'application:
-- Docker: https://github.com/DevElkami?tab=packages&repo_name=MesConges
+- Docker: docker pull ghcr.io/develkami/mesconges:latest
 - IIS
 
 Etapes pour configurer l'application:
