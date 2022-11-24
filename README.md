@@ -10,16 +10,19 @@ Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 - Différents types de congés (congés payés, événements familiaux, enfants malades, récupérations, sans solde, absences temporaires)
 - Validation par le responsable des congés posés et notification par emails
 
+Déployez l'application:
+- Docker: https://github.com/DevElkami?tab=packages&repo_name=MesConges
+- IIS
+
 Etapes pour configurer l'application:
 1. Connectez-vous: login = administrator et mot de passe = holidays
 
 2. Paramétrez l'application
   ![](https://github.com/DevElkami/MesConges/blob/main/admin.png)
-3. Déployez. Déploiement possible sur:
-- Azure
-- Docker
-- IIS
-- Via fichier zip (Profil par défaut)
+  
+3. [Option] : Si vous souhaitez distribuer l'application sour forme d'exécutable
+- npm install -g nativefier
+- nativefier --name 'Gestion des congés' 'https://votre.serveur.com'
 
 ![](https://github.com/DevElkami/MesConges/blob/main/calendrier.png)
 ![](https://github.com/DevElkami/MesConges/blob/main/ldap.png)
