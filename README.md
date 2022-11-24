@@ -20,7 +20,7 @@ Etapes pour configurer l'application:
 2. Paramétrez l'application
   ![](https://github.com/DevElkami/MesConges/blob/main/admin.png)
   
-3. [Option] : Si vous souhaitez distribuer l'application sour forme d'exécutable
+3. [Option] : Si vous souhaitez distribuer l'application sous forme d'exécutable
 - npm install -g nativefier
 - nativefier --name 'Gestion des congés' 'https://votre.serveur.com'
 - L'exécutable généré utilise [Electron](https://www.electronjs.org/) et [Node.js](https://nodejs.org/fr/)
