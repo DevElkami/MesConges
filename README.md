@@ -25,6 +25,14 @@ Etapes pour configurer l'application:
 - nativefier --name 'Gestion des congés' 'https://votre.serveur.com'
 - L'exécutable généré utilise [Electron](https://www.electronjs.org/) et [Node.js](https://nodejs.org/fr/)
 
+---
+Ils l'utilisent: :sparkling_heart:
+- [i2S](https://www.i2s.fr/fr/)
+- [CGI](https://conges.cgi-formation.fr/)
+
+Vous aussi :question: Faites le moi savoir: cette application est libre, et un peu de pub pour le développeur serait la bienvenue :pray:
+---
+Quelques captures d'écrans:
 ![](https://github.com/DevElkami/MesConges/blob/main/calendrier.png)
 ![](https://github.com/DevElkami/MesConges/blob/main/ldap.png)
 ![](https://github.com/DevElkami/MesConges/blob/main/rh.png)
