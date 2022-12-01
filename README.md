@@ -1,4 +1,4 @@
-# Mes congés
+# Mes congés :sunrise:
 Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 
 - Gestion des services (un seul responsable par service)
