@@ -27,12 +27,14 @@ Etapes pour configurer l'application:
 
 ---
 Ils l'utilisent: :sparkling_heart:
-- [i2S](https://www.i2s.fr/fr/)
-- [CGI](https://conges.cgi-formation.fr/)
+- :camera: [i2S](https://www.i2s.fr/fr/)
+- :articulated_lorry: [CGI](https://conges.cgi-formation.fr/)
 
 Vous aussi :question: Faites le moi savoir: cette application est libre, et un peu de pub pour le développeur serait la bienvenue :pray:
+
 ---
 Quelques captures d'écrans:
+
 ![](https://github.com/DevElkami/MesConges/blob/main/calendrier.png)
 ![](https://github.com/DevElkami/MesConges/blob/main/ldap.png)
 ![](https://github.com/DevElkami/MesConges/blob/main/rh.png)
