@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -43,7 +45,9 @@ namespace WebApplicationConges.Pages
                 ModelState.AddModelError(String.Empty, ErrorMessage);
 
             User user = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-            PreviousConnection = user.LastConnection.ToLongDateString() + " à " + user.LastConnection.ToLongTimeString();
+
+            PreviousConnection = user.LastConnection.ToString("D", CultureInfo.GetCultureInfo("fr-FR")) + " à " + user.LastConnection.ToString("T", CultureInfo.GetCultureInfo("fr-FR"));
+
             CongesInProgress = Db.Instance.DataBase.CongeRepository.Get(user.Email, Conge.StateEnum.InProgress).OrderBy(c => (String)(c.BeginDate.ToString("yyyyMMdd"))).ToList();
             CongesValidated = Db.Instance.DataBase.CongeRepository.Get(user.Email, Conge.StateEnum.Accepted).OrderBy(c => (String)(c.BeginDate.ToString("yyyyMMdd"))).ToList();
             CongesRefused = Db.Instance.DataBase.CongeRepository.Get(user.Email, Conge.StateEnum.Refused).OrderBy(c => (String)(c.BeginDate.ToString("yyyyMMdd"))).ToList();

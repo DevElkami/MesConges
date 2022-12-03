@@ -59,75 +59,69 @@ namespace WebApplicationConges.Pages.Account
         {
             ReturnUrl = returnUrl;
 
-            if (ModelState.IsValid)
+            User user = AuthenticateUser(Input.Login, Input.Password);
+            if (user == null)
             {
-                User user = AuthenticateUser(Input.Login, Input.Password);
-                if (user == null)
-                {
-                    ModelState.AddModelError(String.Empty, "Mauvais login ou mauvais mot de passe.");
-                    return Page();
-                }
+                ModelState.AddModelError(String.Empty, "Mauvais login ou mauvais mot de passe.");
+                return Page();
+            }
 
-                user.Login = Input.Login;
+            user.Login = Input.Login;
 
-                List<Claim> claims = new List<Claim>
+            List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Email),
                     new Claim("CurrentUser", JsonConvert.SerializeObject(user))
                 };
 
-                if (user.IsAdmin)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, "admin"));
-                    claims.Add(new Claim("adminextra", Input.Password));
-                }
-
-                if (user.IsManager)
-                    claims.Add(new Claim(ClaimTypes.Role, "manager"));
-
-                if (user.IsDrh)
-                    claims.Add(new Claim(ClaimTypes.Role, "drh"));
-
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                AuthenticationProperties authProperties = new AuthenticationProperties
-                {
-                    //AllowRefresh = <bool>,
-                    // Refreshing the authentication session should be allowed.
-
-                    //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                    // The time at which the authentication ticket expires. A 
-                    // value set here overrides the ExpireTimeSpan option of 
-                    // CookieAuthenticationOptions set with AddCookie.
-
-                    //IsPersistent = true,
-                    // Whether the authentication session is persisted across 
-                    // multiple requests. Required when setting the 
-                    // ExpireTimeSpan option of CookieAuthenticationOptions 
-                    // set with AddCookie. Also required when setting 
-                    // ExpiresUtc.
-
-                    //IssuedUtc = <DateTimeOffset>,
-                    // The time at which the authentication ticket was issued.
-
-                    //RedirectUri = <string>
-                    // The full path or absolute URI to be used as an http 
-                    // redirect response value.
-                };
-
-                // Mise à jour de la date de dernière connexion
-                user.LastConnection = DateTime.Now;
-                Db.Instance.DataBase.UserRepository.Update(user);
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                _logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}.");
-
-                return LocalRedirect(Url.GetLocalUrl(returnUrl));
+            if (user.IsAdmin)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "admin"));
+                claims.Add(new Claim("adminextra", Input.Password));
             }
 
-            // Something failed. Redisplay the form.
-            return Page();
+            if (user.IsManager)
+                claims.Add(new Claim(ClaimTypes.Role, "manager"));
+
+            if (user.IsDrh)
+                claims.Add(new Claim(ClaimTypes.Role, "drh"));
+
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            AuthenticationProperties authProperties = new AuthenticationProperties
+            {
+                //AllowRefresh = <bool>,
+                // Refreshing the authentication session should be allowed.
+
+                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                // The time at which the authentication ticket expires. A 
+                // value set here overrides the ExpireTimeSpan option of 
+                // CookieAuthenticationOptions set with AddCookie.
+
+                //IsPersistent = true,
+                // Whether the authentication session is persisted across 
+                // multiple requests. Required when setting the 
+                // ExpireTimeSpan option of CookieAuthenticationOptions 
+                // set with AddCookie. Also required when setting 
+                // ExpiresUtc.
+
+                //IssuedUtc = <DateTimeOffset>,
+                // The time at which the authentication ticket was issued.
+
+                //RedirectUri = <string>
+                // The full path or absolute URI to be used as an http 
+                // redirect response value.
+            };
+
+            // Mise à jour de la date de dernière connexion
+            user.LastConnection = DateTime.Now;
+            Db.Instance.DataBase.UserRepository.Update(user);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+            _logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}.");
+
+            return LocalRedirect(Url.GetLocalUrl(returnUrl));
         }
 
         private User AuthenticateUser(String login, String password)
