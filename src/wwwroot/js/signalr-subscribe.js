@@ -1,5 +1,8 @@
 var connection = new signalR.HubConnectionBuilder()
-    .withUrl("/conges/CongesHub")
+    .withUrl("/conges/CongesHub", {
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets
+    })
     .build();
 
 if (connection != null)

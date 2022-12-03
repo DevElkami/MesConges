@@ -30,7 +30,7 @@
             if (Toolkit.Connection == null)
             {
                 Toolkit.Connection = new HubConnectionBuilder()
-                .WithUrl(new Uri($"{HttpContextAccessor.HttpContext.Request.Scheme}://{HttpContextAccessor.HttpContext.Request.Host}{HttpContextAccessor.HttpContext.Request.PathBase}/CongesHub"))
+                .WithUrl(new Uri($"{HttpContextAccessor.HttpContext.Request.Scheme}://{HttpContextAccessor.HttpContext.Request.Host}{HttpContextAccessor.HttpContext.Request.PathBase}/CongesHub"), Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets)
                 .Build();
 
                 // SignalR start connection

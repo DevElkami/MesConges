@@ -63,10 +63,10 @@
                                 <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].BeginDate)</td>
                                 <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(Model.CongesInProgress[j].EndDate)</td>
                                 <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(Model.CongesInProgress[j])</td>
-                                <td>
+                                <td>                                    
                                     <button class="btn btn-success" type="submit" asp-page-handler="Accept" asp-route-id="@Model.CongesInProgress[j].Id"><i class="fa fa-check fa-lg"></i> Accepter</button>
                                     <button class="btn btn-danger" type="submit" asp-page-handler="Refuse" asp-route-id="@Model.CongesInProgress[j].Id"><i class="fa fa-times fa-lg"></i> Refuser</button>
-                                    <input class="form-control" asp-for="@Model.CongesInProgress[j].Motif" type="text" placeholder="Motif du refus" />
+                                    <input class="form-control" asp-for="@Model.CongesInProgress[j].Motif" style="margin-top:5px;" onkeypress="return event.keyCode!=13" type="text" autocomplete="off" placeholder="Motif du refus" />
                                 </td>
                             </tr>
                         }
