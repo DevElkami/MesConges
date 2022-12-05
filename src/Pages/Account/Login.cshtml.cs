@@ -33,12 +33,12 @@ namespace WebApplicationConges.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez entrer votre login")]
             [RegularExpression("[^<>:='\"]*")]
             [MaxLength(50)]
             public String Login { get; set; }
 
-            [Required]
+            [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez entrer votre mot de passe")]
             [MaxLength(50)]
             [DataType(DataType.Password)]
             public String Password { get; set; }
