@@ -44,6 +44,22 @@ namespace TestProject
             Db.Instance.DataBase.UserRepository.Update(user);
             Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).Surname, user.Surname);
 
+            user.IsDrh = true;
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).IsDrh, true);
+
+            user.IsDrh = false;
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).IsDrh, false);
+
+            user.IsAdmin = true;
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).IsAdmin, true);
+
+            user.IsAdmin = false;
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).IsAdmin, false);
+
             Db.Instance.DataBase.UserRepository.Delete(user);
             Assert.IsNull(Db.Instance.DataBase.UserRepository.Get(user.Email));
         }

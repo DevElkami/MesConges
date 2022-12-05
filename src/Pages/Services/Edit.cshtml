@@ -7,13 +7,14 @@
 <h3>Gestion des services</h3>
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<ul class="nav nav-tabs id="serviceTab" role="tablist" ">
-    <li class="nav-item" role="presentation"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#service0" aria-selected="true">Mettre à jour le service</a></li>
-    <li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#service1" aria-selected="false">Les membres du service</a></li>
+<ul class="nav nav-tabs" id="serviceTab">
+    <li class="nav-item"><a href="#" class="text-dark nav-link active" data-bs-toggle="tab" data-bs-target="#service0" aria-selected="true">Mettre à jour le service</a></li>
+    <li class="nav-item"><a href="#" class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#service1" aria-selected="false">Les membres du service</a></li>
 </ul>
 
 <div class="tab-content" id="serviceTabContent">
     <div role="tabpanel" id="service0" class="tab-pane fade show active">
+        <br/>
         <form role="form" method="post">
             <div class="mb-3">
                 <label class="form-label" asp-for="Service.Name">Nom du service</label>
@@ -26,17 +27,18 @@
                 <span asp-validation-for="Service.Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label class="form-label" asp-for="ManagerId">Manager du service</label>
-                @Html.DropDownListFor(x => Model.ManagerId, new SelectList(Model.Users, "Email", "Name"), htmlAttributes: new { @class = "form-control", id = "ManagerId" })
+                <label class="form-label" asp-for="ManagerId">Manager du service: </label>
+                @Html.DropDownListFor(x => Model.ManagerId, new SelectList(Model.Users, "Email", "Name"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "ManagerId" })
                 <span asp-validation-for="ManagerId" class="text-danger"></span>
             </div>
 
             <input asp-for="Service.Id" type="hidden" class="form-control" />
-            <button type="submit" class="btn btn-secondary">Modifier</button>
+            <button type="submit" class="btn btn-dark">Modifier</button>
         </form>
     </div>
 
     <div role="tabpanel" id="service1" class="tab-pane fade">
+        <br/>
         @if (Model.Members.Count() <= 0)
         {
             <br />

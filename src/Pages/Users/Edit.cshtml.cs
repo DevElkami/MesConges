@@ -52,6 +52,8 @@ namespace WebApplicationConges.Pages.Users
                     User.HashPwd = Toolkit.CreateSHAHash(Password);
 
                 Db.Instance.DataBase.UserRepository.Update(User);
+
+                User antoerUser = Db.Instance.DataBase.UserRepository.Get(User.Email);
             }
             catch (Exception except)
             {

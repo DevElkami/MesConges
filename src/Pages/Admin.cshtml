@@ -8,11 +8,11 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <ul class="nav nav-tabs" id="adminTab" role="tablist">
-    <li class="nav-item" role="presentation"><button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab" aria-controls="config" aria-selected="true">Configuration</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" id="service-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab" aria-controls="services" aria-selected="false">Services</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false">Utilisateurs</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" id="bdd-tab" data-bs-toggle="tab" data-bs-target="#bdd" type="button" role="tab" aria-controls="bdd" aria-selected="false">BDD</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" id="clean-tab" data-bs-toggle="tab" data-bs-target="#clean" type="button" role="tab" aria-controls="clean" aria-selected="false">Divers</button></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab" aria-controls="config" aria-selected="true">Configuration</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="service-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab" aria-controls="services" aria-selected="false">Services</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false">Utilisateurs</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="bdd-tab" data-bs-toggle="tab" data-bs-target="#bdd" type="button" role="tab" aria-controls="bdd" aria-selected="false">BDD</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="clean-tab" data-bs-toggle="tab" data-bs-target="#clean" type="button" role="tab" aria-controls="clean" aria-selected="false">Divers</a></li>
 </ul>
 
 <div class="tab-content" id="adminTabContent">
@@ -21,7 +21,7 @@
         <form method="post">
             <div class="mb-3">
                 <label class="form-label" asp-for="MyConfig.AppAdminLogin">Login</label>
-                <input asp-for="MyConfig.AppAdminLogin" type="text" class="form-control" placeholder="Login" maxlength="49" readonly />
+                <input asp-for="MyConfig.AppAdminLogin" type="text" class="form-control" placeholder="Login" maxlength="49" disabled readonly />
                 <span asp-validation-for="MyConfig.AppAdminLogin" class="text-danger"></span>
             </div>
 
@@ -93,7 +93,7 @@
                 <span asp-validation-for="MyConfig.FuturUse1" class="text-danger"></span>
             </div>
                                                 
-            <button class="btn btn-secondary" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>
+            <button class="btn btn-dark" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>
         </form>        
     </div>
 
@@ -107,6 +107,7 @@
         {
             <br />
             <a class="btn btn-secondary" asp-page="./Services/Create">Créer un service</a>
+            <br />
             <br />
             <form method="post">
                 <table class="table">
@@ -148,6 +149,7 @@
         {
             <a class="btn btn-secondary" asp-page="./Users/Import">Gérer les utilisateurs</a>
         }
+        <br />
         <br />
         <form method="post">
             <table class="table">

@@ -1,6 +1,7 @@
 ﻿@page
 @model WebApplicationConges.Pages.Users.EditModel
 @{ ViewData["Title"] = "Modifier un utilisateur"; }
+
 <h3>Modifier un utilisateur</h3>
 <div asp-validation-summary="All" class="text-danger"></div>
 <form role="form" method="post">
@@ -21,7 +22,7 @@
 
         <div class="mb-3">
             <label class="form-label" asp-for="User.Email">Email</label>
-            <input asp-for="User.Email" type="text" class="form-control" placeholder="Email" maxlength="49" />
+            <input asp-for="User.Email" type="text" class="form-control" placeholder="Email" maxlength="49" disabled readonly />
             <span asp-validation-for="User.Email" class="text-danger"></span>
         </div>
     }
@@ -62,7 +63,7 @@
         <span asp-validation-for="User.IsDrh" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label"asp-for="User.ServiceId">Service</label>
+        <label class="form-label" asp-for="User.ServiceId">Service: </label>
         @Html.DropDownListFor(x => Model.User.ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "ServiceId" })
         <span asp-validation-for="User.ServiceId" class="text-danger"></span>
     </div>
@@ -75,7 +76,8 @@
     {
         <input asp-for="User.HashPwd" type="hidden" class="form-control" />
     }
-    <button type="submit" class="btn btn-secondary">Modifier</button>
+    <br/>
+    <button type="submit" class="btn btn-dark">Modifier</button>
 </form>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -44,7 +44,7 @@
 </head>
 <body>    
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">                
                 <a asp-area="" asp-page="/Index" class="navbar-brand">
                     <span><img src="~/images/logo.png" width="48" title="Gestion des congés" alt="Gestion des congés" /> Gestion des congés</span>
@@ -56,27 +56,27 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">                        
                         <li>
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index"><i class="fa-solid fa-house"></i> Accueil</a>
+                            <a class="nav-link" asp-area="" asp-page="/Index"><i class="fa-solid fa-house"></i> Accueil</a>
                         </li>
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin"><i class="fa fa-cog"></i> Administration</a>
+                                <a class="nav-link" asp-area="" asp-page="/Admin"><i class="fa fa-cog"></i> Administration</a>
                             </li>
                         }
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("manager"))
                         {
-                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Manage"><i class="fa fa-users"></i> Gérer l'équipe</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Manage"><i class="fa fa-users"></i> Gérer l'équipe</a></li>
                         }
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("drh"))
                         {
-                            <li><a class="nav-link text-dark" asp-page="/RH/Compta"><i class="fa fa-users"></i> Ressources humaines</a></li>
+                            <li><a class="nav-link" asp-page="/RH/Compta"><i class="fa fa-users"></i> Ressources humaines</a></li>
                         }
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Calendar"><i class="fa fa-calendar"></i> Calendrier</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/About"><i class="fa fa-info"></i> A propos</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Calendar"><i class="fa fa-calendar"></i> Calendrier</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/About"><i class="fa fa-info"></i> A propos</a></li>
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-page="/Account/SignedOut"><i class="fa fa-sign-out"></i> Se déconnecter</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Account/SignedOut"><i class="fa fa-sign-out"></i> Se déconnecter</a></li>
                         }
                     </ul>
                 </div>
