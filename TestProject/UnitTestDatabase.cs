@@ -38,11 +38,16 @@ namespace TestProject
             user.HashPwd = Toolkit.CreateSHAHash(user.Email);
             user.ServiceId = (int)service.Id;
 
+            Db.Instance.DataBase.UserRepository.Delete(user);
             Db.Instance.DataBase.UserRepository.Insert(user);
 
             user.Surname = "Jambain";
             Db.Instance.DataBase.UserRepository.Update(user);
             Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).Surname, user.Surname);
+
+            user.Login = "LoginJambain";
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).Login, user.Login);
 
             user.IsDrh = true;
             Db.Instance.DataBase.UserRepository.Update(user);

@@ -75,7 +75,7 @@ namespace WebApplicationConges.Data
         public static String GetQueryUpdate()
         {
             return @"update " + GetTableName() +
-                    @" set name = @Name, email = @Email, hash = @HashPwd, isdrh = @IsDrh, isadmin = @IsAdmin, service_id = @ServiceId, surname = @Surname, 
+                    @" set login = @Login, name = @Name, email = @Email, hash = @HashPwd, isdrh = @IsDrh, isadmin = @IsAdmin, service_id = @ServiceId, surname = @Surname, 
                     family_name = @FamilyName, phone_number = @PhoneNumber, description = @Description, last_connection = @LastConnection, matricule = @Matricule
                     WHERE email = @Email";
         }
