@@ -5,3 +5,4 @@
 *.html -linguist-detectable
 *.less -linguist-detectable
 *.scss -linguist-detectable
+*.ts -linguist-detectable
