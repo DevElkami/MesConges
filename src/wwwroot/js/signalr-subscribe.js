@@ -1,8 +1,5 @@
 var connection = new signalR.HubConnectionBuilder()
-    .withUrl("/conges/CongesHub", {
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets
-    })
+    .withUrl("/CongesHub")
     .build();
 
 if (connection != null)
@@ -26,13 +23,13 @@ if (connection != null)
             switch (type)
             {
                 default:
-                case 0: hrefValue = "/conges/"; break;
-                case 1: hrefValue = "/conges/Manage/"; break;
-                case 2: hrefValue = "/conges/"; break;
-                case 3: hrefValue = "/conges/"; break;
-                case 4: hrefValue = "/conges/"; break;
-                case 5: hrefValue = "/conges/Manage/"; break;
-                case 6: hrefValue = "/conges/RH/Compta/"; break;
+                case 0: hrefValue = "/"; break;
+                case 1: hrefValue = "/Manage/"; break;
+                case 2: hrefValue = "/"; break;
+                case 3: hrefValue = "/"; break;
+                case 4: hrefValue = "/"; break;
+                case 5: hrefValue = "/Manage/"; break;
+                case 6: hrefValue = "/RH/Compta/"; break;
             }            
 
             $("#SignalRDisplay a").attr("href", hrefValue); 
@@ -47,5 +44,5 @@ if (connection != null)
     });
 
     connection.start();
-    FaviconNotification.init({ url: '/conges/favicon.ico'});
+    FaviconNotification.init({ url: '/favicon.ico'});
 }
