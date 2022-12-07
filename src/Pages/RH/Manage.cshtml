@@ -10,13 +10,11 @@
     @for (int i = 0; i < Model.Services.Count; i++)
     {
         var href = "#service" + i.ToString();
-        var classActive = "";
-        if (i == 0)
-        {
-            classActive = "active";
-        }
+        var classActive = "text-dark nav-link";
+        if (i == 0)        
+            classActive += " active";
 
-        <li class="@classActive"><a data-toggle="tab" href="@href">@Model.Services[i].Key.Name</a></li>
+        <li class="nav-item"><a class="@classActive" data-bs-toggle="tab" data-bs-target="@href" href="#">@Model.Services[i].Key.Name</a></li>
     }
 </ul>
 
@@ -26,9 +24,7 @@
         var href = "service" + i.ToString();
         var classActive = "tab-pane fade";
         if (i == 0)
-        {
-            classActive = "tab-pane fade in active";
-        }
+            classActive = "tab-pane fade show active";
 
         <div id="@href" class="@classActive">
             @if (Model.Services[i].Value.Count <= 0)
