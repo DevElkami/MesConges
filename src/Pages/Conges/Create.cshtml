@@ -21,7 +21,7 @@
             <input type="text" readonly class="form-control labelConge" value="Type de demande">
         </div>
         <div class="col-sm-2">
-            @Html.DropDownListFor(x => Model.CgType, new SelectList(Model.CgTypes, "Value", "Key"), htmlAttributes: new { @class = "form-control", id = "CgType", @onchange = "CallChangefunc(this.value)" })
+            @Html.DropDownListFor(x => Model.CgType, new SelectList(Model.CgTypes, "Value", "Key"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "CgType", @onchange = "CallChangefunc(this.value)" })
             <span asp-validation-for="CgType" class="text-danger"></span>
         </div>
     </div>
@@ -38,7 +38,7 @@
                 <input type="text" readonly class="form-control labelConge" value="Commence le">
             </div>
             <div class="col-sm-2">
-                @Html.DropDownListFor(x => Model.IntervalTypeBegin, new SelectList(Model.IntervalTypes, "Value", "Key"), htmlAttributes: new { @class = "form-control", id = "BeginInterval" })
+                @Html.DropDownListFor(x => Model.IntervalTypeBegin, new SelectList(Model.IntervalTypes, "Value", "Key"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "BeginInterval" })
             </div>
         </div>
         <div id="hourBegin">
@@ -72,7 +72,7 @@
             <input type="text" readonly class="form-control labelConge" value="Termine le">
         </div>
         <div class="col-sm-2">
-            @Html.DropDownListFor(x => Model.IntervalTypeEnd, new SelectList(Model.IntervalTypes, "Value", "Key"), htmlAttributes: new { @class = "form-control", id = "EndInterval" })
+            @Html.DropDownListFor(x => Model.IntervalTypeEnd, new SelectList(Model.IntervalTypes, "Value", "Key"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "EndInterval" })
         </div>
     </div>
 
