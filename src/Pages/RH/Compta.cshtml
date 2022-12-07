@@ -19,16 +19,16 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#cg0">Les exports</a></li>
-    <li><a data-toggle="tab" href="#cg1">Les congés du mois</a></li>
-    <li><a data-toggle="tab" href="#cg2">Tous les congés</a></li>
-    <li><a data-toggle="tab" href="#cg3">Exporter les données</a></li>
-    <li><a data-toggle="tab" href="#cg4">Absences des managers</a></li>
-    <li><a data-toggle="tab" href="#cg5">Absences temporaires (15j glissants)</a></li>
+    <li class="nav-item"><a class="text-dark nav-link active" data-bs-toggle="tab" data-bs-target="#cg0" href="#">Les exports</a></li>
+    <li class="nav-item"><a class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#cg1" href="#">Les congés du mois</a></li>
+    <li class="nav-item"><a class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#cg2" href="#">Tous les congés</a></li>
+    <li class="nav-item"><a class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#cg3" href="#">Exporter les données</a></li>
+    <li class="nav-item"><a class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#cg4" href="#">Absences des managers</a></li>
+    <li class="nav-item"><a class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#cg5" href="#">Absences temporaires (15j glissants)</a></li>
 </ul>
 
 <div class="tab-content">
-    <div id="cg0" class="tab-pane fade in active">
+    <div id="cg0" class="tab-pane fade show active">
         @if (Model.ExportColl.Count() <= 0)
         {
             <br />
@@ -162,13 +162,17 @@
     </div>
 
     <div id="cg3" class="tab-pane fade">
-        <br />
-        <form class="form-inline" role="form" method="post">
-            <div class="form-group">
+        <br />        
+        <form method="post" class="row row-cols-lg-auto g-3 align-items-end">
+          <div class="col-12">
                 <label asp-for="DateEnd">Exporter jusqu'au mois (inclus) de &nbsp;</label>
                 <input class="form-control" asp-for="DateEnd" type="text" id="datepickerEnd" autocomplete="off" placeholder="Date d'export" />
+          </div>
+            <div class="col-12">
+            <div class="input-group">
+                <button type="submit" class="btn btn-dark">Exporter</button>
             </div>
-            <button type="submit" class="btn btn-primary">Exporter</button>
+            </div>
         </form>
     </div>
 
@@ -176,7 +180,7 @@
         <br />
         <form role="form" method="post">
             <p>Il est possible, en cas d'absence d'un manager et lorsqu'une demande de congé doit être signée dans l'urgence, de le faire à sa place.</p>
-            <a class="btn btn-default" asp-page="/RH/Manage">Valider des congés</a>
+            <a class="btn btn-dark" asp-page="/RH/Manage">Valider des congés</a>
         </form>
     </div>
 
@@ -238,7 +242,7 @@
     {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <environment names="Development,Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery/jquery.min.js"></script>
         <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
         <script src="~/lib/jquery-ui/datepicker-fr.js"></script>
         <script>
