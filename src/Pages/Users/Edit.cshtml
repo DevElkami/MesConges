@@ -53,12 +53,12 @@
         <textarea asp-for="User.PhoneNumber" class="form-control" maxlength="50"></textarea>
         <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
     </div>
-    <div class="mb-3 form-check">
+    <div class="mb-3 form-check form-switch">
         <label class="form-label" asp-for="User.IsAdmin">Administrateur</label>
         <input asp-for="User.IsAdmin" type="checkbox" class="form-check-input" />
         <span asp-validation-for="User.IsAdmin" class="text-danger"></span>
     </div>
-    <div class="mb-3 form-check">
+    <div class="mb-3 form-check form-switch">
         <label class="form-label" asp-for="User.IsDrh">DRH</label>
         <input asp-for="User.IsDrh" type="checkbox" class="form-check-input" />
         <span asp-validation-for="User.IsDrh" class="text-danger"></span>
