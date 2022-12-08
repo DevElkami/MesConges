@@ -65,7 +65,7 @@
     </div>
     <div class="mb-3">
         <label class="form-label" asp-for="User.ServiceId">Service: </label>
-        @Html.DropDownListFor(x => Model.User.ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "ServiceId" })
+        @Html.DropDownListFor(x => Model.User.ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "form-select", id = "ServiceId" })
         <span asp-validation-for="User.ServiceId" class="text-danger"></span>
     </div>
 

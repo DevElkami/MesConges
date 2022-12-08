@@ -28,7 +28,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" asp-for="ManagerId">Manager du service: </label>
-                @Html.DropDownListFor(x => Model.ManagerId, new SelectList(Model.Users, "Email", "Name"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "ManagerId" })
+                @Html.DropDownListFor(x => Model.ManagerId, new SelectList(Model.Users, "Email", "Name"), htmlAttributes: new { @class = "form-select", id = "ManagerId" })
                 <span asp-validation-for="ManagerId" class="text-danger"></span>
             </div>
 

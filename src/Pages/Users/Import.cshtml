@@ -35,7 +35,7 @@ else
                     @Html.HiddenFor(x => Model.Users[i].Surname)
                     <td>@Model.Users[i].Name</td>
                     <td>@Model.Users[i].Email</td>
-                    <td>@Html.DropDownListFor(modelItem => Model.Users[i].ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "btn btn-secondary dropdown-toggle", id = "ServiceId" })</td>
+                        <td>@Html.DropDownListFor(modelItem => Model.Users[i].ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "form-select", id = "ServiceId" })</td>
                     <td>@Html.EditorFor(modelItem => Model.Users[i].Imported)</td>
                     <td>@Html.EditorFor(modelItem => Model.Users[i].IsDrh)</td>
                     <td>@Html.EditorFor(modelItem => Model.Users[i].IsAdmin)</td>
