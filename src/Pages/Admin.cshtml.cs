@@ -142,7 +142,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                Db.Instance.DataBase.LogRepository.Insert(new Log { UserId = GetCurrentUser().Email, ActionDate = DateTime.Now, Description = $"Delete service {Db.Instance.DataBase.ManagerRepository.GetByServiceId(id).Service.Name}" });
+                Toolkit.Log(HttpContext, $"Suppression du service {Db.Instance.DataBase.ServiceRepository.Get(id).Name}");
+
                 Db.Instance.DataBase.ServiceRepository.Delete(new Service() { Id = id });
 
                 // On supprime aussi le manager du service si il existait
@@ -162,6 +163,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Suppression de l'utilisateur {id}");
+
                 User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 if (current.Email == id)
                 {
@@ -183,6 +186,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Mise à jour de la configuration générale");
+
                 if (!String.IsNullOrEmpty(NewPassword))
                 {
                     if (Toolkit.CreateSHAHash(CurrentPassword) != Db.Instance.DataBase.ConfigRepository.Get().AppAdminPwd)
@@ -206,6 +211,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Création d'une sauvegarde de la BDD");
+
                 String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 Directory.CreateDirectory(backupPath);
                 Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));
@@ -221,13 +228,13 @@ namespace WebApplicationConges.Pages
         public IActionResult OnPostReplace(List<IFormFile> bddBackups)
         {
             try
-            {
+            {                
                 string wwwPath = _hostingEnvironment.WebRootPath;
                 string contentPath = _hostingEnvironment.ContentRootPath;
 
                 string path = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads");
-                if (!Directory.Exists(path))                
-                    Directory.CreateDirectory(path);                
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
 
                 foreach (IFormFile postedFile in bddBackups)
                 {
@@ -239,6 +246,8 @@ namespace WebApplicationConges.Pages
 
                     Db.Instance.DataBase.Load(Path.Combine(path, fileName));
                 }
+                
+                Toolkit.Log(HttpContext, $"Restauration complète de la BDD");
 
             }
             catch (Exception except)
@@ -253,6 +262,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Suppression de toutes les sauvegardes de la BDD");
+
                 String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 if (Directory.Exists(backupPath))
                 {
@@ -274,6 +285,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Suppression de toutes les exports comptables");
+
                 String exportPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirExport);
                 if (Directory.Exists(exportPath))
                 {
@@ -295,6 +308,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Suppression de toutes les abscences temporaires");
+
                 foreach (User user in Db.Instance.DataBase.UserRepository.GetAll())
                 {
                     OldAbsenceTemporaires.AddRange(GetOldConge(user.Email, Conge.StateEnum.Accepted, Conge.CGTypeEnum.AbsenceTemporaire, Toolkit.IntervalAbsenceTemporaire()));
@@ -316,6 +331,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Suppression de toutes les congés plus vieux de {Toolkit.IntervalCongeOld()}");
+
                 foreach (User user in Db.Instance.DataBase.UserRepository.GetAll())
                 {
                     foreach (Conge.CGTypeEnum cgType in Enum.GetValues(typeof(Conge.CGTypeEnum)))
@@ -358,6 +375,8 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Toolkit.Log(HttpContext, $"Remise à zéro du cache");
+
                 Cache.ClearAll();
             }
             catch (Exception except)

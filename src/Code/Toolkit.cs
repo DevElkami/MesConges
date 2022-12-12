@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -77,6 +79,13 @@ namespace WebApplicationConges
             return description;
         }
 
+        public static void Log(HttpContext context, String description)
+        {
+            User user = JsonConvert.DeserializeObject<User>(context.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+            user ??= new User() { Email = "unknown@user" };
+            Db.Instance.DataBase.LogRepository.Insert(new Log { UserId = user.Email, ActionDate = DateTime.Now, Description = description });
+        }
+
         public enum NotifyTypeEnum
         {
             Test = 0,               // Test
@@ -119,6 +128,9 @@ namespace WebApplicationConges
             {
                 // Nothing: SignalR is not mandatory
             }
+
+            // Log
+            Db.Instance.DataBase.LogRepository.Insert(new Log { UserId = mailFrom, ActionDate = DateTime.Now, Description = $"Pour {mailTo} : {notifyType}. {subject} - {body}" });
         }
 
         public static String LayoutColumnDateBeginTitle() { return "Date de début"; }
