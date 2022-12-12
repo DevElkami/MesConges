@@ -13,6 +13,7 @@
     <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false">Utilisateurs</a></li>
     <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="bdd-tab" data-bs-toggle="tab" data-bs-target="#bdd" type="button" role="tab" aria-controls="bdd" aria-selected="false">BDD</a></li>
     <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="clean-tab" data-bs-toggle="tab" data-bs-target="#clean" type="button" role="tab" aria-controls="clean" aria-selected="false">Divers</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="clean-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab" aria-controls="clean" aria-selected="false">Logs</a></li>
 </ul>
 
 <div class="tab-content" id="adminTabContent">
@@ -51,7 +52,7 @@
 
             <div class="mb-3 form-check form-switch">
                 <label asp-for="MyConfig.Ldap" class="form-check-label">Ldap</label>
-                <input asp-for="MyConfig.Ldap" type="checkbox" class="form-check-input"/>
+                <input asp-for="MyConfig.Ldap" type="checkbox" class="form-check-input" />
                 <span asp-validation-for="MyConfig.Ldap" class="text-danger"></span>
             </div>
 
@@ -71,7 +72,7 @@
 
             <div class="mb-3 form-check form-switch">
                 <label asp-for="MyConfig.Smtp" class="form-check-label">Smtp</label>
-                <input asp-for="MyConfig.Smtp" type="checkbox" class="form-check-input"/>
+                <input asp-for="MyConfig.Smtp" type="checkbox" class="form-check-input" />
                 <span asp-validation-for="MyConfig.Smtp" class="text-danger"></span>
             </div>
 
@@ -86,15 +87,15 @@
                 <input asp-for="MyConfig.SmtpPort" type="number" class="form-control" />
                 <span asp-validation-for="MyConfig.SmtpPort" class="text-danger"></span>
             </div>
-            
+
             <div class="mb-3">
                 <label class="form-label" asp-for="MyConfig.FuturUse1">Jours supplémentaires de repos au format 'aaaammjj': 20221125,20230315,20230417</label>
                 <input asp-for="MyConfig.FuturUse1" type="text" class="form-control" autocomplete="off" />
                 <span asp-validation-for="MyConfig.FuturUse1" class="text-danger"></span>
             </div>
-                                                
+
             <button class="btn btn-dark" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>
-        </form>        
+        </form>
     </div>
 
     <div role="tabpanel" id="services" class="tab-pane fade">
@@ -143,7 +144,7 @@
         <br />
         @if (Connect.UserAccess.Instance is Connect.DbConnection)
         {
-            <a class="btn btn-secondary" asp-page="./Users/Create">Gérer les utilisateurs</a>            
+            <a class="btn btn-secondary" asp-page="./Users/Create">Gérer les utilisateurs</a>
         }
         @if (Connect.UserAccess.Instance is Connect.LdapConnection)
         {
@@ -177,7 +178,7 @@
                 </tbody>
             </table>
         </form>
-         @if (Connect.UserAccess.Instance is Connect.DbConnection)
+        @if (Connect.UserAccess.Instance is Connect.DbConnection)
         {
             <a class="btn btn-secondary" asp-page="./Users/Create">Gérer les utilisateurs</a>
         }
@@ -186,56 +187,56 @@
             <a class="btn btn-secondary" asp-page="./Users/Import">Gérer les utilisateurs</a>
         }
     </div>
-            
-    <div role="tabpanel" id="bdd" class="tab-pane fade">
-    <br />
-    <p>Gestion des sauvegardes de la base de donnée.</p>
-    @if (Model.BackupColl.Count() <= 0)
-    {
-        <br />
-        <p>Aucune sauvegarde de la base de donnée réalisée pour le moment</p>
-    }
-    else
-    {
-        <form method="post">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Lien</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int j = 0; j < Model.BackupColl.Count; j++)
-                    {
-                        <tr>
-                            <td>@Model.BackupColl[j].Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
-                            <td>
-                                <a href="@Model.BackupColl[j].Key" download>@System.IO.Path.GetFileName(Model.BackupColl[j].Key)</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </form>
-    }
 
-    <br />        
+    <div role="tabpanel" id="bdd" class="tab-pane fade">
+        <br />
+        <p>Gestion des sauvegardes de la base de donnée.</p>
+        @if (Model.BackupColl.Count() <= 0)
+        {
+            <br />
+            <p>Aucune sauvegarde de la base de donnée réalisée pour le moment</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Lien</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < Model.BackupColl.Count; j++)
+                        {
+                            <tr>
+                                <td>@Model.BackupColl[j].Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td>
+                                    <a href="@Model.BackupColl[j].Key" download>@System.IO.Path.GetFileName(Model.BackupColl[j].Key)</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+
+        <br />
 
         <form method="post" enctype="multipart/form-data" class="row row-cols-lg-auto g-3 align-items-center">
-          <div class="col-12">
+            <div class="col-12">
                 <button class="btn btn-secondary" type="submit" asp-page-handler="CleanBackup"><i class="fa-solid fa-recycle fa-lg"></i> Purger</button>
                 <button class="btn btn-secondary" type="submit" asp-page-handler="Backup"><i class="fa-solid fa-file-zipper fa-lg"></i> Sauvegarder</button>
-          </div>
-            <div class="col-12">
-            <div class="input-group">
-                <button class="btn btn-secondary" type="submit" asp-page-handler="Replace"><i class="fa-solid fa-upload fa-lg"></i> Mise à jour</button>
-                    <input class="form-control" type="file" accept=".sqlite" name="bddBackups">
             </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <button class="btn btn-secondary" type="submit" asp-page-handler="Replace"><i class="fa-solid fa-upload fa-lg"></i> Mise à jour</button>
+                    <input class="form-control" type="file" accept=".sqlite" name="bddBackups">
+                </div>
             </div>
         </form>
 
-    </div>    
+    </div>
 
     <div role="tabpanel" id="clean" class="tab-pane fade">
         <br />
@@ -277,7 +278,7 @@
             <form method="post">
                 <button class="btn btn-secondary" type="submit" asp-page-handler="CleanConge"><i class="fa fa-recycle fa-lg"></i> Purger</button>
             </form>
-        }        
+        }
 
         <br />
         <p>Envoyer un email pour tester le système SMTP.</p>
@@ -291,8 +292,43 @@
             <button class="btn btn-secondary" type="submit" asp-page-handler="ResetCache"><i class="fa-solid fa-trash-can"></i> Reset</button>
         </form>
     </div>
+
+    <div role="tabpanel" id="logs" class="tab-pane fade">
+        @if (Db.Instance.DataBase.LogRepository.GetAll().Count() <= 0)
+        {
+            <br/>
+            <p>Aucun log existant.</p>
+        }
+        else
+        {
+            <br />
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Qui ?</th>
+                            <th>Quand ?</th>
+                            <th>Quoi ?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var log in Db.Instance.DataBase.LogRepository.GetAll())
+                        {
+                            <tr>
+                                <td>@log.UserId</td>
+                                <td>@log.ActionDate</td>
+                                <td>@log.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+    </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

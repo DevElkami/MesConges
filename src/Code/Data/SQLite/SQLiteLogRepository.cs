@@ -30,15 +30,16 @@ namespace WebApplicationConges.Data
 
         public void Create()
         {
-            Data.CongeRepository.RestoreTableName();
+            Data.LogRepository.RestoreTableName();
             using (var cnn = DbConnection())
             {
                 cnn.Open();
-                cnn.Execute(@"create TABLE IF NOT EXISTS " + Data.CongeRepository.TABLE_NAME + @"
+                cnn.Execute(@"create TABLE IF NOT EXISTS " + Data.LogRepository.TABLE_NAME + @"
                       (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        user_id varchar(50) not null,                        
-                        description varchar(1024) null
+                        user_id varchar(50) not null,
+                        actiondate datetime not null,
+                        description varchar(1024) not null
                       )");
             }
         }

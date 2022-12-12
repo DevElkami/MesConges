@@ -58,6 +58,11 @@ namespace WebApplicationConges.Pages
         [TempData]
         public String ErrorMessage { get; set; }
 
+        private User GetCurrentUser()
+        {
+            return JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+        }
+
         public IActionResult OnGet()
         {
             if (!String.IsNullOrEmpty(ErrorMessage))
@@ -65,7 +70,7 @@ namespace WebApplicationConges.Pages
 
             MyConfig = Db.Instance.DataBase.ConfigRepository.Get();
 
-            User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+            User currentUser = GetCurrentUser();
             if (currentUser.IsAdmin)
             {
                 Services = Db.Instance.DataBase.ServiceRepository.GetAll().OrderBy(s => s.Name).ToList();
@@ -137,6 +142,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
+                Db.Instance.DataBase.LogRepository.Insert(new Log { UserId = GetCurrentUser().Email, ActionDate = DateTime.Now, Description = $"Delete service {Db.Instance.DataBase.ManagerRepository.GetByServiceId(id).Service.Name}" });
                 Db.Instance.DataBase.ServiceRepository.Delete(new Service() { Id = id });
 
                 // On supprime aussi le manager du service si il existait

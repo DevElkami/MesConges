@@ -24,7 +24,7 @@ namespace WebApplicationConges.Data
             return TABLE_NAME;
         }
 
-        private static String SELECT = "select id Id, user_id UserId, description Description";
+        private static String SELECT = "select id Id, user_id UserId, actiondate ActionDate, description Description";
 
         public static String GetQueryAll()
         {
@@ -33,7 +33,7 @@ namespace WebApplicationConges.Data
 
         public static String GetQueryInsert()
         {
-            return @"INSERT INTO " + GetTableName() + " ( user_id, description ) VALUES ( @UserId, @Description )";
+            return @"INSERT INTO " + GetTableName() + " ( user_id, actiondate, description ) VALUES ( @UserId, @ActionDate, @Description )";
         }
     }
 }
