@@ -14,14 +14,14 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#manage0">Les demandes en cours</a></li>
-    <li><a data-toggle="tab" href="#manage1">Les membres de votre service</a></li>
-    <li><a data-toggle="tab" href="#manage2">Planning de votre équipe</a></li>
-    <li><a data-toggle="tab" href="#manage3">Supprimer une demande</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link active" data-bs-toggle="tab" data-bs-target="#manage0">Les demandes en cours</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#manage1">Les membres de votre service</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#manage2">Planning de votre équipe</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#manage3">Supprimer une demande</a></li>
 </ul>
 
 <div class="tab-content">
-    <div id="manage0" class="tab-pane fade in active">
+    <div id="manage0" class="tab-pane fade show active">
         @if (Model.CongesInProgress.Count() <= 0)
         {
             <br />
