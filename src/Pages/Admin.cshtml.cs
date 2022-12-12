@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -52,7 +53,7 @@ namespace WebApplicationConges.Pages
 
         public int FilesCount { get; set; } = 0;
 
-        public List<KeyValuePair<String, DateTime>> BackupColl { get; set; }
+        public List<KeyValuePair<String, DateTime>> BackupColl { get; set; } = new List<KeyValuePair<string, DateTime>>();
 
         [TempData]
         public String ErrorMessage { get; set; }
@@ -202,6 +203,37 @@ namespace WebApplicationConges.Pages
                 String backupPath = Path.Combine(_hostingEnvironment.WebRootPath, Db.Instance.DataBase.ConfigRepository.Get().DirBackupBdd);
                 Directory.CreateDirectory(backupPath);
                 Db.Instance.DataBase.Backup(Path.Combine(backupPath, DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-data.tmp"));
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostReplace(List<IFormFile> bddBackups)
+        {
+            try
+            {
+                string wwwPath = _hostingEnvironment.WebRootPath;
+                string contentPath = _hostingEnvironment.ContentRootPath;
+
+                string path = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads");
+                if (!Directory.Exists(path))                
+                    Directory.CreateDirectory(path);                
+
+                foreach (IFormFile postedFile in bddBackups)
+                {
+                    string fileName = Path.GetFileName(postedFile.FileName);
+                    using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream);
+                    }
+
+                    Db.Instance.DataBase.Load(Path.Combine(path, fileName));
+                }
+
             }
             catch (Exception except)
             {

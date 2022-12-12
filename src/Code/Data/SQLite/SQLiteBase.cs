@@ -9,16 +9,17 @@ namespace WebApplicationConges.Data
 {
     public class SQLiteBase : IDb
     {
+        private const String DB_FILE_NAME = "data.sqlite";
         public static String DB_NAME { get; set; }
         public static String ConnectionString { get; set; }
 
         public System.Data.Common.DbConnection DbConnection()
         {
-            return new SqliteConnection("Data Source=data.sqlite");
+            return new SqliteConnection("Data Source=" + DB_FILE_NAME);
         }
 
         public IConfigRepository ConfigRepository { get { return new SQLiteConfigRepository(); } }
-
+        public ILogRepository LogRepository { get { return new SQLiteLogRepository(); } }
         public IUserRepository UserRepository { get { return new SQLiteUserRepository(); } }
         public IServiceRepository ServiceRepository { get { return new SQLiteServiceRepository(); } }
         public IManagerRepository ManagerRepository { get { return new SQLiteManagerRepository(); } }
@@ -56,6 +57,15 @@ namespace WebApplicationConges.Data
                 // Keep only zip file
                 File.Delete(fullpath);
             }
+        }
+
+        public void Load(string fullpath)
+        {
+            // To avoid error message " ... used by another process"
+            SqliteConnection.ClearAllPools();
+
+            // Replace bdd file
+            File.Move(fullpath, DB_FILE_NAME, true);
         }
 
         public void Init()
