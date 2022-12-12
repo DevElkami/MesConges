@@ -128,7 +128,7 @@
                                 <td>@service.Manager?.User?.Name</td>
                                 <td>
                                     <a class="btn btn-secondary" asp-page="./Services/Edit" asp-route-id="@service.Id"><i class="fa fa-edit fa-lg"></i> Editer</a>
-                                    <button class="btn btn-danger" type="submit" asp-page-handler="DeleteService" asp-route-id="@service.Id"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                                    <button class="btn btn-danger" type="submit" asp-page-handler="DeleteService" asp-route-id="@service.Id"><i class="fa-solid fa-trash-can"></i> Supprimer</button>
                                 </td>
                             </tr>
                         }
@@ -170,7 +170,7 @@
                             <td>@Model.Users[i].Service?.Name</td>
                             <td>
                                 <a class="btn btn-secondary" asp-page="./Users/Edit" asp-route-id="@Model.Users[i].Email"><i class="fa fa-edit fa-lg"></i> Editer</a>
-                                <button class="btn btn-danger" type="submit" asp-page-handler="DeleteUser" asp-route-id="@Model.Users[i].Email"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                                <button class="btn btn-danger" type="submit" asp-page-handler="DeleteUser" asp-route-id="@Model.Users[i].Email"><i class="fa-solid fa-trash-can"></i> Supprimer</button>
                             </td>
                         </tr>
                     }
@@ -288,7 +288,7 @@
         <br />
         <p>Remise à zéro du cache.</p>
         <form method="post">
-            <button class="btn btn-secondary" type="submit" asp-page-handler="ResetCache"><i class="fa fa-trash-o fa-lg"></i> Reset</button>
+            <button class="btn btn-secondary" type="submit" asp-page-handler="ResetCache"><i class="fa-solid fa-trash-can"></i> Reset</button>
         </form>
     </div>
 </div>

@@ -3,8 +3,8 @@
 
 @section Header
     {
-    <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css">
-    <link rel="stylesheet" href="~/lib/jquery-ui/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="~/lib/jquery-ui/dist/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="~/lib/timepicker/jquery.timepicker.min.css">
 }
 
 @{
@@ -114,10 +114,9 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-<script src="~/lib/jquery/jquery.min.js"></script>
-<script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
-<script src="~/lib/jquery-ui/datepicker-fr.js"></script>
-<script src="~/lib/jquery-ui/jquery.timepicker.min.js"></script>
+<script src="~/lib/jquery-ui/dist/jquery-ui.min.js"></script>
+<script src="~/lib/jquery-ui/ui/i18n/datepicker-fr.js"></script>
+<script src="~/lib/timepicker/jquery.timepicker.min.js"></script>
 
 <script>
     $(function () {
@@ -132,8 +131,8 @@
         $('#InputHourBegin').timepicker({
             timeFormat: 'HH:mm',
             interval: 15,
-            minTime: '8',
-            maxTime: '18',
+            minTime: '7',
+            maxTime: '20',
             startTime: '08',
             dynamic: false,
             dropdown: true,
@@ -143,8 +142,8 @@
         $('#InputHourEnd').timepicker({
             timeFormat: 'HH:mm',
             interval: 15,
-            minTime: '8',
-            maxTime: '18',
+            minTime: '7',
+            maxTime: '20',
             startTime: '08',
             dynamic: false,
             dropdown: true,

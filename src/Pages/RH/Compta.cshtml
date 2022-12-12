@@ -3,7 +3,7 @@
 
 @section Header
     {
-    <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="~/lib/jquery-ui/dist/themes/base/jquery-ui.min.css">
     <style>
         .ui-datepicker-calendar {
             display: none;
@@ -242,9 +242,8 @@
     {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <environment names="Development,Staging,Production">
-        <script src="~/lib/jquery/jquery.min.js"></script>
-        <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
-        <script src="~/lib/jquery-ui/datepicker-fr.js"></script>
+        <script src="~/lib/jquery-ui/dist/jquery-ui.min.js"></script>
+        <script src="~/lib/jquery-ui/ui/i18n/datepicker-fr.js"></script>
         <script>
             $(function () {
                 $.datepicker.setDefaults($.datepicker.regional["fr"]);

@@ -57,14 +57,14 @@
                                     <td>En cours de validation par votre responsable</td>
                                     <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.ModifyDate)</td>
                                     <td>
-                                        <button class="btn btn-default" type="submit" asp-page-handler="Delete" asp-route-id="@conge.Id"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                                        <button class="btn btn-danger" type="submit" asp-page-handler="Delete" asp-route-id="@conge.Id"><i class="fa-solid fa-trash-can"></i> Supprimer</button>
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
 
-                    <a asp-page="./Conges/Create">Poser des congés</a>
+                    <a class="btn btn-dark" asp-page="./Conges/Create">Poser des congés</a>
                 </form>
             }
         </div>
@@ -103,7 +103,7 @@
                                         {
                                             @if (conge.CanDeleted == false)
                                             {
-                                                <button class="btn btn-default" type="submit" asp-page-handler="Cancel" asp-route-id="@conge.Id"><i class="fa fa-trash-o fa-lg"></i> Demander l'annulation</button>
+                                                <button class="btn btn-danger" type="submit" asp-page-handler="Cancel" asp-route-id="@conge.Id"><i class="fa-solid fa-trash-can"></i> Demander l'annulation</button>
                                             }
                                             else
                                             {
