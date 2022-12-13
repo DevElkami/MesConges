@@ -19,6 +19,15 @@ namespace WebApplicationConges.Data
             }
         }
 
+        public void DeleteOld()
+        {
+            using (var cnn = DbConnection())
+            {
+                cnn.Open();
+                cnn.Query<dynamic>(Data.LogRepository.GetQueryDeleteOld(), null);
+            }
+        }
+
         public void Insert(Log log)
         {
             using (var cnn = DbConnection())

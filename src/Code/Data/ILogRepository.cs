@@ -1,12 +1,14 @@
 ﻿using WebApplicationConges.Model;
 using System;
 using System.Collections.Generic;
+using Org.BouncyCastle.Utilities;
 
 namespace WebApplicationConges.Data
 {
     public interface ILogRepository : IRepository
     {
-        List<Log> GetAll();       
+        List<Log> GetAll();
+        void DeleteOld();
         void Insert(Log log);
     }
 
@@ -28,7 +30,12 @@ namespace WebApplicationConges.Data
 
         public static String GetQueryAll()
         {
-            return SELECT + " FROM " + GetTableName();
+            return $"{SELECT} FROM {GetTableName()} ORDER BY actiondate DESC";
+        }
+
+        public static String GetQueryDeleteOld()
+        {
+            return $"DELETE FROM {GetTableName()} WHERE id IN (SELECT id FROM {GetTableName()} ORDER BY actiondate ASC LIMIT 100)";
         }
 
         public static String GetQueryInsert()

@@ -294,9 +294,9 @@
     </div>
 
     <div role="tabpanel" id="logs" class="tab-pane fade">
-        @if (Db.Instance.DataBase.LogRepository.GetAll().Count() <= 0)
+        @if (Model.Logs.Count() <= 0)
         {
-            <br/>
+            <br />
             <p>Aucun log existant.</p>
         }
         else
@@ -312,7 +312,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var log in Db.Instance.DataBase.LogRepository.GetAll())
+                        @foreach (var log in Model.Logs)
                         {
                             <tr>
                                 <td>@log.UserId</td>
@@ -323,6 +323,15 @@
                     </tbody>
                 </table>
             </form>
+            @if (Model.Logs.Count() > 150)
+            {
+                <br />
+                <form method="post">
+                    <button class="btn btn-secondary" type="submit" asp-page-handler="DeleteOldLogs"><i class="fa-solid fa-trash-can"></i> Suppression des vieux logs</button>
+                </form>
+                <br />
+            }
+            <br />
         }
     </div>
 </div>

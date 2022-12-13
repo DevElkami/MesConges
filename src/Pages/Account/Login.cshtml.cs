@@ -118,9 +118,7 @@ namespace WebApplicationConges.Pages.Account
             Db.Instance.DataBase.UserRepository.Update(user);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-            _logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}.");
-            Toolkit.Log(HttpContext, $"Connexion de l'utilisateur {user.Email}.");
+            Db.Instance.DataBase.LogRepository.Insert(new Log { UserId = user.Email, ActionDate = DateTime.Now, Description = $"Connexion de l'utilisateur {user.Email}." });
 
             return LocalRedirect(Url.GetLocalUrl(returnUrl));
         }

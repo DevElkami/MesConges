@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -45,6 +46,9 @@ namespace WebApplicationConges.Pages
         public List<User> Users { get; set; }
 
         [BindProperty]
+        public List<Log> Logs { get; set; }
+
+        [BindProperty]
         public List<Manager> Managers { get; set; }
 
         public List<Conge> OldAbsenceTemporaires { get; set; } = new List<Conge>();
@@ -69,6 +73,7 @@ namespace WebApplicationConges.Pages
                 ModelState.AddModelError(String.Empty, ErrorMessage);
 
             MyConfig = Db.Instance.DataBase.ConfigRepository.Get();
+            Logs = Db.Instance.DataBase.LogRepository.GetAll();
 
             User currentUser = GetCurrentUser();
             if (currentUser.IsAdmin)
@@ -381,6 +386,20 @@ namespace WebApplicationConges.Pages
                 Toolkit.Log(HttpContext, $"Remise à zéro du cache");
 
                 Cache.ClearAll();
+            }
+            catch (Exception except)
+            {
+                ErrorMessage = except.Message;
+            }
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostDeleteOldLogsAsync()
+        {
+            try
+            {
+                Toolkit.Log(HttpContext, $"Suppression des vieux logs.");
             }
             catch (Exception except)
             {
