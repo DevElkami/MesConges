@@ -53,6 +53,8 @@ namespace WebApplicationConges.Pages.Users
                     User.HashPwd = Toolkit.CreateSHAHash(Password);
 
                 Db.Instance.DataBase.UserRepository.Insert(User);
+
+                Toolkit.Log(HttpContext, $"Création d'un nouvel utilisateur {User.Email}.");
             }
             catch (Exception except)
             {

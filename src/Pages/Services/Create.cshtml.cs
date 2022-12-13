@@ -39,7 +39,8 @@ namespace WebApplicationConges.Pages.Services
         public IActionResult OnPostAsync()
         {
             try
-            {                
+            {
+                Toolkit.Log(HttpContext, $"Création du service {Service.Name}");
                 Db.Instance.DataBase.ServiceRepository.Insert(Service);
             }
             catch (Exception except)

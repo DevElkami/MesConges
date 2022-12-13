@@ -186,7 +186,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                Toolkit.Log(HttpContext, $"Mise à jour de la configuration générale");
+                String description = "Mise à jour de la configuration générale";
 
                 if (!String.IsNullOrEmpty(NewPassword))
                 {
@@ -195,8 +195,11 @@ namespace WebApplicationConges.Pages
                         ErrorMessage = "Le mot de passe courant n'est pas le bon";
                         return RedirectToPage();
                     }
+                    description += " avec changement du mot de passe administrateur.";
                     MyConfig.AppAdminPwd = Toolkit.CreateSHAHash(NewPassword);
                 }
+
+                Toolkit.Log(HttpContext, description);
                 Db.Instance.DataBase.ConfigRepository.Update(MyConfig);
             }
             catch (Exception except)
@@ -228,7 +231,7 @@ namespace WebApplicationConges.Pages
         public IActionResult OnPostReplace(List<IFormFile> bddBackups)
         {
             try
-            {                
+            {
                 string wwwPath = _hostingEnvironment.WebRootPath;
                 string contentPath = _hostingEnvironment.ContentRootPath;
 
@@ -246,7 +249,7 @@ namespace WebApplicationConges.Pages
 
                     Db.Instance.DataBase.Load(Path.Combine(path, fileName));
                 }
-                
+
                 Toolkit.Log(HttpContext, $"Restauration complète de la BDD");
 
             }

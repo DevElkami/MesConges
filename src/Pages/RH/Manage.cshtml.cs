@@ -62,6 +62,8 @@ namespace WebApplicationConges.Pages.RH
             {
                 User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 Pages.ManageModel.CongeAccept(current.Email, id);
+
+                Toolkit.Log(HttpContext, $"Drh: congés validés.");
             }
             catch (Exception except)
             {

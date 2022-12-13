@@ -57,15 +57,21 @@ namespace WebApplicationConges.Pages.Users
         {
             if (!ModelState.IsValid)
                 return Page();
-            
+
             try
             {
                 foreach (User user in Users)
                 {
                     if (user.Imported && (Db.Instance.DataBase.UserRepository.Get(user.Email) == null))
+                    {
+                        Toolkit.Log(HttpContext, $"Import en masse: Ajout de l'utilisateur {user.Email}.");
                         Db.Instance.DataBase.UserRepository.Insert(user);
+                    }
                     else if ((!user.Imported) && (Db.Instance.DataBase.UserRepository.Get(user.Email) != null))
+                    {
+                        Toolkit.Log(HttpContext, $"Import en masse: Suppression de l'utilisateur {user.Email}.");
                         Db.Instance.DataBase.UserRepository.Delete(user);
+                    }
 
                     User dataBaseUser = Db.Instance.DataBase.UserRepository.Get(user.Email);
                     if (dataBaseUser != null)
@@ -74,6 +80,7 @@ namespace WebApplicationConges.Pages.Users
                         {
                             dataBaseUser.ServiceId = user.ServiceId;
                             Db.Instance.DataBase.UserRepository.Update(dataBaseUser);
+                            Toolkit.Log(HttpContext, $"Import en masse: Changement de service de l'utilisateur {user.Email}.");
                         }
                     }
                 }

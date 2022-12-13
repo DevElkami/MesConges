@@ -120,6 +120,7 @@ namespace WebApplicationConges.Pages.Account
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
             _logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}.");
+            Toolkit.Log(HttpContext, $"Connexion de l'utilisateur {user.Email}.");
 
             return LocalRedirect(Url.GetLocalUrl(returnUrl));
         }

@@ -218,6 +218,8 @@ namespace WebApplicationConges.Pages.RH
                     conge.IsExported = true;
                     Db.Instance.DataBase.CongeRepository.Update(conge);
                 }
+
+                Toolkit.Log(HttpContext, $"Compta: export des congés à la date du {DateEnd}");
             }
             catch (Exception except)
             {
