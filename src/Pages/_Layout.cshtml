@@ -82,39 +82,42 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li>
-                            <a class="nav-link" asp-area="" asp-page="/Index"><i class="fa-solid fa-house"></i> Accueil</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/Index"><i class="fa-solid fa-house"></i> Accueil</a>
                         </li>
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Admin"><i class="fa fa-cog"></i> Administration</a>
+                                <a class="nav-link text-light" asp-area="" asp-page="/Admin"><i class="fa fa-cog"></i> Administration</a>
                             </li>
                         }
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("manager"))
                         {
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Manage"><i class="fa fa-users"></i> Gérer l'équipe</a></li>
+                            <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-page="/Manage"><i class="fa fa-users"></i> Gérer l'équipe</a></li>
                         }
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("drh"))
                         {
-                            <li><a class="nav-link" asp-page="/RH/Compta"><i class="fa fa-users"></i> Ressources humaines</a></li>
+                            <li><a class="nav-link text-light" asp-page="/RH/Compta"><i class="fa fa-users"></i> Ressources humaines</a></li>
                         }
                         @if (Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayPublicCalendar || HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Calendar"><i class="fa fa-calendar"></i> Calendrier</a></li>
-                        }
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/About"><i class="fa fa-info"></i> A propos</a></li>
+                            <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-page="/Calendar"><i class="fa fa-calendar"></i> Calendrier</a></li>
+                        }                        
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fa-regular fa-circle-user"></i> @userName</a>
+                                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fa-regular fa-circle-user"></i> @userName</a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-area="" asp-page="./Users/Parameters"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Account/SignedOut"><i class="fa fa-sign-out"></i> Se déconnecter</a></li>
                                 </ul>
                             </li>
-                        }
+                        }                        
                     </ul>
+
+                    <form class="d-flex">
+                        <a class="nav-link text-light" asp-area="" asp-page="/About"><i class="fa fa-info"></i> A propos</a>
+                    </form>
                 </div>
             </div>
         </nav>
