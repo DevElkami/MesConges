@@ -66,6 +66,9 @@ namespace WebApplicationConges.Data
 
             // Replace bdd file
             File.Move(fullpath, DB_FILE_NAME, true);
+
+            // Create new table if needed
+            Init();
         }
 
         public void Init()
