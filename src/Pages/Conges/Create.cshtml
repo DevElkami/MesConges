@@ -1,4 +1,5 @@
 ﻿@page
+@using WebApplicationConges.Data;
 @model WebApplicationConges.Pages.Conges.CreateModel
 
 @section Header
@@ -42,23 +43,23 @@
         <div class="col-md-2" id="amInput">
             @Html.DropDownListFor(x => Model.IntervalTypeBegin, new SelectList(Model.IntervalTypes, "Value", "Key"), htmlAttributes: new { @class = "form-select", id = "BeginInterval" })
         </div>
-        
+
         <div class="row col-md-2" style="display:none;" id="hourBegin">
             <label for="InputHourBegin" class="col-md-2 col-form-label">de</label>
             <div class="col-md-6">
-                <input id="InputHourBegin" asp-for="HourBegin" type="text" class="form-control" autocomplete="off" placeholder="Heure"/>
+                <input id="InputHourBegin" asp-for="HourBegin" type="text" class="form-control" autocomplete="off" placeholder="Heure" />
                 <span asp-validation-for="HourBegin" class="text-danger"></span>
             </div>
-        </div>        
-        
+        </div>
+
         <div class="row col-md-2" style="display:none;" id="hourEnd">
             <label for="InputHourEnd" class="col-md-2 col-form-label">à</label>
             <div class="col-md-6">
-                <input id="InputHourEnd" asp-for="HourEnd" type="text" class="form-control" autocomplete="off" placeholder="Heure"/>
+                <input id="InputHourEnd" asp-for="HourEnd" type="text" class="form-control" autocomplete="off" placeholder="Heure" />
                 <span asp-validation-for="HourEnd" class="text-danger"></span>
             </div>
         </div>
-        
+
         <div class="col-auto">
         </div>
     </div>
@@ -87,7 +88,7 @@
         </div>
 
         <div class="col-md-6">
-            <input id="InputMotifRecup" asp-for="Motif" type="text" onkeypress="return event.keyCode!=13" autocomplete="off" class="form-control"/>
+            <input id="InputMotifRecup" asp-for="Motif" type="text" onkeypress="return event.keyCode!=13" autocomplete="off" class="form-control" />
             <span asp-validation-for="Motif" class="text-danger"></span>
         </div>
     </div>
@@ -97,15 +98,17 @@
             <button type="submit" class="btn btn-secondary">Poser</button>
         </div>
     </div>
-
-    <br />
-    <br />
-    <div class="row g-1">
-        <label class="form-label col-md-8">(*) Plus de précisions selon les types de congés:</label>
-        <label class="form-label col-md-8">- Vous devez d'abord écouler vos congés payés avant de poser des congés sans solde.</label>
-        <label class="form-label col-md-8">- Les congés pour événements familiaux ne sont accordés que sur justificatif.</label>
-        <label class="form-label col-md-8">- Les journées 'Enfants malades' sont encadrées: consultez les R.H. avant d'en déposer.</label>
-    </div>
+    @if (Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayCongeInformation)
+    {
+        <br />
+        <br />
+        <div class="row g-1">
+            <label class="form-label col-md-8">(*) Plus de précisions selon les types de congés:</label>
+            <label class="form-label col-md-8">- Vous devez d'abord écouler vos congés payés avant de poser des congés sans solde.</label>
+            <label class="form-label col-md-8">- Les congés pour événements familiaux ne sont accordés que sur justificatif.</label>
+            <label class="form-label col-md-8">- Les journées 'Enfants malades' sont encadrées: consultez les R.H. avant d'en déposer.</label>
+        </div>
+    }
 </form>
 
 @section Scripts
@@ -114,67 +117,67 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-<script src="~/lib/jquery-ui/dist/jquery-ui.min.js"></script>
-<script src="~/lib/jquery-ui/ui/i18n/datepicker-fr.js"></script>
-<script src="~/lib/timepicker/jquery.timepicker.min.js"></script>
+    <script src="~/lib/jquery-ui/dist/jquery-ui.min.js"></script>
+    <script src="~/lib/jquery-ui/ui/i18n/datepicker-fr.js"></script>
+    <script src="~/lib/timepicker/jquery.timepicker.min.js"></script>
 
-<script>
-    $(function () {
-        $("#hourBegin").hide();
-        $("#hourEnd").hide();
-        $("#divmotif").hide();
-
-        $.datepicker.setDefaults($.datepicker.regional["fr"]);
-        $("#datepickerBegin").datepicker();
-        $("#datepickerEnd").datepicker();
-
-        $('#InputHourBegin').timepicker({
-            timeFormat: 'HH:mm',
-            interval: 15,
-            minTime: '7',
-            maxTime: '20',
-            startTime: '08',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: false
-        });
-
-        $('#InputHourEnd').timepicker({
-            timeFormat: 'HH:mm',
-            interval: 15,
-            minTime: '7',
-            maxTime: '20',
-            startTime: '08',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: false
-        });
-    });
-
-    function CallChangefunc(val) {
-        if (val == 3) {
-            $("#hourBegin").show();
-            $("#hourEnd").show();
-            $("#amLabel").hide();
-            $("#amInput").hide();
-            $("#pm").hide();
-            $("#datepickerEnd").hide();
-        }
-        else {
+    <script>
+        $(function () {
             $("#hourBegin").hide();
             $("#hourEnd").hide();
-            $("#amLabel").show();
-            $("#amInput").show();
-            $("#pm").show();
-            $("#datepickerEnd").show();
-        }
-
-        if ((val == 2) || (val == 3)) {
-            $("#divmotif").show();
-        }
-        else {
             $("#divmotif").hide();
+
+            $.datepicker.setDefaults($.datepicker.regional["fr"]);
+            $("#datepickerBegin").datepicker();
+            $("#datepickerEnd").datepicker();
+
+            $('#InputHourBegin').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 15,
+                minTime: '7',
+                maxTime: '20',
+                startTime: '08',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: false
+            });
+
+            $('#InputHourEnd').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 15,
+                minTime: '7',
+                maxTime: '20',
+                startTime: '08',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: false
+            });
+        });
+
+        function CallChangefunc(val) {
+            if (val == 3) {
+                $("#hourBegin").show();
+                $("#hourEnd").show();
+                $("#amLabel").hide();
+                $("#amInput").hide();
+                $("#pm").hide();
+                $("#datepickerEnd").hide();
+            }
+            else {
+                $("#hourBegin").hide();
+                $("#hourEnd").hide();
+                $("#amLabel").show();
+                $("#amInput").show();
+                $("#pm").show();
+                $("#datepickerEnd").show();
+            }
+
+            if ((val == 2) || (val == 3)) {
+                $("#divmotif").show();
+            }
+            else {
+                $("#divmotif").hide();
+            }
         }
-    }
-</script>
+    </script>
 }

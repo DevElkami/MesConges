@@ -73,7 +73,10 @@
                         {
                             <li><a class="nav-link" asp-page="/RH/Compta"><i class="fa fa-users"></i> Ressources humaines</a></li>
                         }
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Calendar"><i class="fa fa-calendar"></i> Calendrier</a></li>
+                        @if (Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayPublicCalendar || HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Calendar"><i class="fa fa-calendar"></i> Calendrier</a></li>
+                        }
                         <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/About"><i class="fa fa-info"></i> A propos</a></li>
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                         {
