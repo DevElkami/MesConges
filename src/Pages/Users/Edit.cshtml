@@ -1,69 +1,71 @@
 ﻿@page
 @model WebApplicationConges.Pages.Users.EditModel
 @{ ViewData["Title"] = "Modifier un utilisateur"; }
+
 <h3>Modifier un utilisateur</h3>
 <div asp-validation-summary="All" class="text-danger"></div>
 <form role="form" method="post">
 
     @if (Connect.UserAccess.Instance is Connect.DbConnection)
     {
-        <div class="form-group">
-            <label asp-for="User.Login">Login</label>
+        <div class="mb-3">
+            <label class="form-label" asp-for="User.Login">Login</label>
             <input asp-for="User.Login" type="text" class="form-control" placeholder="Login" maxlength="49" />
             <span asp-validation-for="User.Login" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Password">Mot de passe</label>
+        <div class="mb-3">
+            <label class="form-label" asp-for="Password">Mot de passe</label>
             <input asp-for="Password" type="password" class="form-control" placeholder="Mot de passe" maxlength="49" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="User.Email">Email</label>
-            <input asp-for="User.Email" type="text" class="form-control" placeholder="Email" maxlength="49" />
+        <div class="mb-3">
+            <label class="form-label" asp-for="User.Email">Email</label>
+            <input asp-for="User.Email" type="text" class="form-control" placeholder="Email" maxlength="49" disabled readonly/>
+            <input asp-for="User.Email" type="hidden" class="form-control" />
             <span asp-validation-for="User.Email" class="text-danger"></span>
         </div>
     }
 
-    <div class="form-group">
-        <label asp-for="User.Name">Nom complet</label>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.Name">Nom complet</label>
         <input asp-for="User.Name" type="text" class="form-control" placeholder="Nom complet de l'utilisateur" maxlength="100" />
         <span asp-validation-for="User.Name" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="User.FamilyName">Nom</label>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.FamilyName">Nom</label>
         <input asp-for="User.FamilyName" type="text" class="form-control" placeholder="Nom de l'utilisateur" maxlength="49" />
         <span asp-validation-for="User.FamilyName" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="User.Surname">Prénom</label>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.Surname">Prénom</label>
         <input asp-for="User.Surname" type="text" class="form-control" placeholder="Prénom de l'utilisateur" maxlength="49" />
         <span asp-validation-for="User.Surname" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="User.Description">Description</label>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.Description">Description</label>
         <textarea asp-for="User.Description" class="form-control" maxlength="254"></textarea>
         <span asp-validation-for="User.Description" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="User.PhoneNumber">Téléphone</label>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.PhoneNumber">Téléphone</label>
         <textarea asp-for="User.PhoneNumber" class="form-control" maxlength="50"></textarea>
         <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="User.IsAdmin">Administrateur</label>
-        <input asp-for="User.IsAdmin" type="checkbox" class="form-control" style="width: 20px; height: 20px;" />
+    <div class="mb-3 form-check form-switch">
+        <label class="form-label" asp-for="User.IsAdmin">Administrateur</label>
+        <input asp-for="User.IsAdmin" type="checkbox" class="form-check-input" />
         <span asp-validation-for="User.IsAdmin" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="User.IsDrh">DRH</label>
-        <input asp-for="User.IsDrh" type="checkbox" class="form-control" style="width: 20px; height: 20px;" />
+    <div class="mb-3 form-check form-switch">
+        <label class="form-label" asp-for="User.IsDrh">DRH</label>
+        <input asp-for="User.IsDrh" type="checkbox" class="form-check-input" />
         <span asp-validation-for="User.IsDrh" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="User.ServiceId">Service</label>
-        @Html.DropDownListFor(x => Model.User.ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "form-control", id = "ServiceId" })
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.ServiceId">Service: </label>
+        @Html.DropDownListFor(x => Model.User.ServiceId, new SelectList(Model.Services, "Id", "Name"), htmlAttributes: new { @class = "form-select", id = "ServiceId" })
         <span asp-validation-for="User.ServiceId" class="text-danger"></span>
     </div>
 
@@ -75,7 +77,8 @@
     {
         <input asp-for="User.HashPwd" type="hidden" class="form-control" />
     }
-    <button type="submit" class="btn btn-default">Modifier</button>
+    <br/>
+    <button type="submit" class="btn btn-dark">Modifier</button>
 </form>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

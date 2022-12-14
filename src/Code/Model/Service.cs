@@ -7,6 +7,7 @@ namespace WebApplicationConges.Model
     {
         public long Id { get; set; }
 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez entrer un nom de service")]
         [RegularExpression("[^<>:='\"]*")]
         [MaxLength(70)]
         public String Name { get; set; }

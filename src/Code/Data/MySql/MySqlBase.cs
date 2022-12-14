@@ -18,7 +18,7 @@ namespace WebApplicationConges.Data
         }
 
         public IConfigRepository ConfigRepository { get { return new MySqlConfigRepository(); } }
-
+        public ILogRepository LogRepository { get { return new MySqlLogRepository(); } }
         public IUserRepository UserRepository { get { return new MySqlUserRepository(); } }
         public IServiceRepository ServiceRepository { get { return new MySqlServiceRepository(); } }
         public IManagerRepository ManagerRepository { get { return new MySqlManagerRepository(); } }
@@ -53,6 +53,11 @@ namespace WebApplicationConges.Data
 
             // Keep only zip file
             File.Delete(fullpath);
+        }
+
+        public void Load(string fullpath)
+        {
+            // Not implemented
         }
 
         public void Init()

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -29,7 +29,7 @@ namespace WebApplicationConges.Pages.RH
             if (!String.IsNullOrEmpty(ErrorMessage))
                 ModelState.AddModelError(String.Empty, ErrorMessage);
 
-            User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+            User currentUser = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
             if (currentUser.IsDrh)
             {
                 foreach (Service service in Db.Instance.DataBase.ServiceRepository.GetAll().OrderBy(u => u.Name).ToList())
@@ -60,8 +60,10 @@ namespace WebApplicationConges.Pages.RH
         {
             try
             {
-                User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 Pages.ManageModel.CongeAccept(current.Email, id);
+
+                Toolkit.Log(HttpContext, $"Drh: congés validés.");
             }
             catch (Exception except)
             {

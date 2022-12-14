@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -13,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -48,7 +48,7 @@ namespace WebApplicationConges.Pages.RH
             if (!String.IsNullOrEmpty(ErrorMessage))
                 ModelState.AddModelError(String.Empty, ErrorMessage);
 
-            User drh = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+            User drh = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
             if (drh.IsDrh)
             {
                 CongesInProgress = new List<Conge>();
@@ -218,6 +218,8 @@ namespace WebApplicationConges.Pages.RH
                     conge.IsExported = true;
                     Db.Instance.DataBase.CongeRepository.Update(conge);
                 }
+
+                Toolkit.Log(HttpContext, $"Compta: export des congés à la date du {DateEnd}");
             }
             catch (Exception except)
             {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -28,7 +28,7 @@ namespace WebApplicationConges.Pages.Services
         {
             try
             {
-                User admin = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                User admin = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 if (admin.IsAdmin)
                 {
                     Service = Db.Instance.DataBase.ServiceRepository.Get(id);
@@ -77,6 +77,8 @@ namespace WebApplicationConges.Pages.Services
                     manager = new Manager();
                     manager.Id = ManagerId;
                     manager.ServiceId = Service.Id;
+
+                    Toolkit.Log(HttpContext, $"Mise à jour du service {Service.Name}. Nouveau manager: {ManagerId}");
                     Db.Instance.DataBase.ManagerRepository.Insert(manager);
                 }
                 else
@@ -88,8 +90,11 @@ namespace WebApplicationConges.Pages.Services
 
                 // Mise à jour descriptif ou nom
                 Service oldService = Db.Instance.DataBase.ServiceRepository.Get((int)Service.Id);
-                if ((oldService.Name != Service.Name) || (oldService.Description != Service.Description))                                   
-                    Db.Instance.DataBase.ServiceRepository.Update(Service);               
+                if ((oldService.Name != Service.Name) || (oldService.Description != Service.Description))
+                {
+                    Toolkit.Log(HttpContext, $"Mise à jour du service {Service.Name}: Nom ou descriptif changé.");
+                    Db.Instance.DataBase.ServiceRepository.Update(Service);
+                }
             }
             catch (Exception except)
             {

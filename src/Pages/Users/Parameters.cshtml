@@ -1,0 +1,62 @@
+﻿@page
+@model WebApplicationConges.Pages.Users.ParametersModel
+@{
+    ViewData["Title"] = "Paramètres";
+}
+
+<h3>Vos paramètres</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+<form role="form" method="post">
+    @if (Connect.UserAccess.Instance is Connect.DbConnection)
+    {
+        <div class="mb-3">
+            <label class="form-label" asp-for="User.Login">Login</label>
+            <input asp-for="User.Login" type="text" class="form-control" placeholder="Login" maxlength="49" />
+            <span asp-validation-for="User.Login" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="Password">Mot de passe</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Mot de passe" maxlength="49" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    }
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.Name">Nom complet</label>
+        <input asp-for="User.Name" type="text" class="form-control" placeholder="Nom complet de l'utilisateur" maxlength="100" />
+        <span asp-validation-for="User.Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.FamilyName">Nom</label>
+        <input asp-for="User.FamilyName" type="text" class="form-control" placeholder="Nom de l'utilisateur" maxlength="49" />
+        <span asp-validation-for="User.FamilyName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.Surname">Prénom</label>
+        <input asp-for="User.Surname" type="text" class="form-control" placeholder="Prénom de l'utilisateur" maxlength="49" />
+        <span asp-validation-for="User.Surname" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.Description">Description</label>
+        <textarea asp-for="User.Description" class="form-control" maxlength="254"></textarea>
+        <span asp-validation-for="User.Description" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="User.PhoneNumber">Téléphone</label>
+        <textarea asp-for="User.PhoneNumber" class="form-control" maxlength="50"></textarea>
+        <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <input asp-for="User.Email" type="hidden" class="form-control" />
+    @if (Connect.UserAccess.Instance is Connect.DbConnection)
+    {
+        <input asp-for="User.HashPwd" type="hidden" class="form-control" />
+    }
+    <br />
+    <button type="submit" class="btn btn-dark">Modifier</button>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

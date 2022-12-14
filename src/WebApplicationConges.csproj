@@ -2,14 +2,14 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <Version>2.2.2.0</Version>
+    <Version>2.5.2.0</Version>
     <Authors>DevElkami</Authors>
     <Company>CGI</Company>
     <Product>Conge app</Product>
     <Description>Application des congés</Description>
     <Copyright>DevElkami 2022</Copyright>
-    <AssemblyVersion>2.2.2.0</AssemblyVersion>
-    <FileVersion>2.2.2.0</FileVersion>
+    <AssemblyVersion>2.5.2.0</AssemblyVersion>
+    <FileVersion>2.5.2.0</FileVersion>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
@@ -28,7 +28,6 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="7.0.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
     <PackageReference Include="MySql.Data" Version="8.0.31" />
     <PackageReference Include="MySqlBackup.NET" Version="2.3.7" />

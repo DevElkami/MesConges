@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace WebApplicationConges.Model
 {
@@ -77,8 +78,7 @@ namespace WebApplicationConges.Model
         [MaxLength(254)]
         public String VAPIDPrivateKey { get; set; }
 
-        // Extra holidays
-        [MaxLength(254)]
+        // Extra holidays       
         public String FuturUse1 { get; set; }
 
         public List<String> ExtraDaysOff
@@ -103,11 +103,26 @@ namespace WebApplicationConges.Model
             }
         }
 
-        // Future use part
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////        
-
-        [MaxLength(254)]
+        // Customize display        
         public String FuturUse2 { get; set; }
+
+        public Custom CustomizeDisplay
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(FuturUse2))
+                    return new Custom();
+
+                return JsonSerializer.Deserialize<Custom>(FuturUse2);
+            }
+            set
+            {
+                FuturUse2 = JsonSerializer.Serialize(value);
+            }
+        }
+
+        // Future use part
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////                
 
         [MaxLength(254)]
         public String FuturUse3 { get; set; }

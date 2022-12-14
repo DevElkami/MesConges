@@ -1,6 +1,8 @@
 ﻿@page
 @model IndexModel
-@{ ViewData["Title"] = "Page d'accueil"; }
+@{
+    ViewData["Title"] = "Page d'accueil";
+}
 @using WebApplicationConges.Data;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 
@@ -10,140 +12,154 @@
 
 @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("admin"))
 {
-<p>Vous êtes connecté en tant qu'administrateur.</p>
+    <p>Vous êtes connecté en tant qu'administrateur.</p>
 }
 
 @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && !HttpContextAccessor.HttpContext.User.IsInRole("admin"))
 {
-<ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#cginprogress">Vos demandes en cours</a></li>
-    <li><a data-toggle="tab" href="#cgok">Vos demandes validées</a></li>
-    <li><a data-toggle="tab" href="#cgko">Vos demandes refusées</a></li>
-</ul>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link active" data-bs-toggle="tab" data-bs-target="#cginprogress">Vos demandes en cours</a></li>
+        <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#cgok">Vos demandes validées</a></li>
+        <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#cgko">Vos demandes refusées</a></li>
+    </ul>
 
-                <div class="tab-content">
-                    <div id="cginprogress" class="tab-pane fade in active">
-                        @if (Model.CongesInProgress.Count() <= 0)
-                        {
-        <br />
-                            <p>Aucune demande de congé en cours de validation</p>
-                                                <a asp-page="./Conges/Create">Poser des congès</a> }
+    <div class="tab-content">
+        <div id="cginprogress" class="tab-pane fade show active">
+            @if (Model.CongesInProgress.Count() <= 0)
+            {
+                <br />
+                <p>Aucune demande de congé en cours de validation</p>
+                <a class="btn btn-dark" asp-page="./Conges/Create">Poser des congés</a>
+            }
+            else
+            {
+                <form method="post">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                                <th>Etat de la demande</th>
+                                <th>Mise à jour le</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var conge in Model.CongesInProgress)
+                            {
+                                <tr>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(conge)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.BeginDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.EndDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(conge)</td>
+                                    <td>En cours de validation par votre responsable</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.ModifyDate)</td>
+                                    <td>
+                                        <button class="btn btn-danger" type="submit" asp-page-handler="Delete" asp-route-id="@conge.Id"><i class="fa-solid fa-trash-can"></i> Supprimer</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <a class="btn btn-dark" asp-page="./Conges/Create">Poser des congés</a>
+                </form>
+            }
+        </div>
+
+        <div id="cgok" class="tab-pane fade">
+            @if (Model.CongesValidated.Count() <= 0)
+            {
+                <br />
+                <p>Aucune demande de congé enregistrée</p>
+            }
+            else
+            {
+                <form method="post">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                                <th>Date d'acceptation</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var conge in Model.CongesValidated)
+                            {
+                                <tr>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(conge)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.BeginDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.EndDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(conge)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.ModifyDate)</td>
+                                    <td>
+                                        @if ((conge.BeginDate > DateTime.Now) && !conge.IsExported)
+                                        {
+                                            @if (conge.CanDeleted == false)
+                                            {
+                                                <button class="btn btn-danger" type="submit" asp-page-handler="Cancel" asp-route-id="@conge.Id"><i class="fa-solid fa-trash-can"></i> Demander l'annulation</button>
+                                            }
                                             else
                                             {
-                            <form method="post">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
-                                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
-                                            <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
-                                            <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
-                                            <th>Etat de la demande</th>
-                                            <th>Mise à jour le</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var conge in Model.CongesInProgress)
-                                        {
-                    <tr>
-                        <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(conge)</td>
-                        <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.BeginDate)</td>
-                        <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.EndDate)</td>
-                        <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(conge)</td>
-                        <td>En cours de validation par votre responsable</td>
-                        <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.ModifyDate)</td>
-                        <td>
-                            <button class="btn btn-default" type="submit" asp-page-handler="Delete" asp-route-id="@conge.Id"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
-                        </td>
-                    </tr>}
-                                    </tbody>
-                                </table>
+                                                <p>Demande d'annulation en cours</p>
+                                            }                       }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            }
+        </div>
 
-                                <a asp-page="./Conges/Create">Poser des congés</a>
-                            </form>}
-                    </div>
-
-                    <div id="cgok" class="tab-pane fade">
-                        @if (Model.CongesValidated.Count() <= 0)
-                        {
-        <br />
-                            <p>Aucune demande de congé enregistrée</p> }
-                        else
-                        {
-        <form method="post">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
-                        <th>Date d'acceptation</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var conge in Model.CongesValidated)
-                    {
-<tr>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(conge)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.BeginDate)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.EndDate)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(conge)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.ModifyDate)</td>
-    <td>
-        @if ((conge.BeginDate > DateTime.Now) && !conge.IsExported)
-        {
-@if (conge.CanDeleted == false)
-{
-<button class="btn btn-default" type="submit" asp-page-handler="Cancel" asp-route-id="@conge.Id"><i class="fa fa-trash-o fa-lg"></i> Demander l'annulation</button> }
-else
-{
-<p>Demande d'annulation en cours</p>}}
-    </td>
-</tr>}
-                </tbody>
-            </table>
-        </form>}
-                    </div>
-
-                    <div id="cgko" class="tab-pane fade">
-                        @if (Model.CongesRefused.Count() <= 0)
-                        {
-        <br />
-                            <p>Aucune demande de congé refusée</p> }
-                        else
-                        {
-        <form method="post">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
-                        <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
-                        <th>Date du refus</th>
-                        <th>Motif du refus</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var conge in Model.CongesRefused)
-                    {
-<tr>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(conge)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.BeginDate)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.EndDate)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(conge)</td>
-    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.ModifyDate)</td>
-    <td>@conge.Motif</td>
-</tr>}
-                </tbody>
-            </table>
-        </form>}
-                    </div>
-                </div>}
+        <div id="cgko" class="tab-pane fade">
+            @if (Model.CongesRefused.Count() <= 0)
+            {
+                <br />
+                <p>Aucune demande de congé refusée</p>
+            }
+            else
+            {
+                <form method="post">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateBeginTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnDateEndTitle()</th>
+                                <th>@WebApplicationConges.Toolkit.LayoutColumnElapsedTitle()</th>
+                                <th>Date du refus</th>
+                                <th>Motif du refus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var conge in Model.CongesRefused)
+                            {
+                                <tr>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnCongeTypeContent(conge)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.BeginDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.EndDate)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnElapsedContent(conge)</td>
+                                    <td>@WebApplicationConges.Toolkit.LayoutColumnDateFormat(conge.ModifyDate)</td>
+                                    <td>@conge.Motif</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            }
+        </div>
+    </div>
+}
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

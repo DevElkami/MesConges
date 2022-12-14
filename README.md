@@ -1,4 +1,4 @@
-# Mes congés
+# Mes congés :sunrise:
 Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 
 - Gestion des services (un seul responsable par service)
@@ -24,6 +24,16 @@ Etapes pour configurer l'application:
 - npm install -g nativefier
 - nativefier --name 'Gestion des congés' 'https://votre.serveur.com'
 - L'exécutable généré utilise [Electron](https://www.electronjs.org/) et [Node.js](https://nodejs.org/fr/)
+
+---
+Ils l'utilisent: :sparkling_heart:
+- :camera: [i2S](https://www.i2s.fr/fr/)
+- :articulated_lorry: [CGI](https://conges.cgi-formation.fr/)
+
+Vous aussi :question: Faites le moi savoir: cette application est libre, et un peu de pub pour le développeur serait la bienvenue :pray:
+
+---
+Quelques captures d'écrans:
 
 ![](https://github.com/DevElkami/MesConges/blob/main/calendrier.png)
 ![](https://github.com/DevElkami/MesConges/blob/main/ldap.png)

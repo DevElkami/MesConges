@@ -1,25 +1,29 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @using Microsoft.AspNetCore.SignalR.Client;
-@using Newtonsoft.Json;
+@using System.Text.Json;
 @using WebApplicationConges.Data;
 @using WebApplicationConges.Model;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 
+@{
+    string userMail = "";
+    string userName = "";
+}
+
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>@ViewData["Title"] - Gestion des congés</title>
 
     <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="~/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
 
     @RenderSection("Header", required: false)
 
@@ -29,8 +33,9 @@
             // SignalR build hub
             if (Toolkit.Connection == null)
             {
+                Uri signarURI = new Uri($"{HttpContextAccessor.HttpContext.Request.Scheme}://{HttpContextAccessor.HttpContext.Request.Host}{HttpContextAccessor.HttpContext.Request.PathBase}/CongesHub");
                 Toolkit.Connection = new HubConnectionBuilder()
-                .WithUrl(new Uri($"{HttpContextAccessor.HttpContext.Request.Scheme}://{HttpContextAccessor.HttpContext.Request.Host}{HttpContextAccessor.HttpContext.Request.PathBase}/CongesHub"))
+                .WithUrl(signarURI)
                 .Build();
 
                 // SignalR start connection
@@ -41,7 +46,27 @@
         {
             // Nothing: SignalR is not mandatory
         }
-     }
+    }
+
+    @{        
+        try
+        {
+            System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
+            if (claim != null)
+            {
+                User user = JsonSerializer.Deserialize<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                if (user != null)
+                {
+                    userMail = user.Email;
+                    userName = user.Surname;
+                }
+            }
+        }
+        catch (Exception)
+        {
+            // Nothing: SignalR is not mandatory
+        }
+    }
 </head>
 <body>    
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -54,71 +79,80 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a asp-page="/Index" class="navbar-brand">
-                    <span><img src="~/images/logo.png" width="60" title="Gestion des congés" alt="Gestion des congés" /> Gestion des congés</span>
+                    <span><img src="~/images/logo.png" width="48" title="Gestion des congés" alt="Gestion des congés" /> Gestion des congés</span>
                 </a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a asp-page="/Index"><i class="fa fa-home fa-lg"></i> Accueil</a>
-                    </li>
-                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("admin"))
-                    {
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
                         <li>
-                            <a asp-page="/Admin"><i class="fa fa-cog fa-lg"></i> Administration</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/Index"><i class="fa-solid fa-house"></i> Accueil</a>
                         </li>
-                    }
-                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("manager"))
-                    {
-                         <li><a asp-page="/Manage"><i class="fa fa-users fa-lg"></i> Gérer l'équipe</a></li>
-                    }
-                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("drh"))
-                    {
-                        <li><a asp-page="/RH/Compta"><i class="fa fa-users fa-lg"></i> Ressources humaines</a></li>
-                    }
-                    <li><a asp-page="/Calendar"><i class="fa fa-calendar fa-lg"></i> Calendrier</a></li>
-                    <li><a asp-page="/About"><i class="fa fa-info fa-lg"></i> A propos</a></li>
-                    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
-                    {
-                        <li><a asp-page="/Account/SignedOut"><i class="fa fa-sign-out fa-lg"></i> Se déconnecter</a></li>
-                    }
-                </ul>
+                        @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Admin"><i class="fa fa-cog"></i> Administration</a>
+                            </li>
+                        }
+                        @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("manager"))
+                        {
+                            <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-page="/Manage"><i class="fa fa-users"></i> Gérer l'équipe</a></li>
+                        }
+                        @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.User.IsInRole("drh"))
+                        {
+                            <li><a class="nav-link text-light" asp-page="/RH/Compta"><i class="fa fa-users"></i> Ressources humaines</a></li>
+                        }
+                        @if (Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayPublicCalendar || HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-page="/Calendar"><i class="fa fa-calendar"></i> Calendrier</a></li>
+                        }                        
+                        @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fa-regular fa-circle-user"></i> @userName</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-page="./Users/Parameters"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Account/SignedOut"><i class="fa fa-sign-out"></i> Se déconnecter</a></li>
+                                </ul>
+                            </li>
+                        }                        
+                    </ul>
+
+                    <form class="d-flex">
+                        <a class="nav-link text-light" asp-area="" asp-page="/About"><i class="fa fa-info"></i> A propos</a>
+                    </form>
+                </div>
             </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @{
-            string userMail = "";
-            try
-            {
-                System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
-                if (claim != null)
-                {
-                    User user = JsonConvert.DeserializeObject<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                    if (user != null)
-                        userMail = user.Email;
-                }
-            }
-            catch (Exception)
-            {
-                // Nothing: SignalR is not mandatory
-            }
-        }
-        
+        </nav>
+    </header>
+    <div class="container">
         @Html.Hidden("usermail", userMail, new { @id = "usermail" })
-        <div class="alert alert-info alert-dismissible" id="SignalRDisplay" role="alert" style="display:none;margin-top:20px;">
+        <div class="alert alert-primary align-items-center" id="SignalRDisplay" role="alert" style="display:none;margin-top:20px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+            </svg>
             <a href="#" class="alert-link"><span id="SignalRSubject"></span></a> <span id="SignalRBody"></span>
         </div>
-        @RenderBody()
-        <hr />
-        <footer>            
-            <p>@Toolkit.Copyright</p>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                <p style="margin-top:10px;">@Toolkit.Copyright</p>
+            </div>
         </footer>
+
+        <input name="copyright" value="DevElkami" type="hidden" />
+        <input name="src" value="https://github.com/DevElkami/MesConges" type="hidden" />
     </div>
 
     <environment names="Development,Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/my-favico.js"></script>

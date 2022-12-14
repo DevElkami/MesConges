@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -24,7 +26,7 @@ namespace WebApplicationConges.Pages
         {
             get
             {
-                return JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value).Surname;
+                return JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value).Surname;
             }
         }
 
@@ -42,8 +44,10 @@ namespace WebApplicationConges.Pages
             if (!String.IsNullOrEmpty(ErrorMessage))
                 ModelState.AddModelError(String.Empty, ErrorMessage);
 
-            User user = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-            PreviousConnection = user.LastConnection.ToLongDateString() + " à " + user.LastConnection.ToLongTimeString();
+            User user = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+
+            PreviousConnection = user.LastConnection.ToString("D", CultureInfo.GetCultureInfo("fr-FR")) + " à " + user.LastConnection.ToString("T", CultureInfo.GetCultureInfo("fr-FR"));
+
             CongesInProgress = Db.Instance.DataBase.CongeRepository.Get(user.Email, Conge.StateEnum.InProgress).OrderBy(c => (String)(c.BeginDate.ToString("yyyyMMdd"))).ToList();
             CongesValidated = Db.Instance.DataBase.CongeRepository.Get(user.Email, Conge.StateEnum.Accepted).OrderBy(c => (String)(c.BeginDate.ToString("yyyyMMdd"))).ToList();
             CongesRefused = Db.Instance.DataBase.CongeRepository.Get(user.Email, Conge.StateEnum.Refused).OrderBy(c => (String)(c.BeginDate.ToString("yyyyMMdd"))).ToList();
@@ -74,7 +78,7 @@ namespace WebApplicationConges.Pages
                     congeToCancel.CanDeleted = true;
                     Db.Instance.DataBase.CongeRepository.Update(congeToCancel);
 
-                    User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                    User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                     Toolkit.Notify(Toolkit.NotifyTypeEnum.LeaveCancelPending, congeToCancel.UserId, current.Manager.Id, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpManagerCancelSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpManagerCancelBody.ToString()]);
                 }
             }

@@ -7,106 +7,154 @@
 <h3>Administration</h3>
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#config">Configuration</a></li>
-    <li><a data-toggle="tab" href="#services">Services</a></li>
-    <li><a data-toggle="tab" href="#users">Utilisateurs</a></li>    
-    <li><a data-toggle="tab" href="#bdd">BDD</a></li>    
-    <li><a data-toggle="tab" href="#clean">Divers</a></li>    
+<ul class="nav nav-tabs" id="adminTab" role="tablist">
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab" aria-controls="config" aria-selected="true">Configuration</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="service-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab" aria-controls="services" aria-selected="false">Services</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false">Utilisateurs</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="bdd-tab" data-bs-toggle="tab" data-bs-target="#bdd" type="button" role="tab" aria-controls="bdd" aria-selected="false">BDD</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="clean-tab" data-bs-toggle="tab" data-bs-target="#clean" type="button" role="tab" aria-controls="clean" aria-selected="false">Divers</a></li>
+    <li class="nav-item" role="presentation"><a href="#" class="text-dark nav-link" id="clean-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab" aria-controls="clean" aria-selected="false">Logs</a></li>
 </ul>
 
-<div class="tab-content">
-    <div id="config" class="tab-pane fade in active"> 
+<div class="tab-content" id="adminTabContent">
+    <div role="tabpanel" id="config" class="tab-pane fade show active">
         <br />
         <form method="post">
-            <div class="form-group">
-                <label asp-for="MyConfig.AppAdminLogin">Login</label>
-                <input asp-for="MyConfig.AppAdminLogin" type="text" class="form-control" placeholder="Login" maxlength="49" readonly />
+            <div class="mb-3">
+                <label class="form-label" asp-for="MyConfig.AppAdminLogin">Login</label>
+                <input asp-for="MyConfig.AppAdminLogin" type="text" class="form-control" placeholder="Login" maxlength="49" disabled readonly />
                 <span asp-validation-for="MyConfig.AppAdminLogin" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="CurrentPassword">Mot de passe actuel</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="CurrentPassword">Mot de passe actuel</label>
                 <input asp-for="CurrentPassword" class="form-control" placeholder="Mot de passe actuel" maxlength="49" />
                 <span asp-validation-for="CurrentPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NewPassword">Nouveau mot de passe</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="NewPassword">Nouveau mot de passe</label>
                 <input asp-for="NewPassword" class="form-control" placeholder="Nouveau mot de passe" maxlength="49" />
                 <span asp-validation-for="NewPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword">Nouveau mot de passe (confirmation)</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="ConfirmPassword">Nouveau mot de passe (confirmation)</label>
                 <input asp-for="ConfirmPassword" class="form-control" placeholder="Nouveau mot de passe" maxlength="49" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="MyConfig.AppAdminEmail">Email</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="MyConfig.AppAdminEmail">Email</label>
                 <input asp-for="MyConfig.AppAdminEmail" type="text" class="form-control" placeholder="Email" maxlength="49" />
                 <span asp-validation-for="MyConfig.AppAdminEmail" class="text-danger"></span>
             </div>
 
-            <hr />
+            <hr class="my-4">
 
-            <div class="form-group">
-                <label asp-for="MyConfig.Ldap">Ldap</label>
-                <input asp-for="MyConfig.Ldap" type="checkbox" class="form-control" style="width: 20px; height: 20px;" />
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.Ldap" class="form-check-label">Ldap</label>
+                <input asp-for="MyConfig.Ldap" type="checkbox" class="form-check-input" />
                 <span asp-validation-for="MyConfig.Ldap" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="MyConfig.LdapConnectionString">Chaine de connexion</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="MyConfig.LdapConnectionString">Chaine de connexion</label>
                 <input asp-for="MyConfig.LdapConnectionString" type="text" class="form-control" placeholder="Chaine" maxlength="254" />
                 <span asp-validation-for="MyConfig.LdapConnectionString" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="MyConfig.LdapFilter">Filtre LDAP</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="MyConfig.LdapFilter">Filtre LDAP</label>
                 <input asp-for="MyConfig.LdapFilter" type="text" class="form-control" placeholder="Filtre" maxlength="63" />
                 <span asp-validation-for="MyConfig.LdapFilter" class="text-danger"></span>
             </div>
 
-            <hr />
+            <hr class="my-4">
 
-            <div class="form-group">
-                <label asp-for="MyConfig.Smtp">Smtp</label>
-                <input asp-for="MyConfig.Smtp" type="checkbox" class="form-control" style="width: 20px; height: 20px;" />
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.Smtp" class="form-check-label">Smtp</label>
+                <input asp-for="MyConfig.Smtp" type="checkbox" class="form-check-input" />
                 <span asp-validation-for="MyConfig.Smtp" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="MyConfig.SmtpServer">Serveur SMTP</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="MyConfig.SmtpServer">Serveur SMTP</label>
                 <input asp-for="MyConfig.SmtpServer" type="text" class="form-control" placeholder="Serveur" maxlength="254" />
                 <span asp-validation-for="MyConfig.SmtpServer" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="MyConfig.SmtpPort">Serveur port</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="MyConfig.SmtpPort">Serveur port</label>
                 <input asp-for="MyConfig.SmtpPort" type="number" class="form-control" />
                 <span asp-validation-for="MyConfig.SmtpPort" class="text-danger"></span>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="MyConfig.FuturUse1">Jours supplémentaires de repos au format 'aaaammjj': 20221125,20230315,20230417</label>
+
+            <hr class="my-4">
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="MyConfig.FuturUse1">Jours supplémentaires de repos au format 'aaaammjj': 20221125,20230315,20230417</label>
                 <input asp-for="MyConfig.FuturUse1" type="text" class="form-control" autocomplete="off" />
                 <span asp-validation-for="MyConfig.FuturUse1" class="text-danger"></span>
             </div>
-                                                
-            <button class="btn btn-default" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>                            
-        </form>        
+
+            <hr class="my-4">
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayPublicCalendar" class="form-check-label">Calendrier public</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayPublicCalendar" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayPublicCalendar" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeSansSolde" class="form-check-label">Congés sans solde</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeSansSolde" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeSansSolde" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeRecup" class="form-check-label">Congés de récupération</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeRecup" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeRecup" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeAbsTmp" class="form-check-label">Absence temporaire</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeAbsTmp" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeAbsTmp" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeFamilyEvent" class="form-check-label">Congés d'événements familiaux'</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeFamilyEvent" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeFamilyEvent" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeChildSick" class="form-check-label">Congés enfant malade</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeChildSick" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeChildSick" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeInformation" class="form-check-label">Affichage des informations générales des congés</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeInformation" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeInformation" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-dark" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>
+        </form>
     </div>
 
-    <div id="services" class="tab-pane fade">
+    <div role="tabpanel" id="services" class="tab-pane fade">
         @if (Model.Services.Count() <= 0)
         {
             <p>Aucun service existant.</p>
-            <a asp-page="./Services/Create">Créer un service</a>
+            <a class="btn btn-secondary" asp-page="./Services/Create">Créer un service</a>
         }
         else
         {
             <br />
-            <a asp-page="./Services/Create">Créer un service</a>
+            <a class="btn btn-secondary" asp-page="./Services/Create">Créer un service</a>
+            <br />
             <br />
             <form method="post">
                 <table class="table">
@@ -126,28 +174,29 @@
                                 <td>@service.Description</td>
                                 <td>@service.Manager?.User?.Name</td>
                                 <td>
-                                    <a class="btn btn-default" asp-page="./Services/Edit" asp-route-id="@service.Id"><i class="fa fa-edit fa-lg"></i> Editer</a>
-                                    <button class="btn btn-default" type="submit" asp-page-handler="DeleteService" asp-route-id="@service.Id"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                                    <a class="btn btn-secondary" asp-page="./Services/Edit" asp-route-id="@service.Id"><i class="fa fa-edit fa-lg"></i> Editer</a>
+                                    <button class="btn btn-danger" type="submit" asp-page-handler="DeleteService" asp-route-id="@service.Id"><i class="fa-solid fa-trash-can"></i> Supprimer</button>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
             </form>
-            <a asp-page="./Services/Create">Créer un service</a>
+            <a class="btn btn-secondary" asp-page="./Services/Create">Créer un service</a>
         }
     </div>
 
-    <div id="users" class="tab-pane fade">
+    <div role="tabpanel" id="users" class="tab-pane fade">
         <br />
         @if (Connect.UserAccess.Instance is Connect.DbConnection)
         {
-            <a asp-page="./Users/Create">Gérer les utilisateurs</a>
+            <a class="btn btn-secondary" asp-page="./Users/Create">Gérer les utilisateurs</a>
         }
         @if (Connect.UserAccess.Instance is Connect.LdapConnection)
         {
-            <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+            <a class="btn btn-secondary" asp-page="./Users/Import">Gérer les utilisateurs</a>
         }
+        <br />
         <br />
         <form method="post">
             <table class="table">
@@ -167,8 +216,8 @@
                             <td>@Model.Users[i].Email</td>
                             <td>@Model.Users[i].Service?.Name</td>
                             <td>
-                                <a class="btn btn-default" asp-page="./Users/Edit" asp-route-id="@Model.Users[i].Email"><i class="fa fa-edit fa-lg"></i> Editer</a>
-                                <button class="btn btn-default" type="submit" asp-page-handler="DeleteUser" asp-route-id="@Model.Users[i].Email"><i class="fa fa-trash-o fa-lg"></i> Supprimer</button>
+                                <a class="btn btn-secondary" asp-page="./Users/Edit" asp-route-id="@Model.Users[i].Email"><i class="fa fa-edit fa-lg"></i> Editer</a>
+                                <button class="btn btn-danger" type="submit" asp-page-handler="DeleteUser" asp-route-id="@Model.Users[i].Email"><i class="fa-solid fa-trash-can"></i> Supprimer</button>
                             </td>
                         </tr>
                     }
@@ -177,63 +226,71 @@
         </form>
         @if (Connect.UserAccess.Instance is Connect.DbConnection)
         {
-            <a asp-page="./Users/Create">Gérer les utilisateurs</a>
+            <a class="btn btn-secondary" asp-page="./Users/Create">Gérer les utilisateurs</a>
         }
         @if (Connect.UserAccess.Instance is Connect.LdapConnection)
         {
-            <a asp-page="./Users/Import">Gérer les utilisateurs</a>
+            <a class="btn btn-secondary" asp-page="./Users/Import">Gérer les utilisateurs</a>
         }
     </div>
-            
-    <div id="bdd" class="tab-pane fade">
-    <br />
-    <p>Gestion des sauvegardes de la base de donnée.</p>
-    @if (Model.BackupColl.Count() <= 0)
-    {
+
+    <div role="tabpanel" id="bdd" class="tab-pane fade">
         <br />
-        <p>Aucune sauvegarde de la base de donnée réalisée pour le moment</p>
-    }
-    else
-    {
-        <form method="post">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Lien</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int j = 0; j < Model.BackupColl.Count; j++)
-                    {
+        <p>Gestion des sauvegardes de la base de donnée.</p>
+        @if (Model.BackupColl.Count() <= 0)
+        {
+            <br />
+            <p>Aucune sauvegarde de la base de donnée réalisée pour le moment</p>
+        }
+        else
+        {
+            <form method="post">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>@Model.BackupColl[j].Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
-                            <td>
-                                <a href="@Model.BackupColl[j].Key" download>@System.IO.Path.GetFileName(Model.BackupColl[j].Key)</a>
-                            </td>
+                            <th>Date</th>
+                            <th>Lien</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < Model.BackupColl.Count; j++)
+                        {
+                            <tr>
+                                <td>@Model.BackupColl[j].Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td>
+                                    <a href="@Model.BackupColl[j].Key" download>@System.IO.Path.GetFileName(Model.BackupColl[j].Key)</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        }
+
+        <br />
+
+        <form method="post" enctype="multipart/form-data" class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+                <button class="btn btn-secondary" type="submit" asp-page-handler="CleanBackup"><i class="fa-solid fa-recycle fa-lg"></i> Purger</button>
+                <button class="btn btn-secondary" type="submit" asp-page-handler="Backup"><i class="fa-solid fa-file-zipper fa-lg"></i> Sauvegarder</button>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <button class="btn btn-secondary" type="submit" asp-page-handler="Replace"><i class="fa-solid fa-upload fa-lg"></i> Mise à jour</button>
+                    <input class="form-control" type="file" accept=".sqlite" name="bddBackups"/>
+                </div>
+            </div>
         </form>
-    }
 
-    <br />
+    </div>
 
-        <form method="post" class="form-inline">
-            <button class="btn btn-default" type="submit" asp-page-handler="CleanBackup"><i class="fa fa-recycle fa-lg"></i> Purger</button>
-            <button class="btn btn-default" type="submit" asp-page-handler="Backup"><i class="fa fa-file-zipper fa-lg"></i>Sauvegarder</button>
-        </form>
-
-    </div>    
-
-    <div id="clean" class="tab-pane fade">
+    <div role="tabpanel" id="clean" class="tab-pane fade">
         <br />
         @if (Model.FilesCount > 0)
         {
             <p>Il y a @Model.FilesCount fichier(s) à purger.</p>
             <form method="post">
-                <button class="btn btn-default" type="submit" asp-page-handler="CleanExport"><i class="fa fa-recycle fa-lg"></i> Purger</button>
+                <button class="btn btn-secondary" type="submit" asp-page-handler="CleanExport"><i class="fa fa-recycle fa-lg"></i> Purger</button>
             </form>
         }
         else
@@ -251,7 +308,7 @@
             <br />
             <p>Il y a @Model.OldAbsenceTemporaires.Count() absences temporaires à purger (plus vielles de @Toolkit.IntervalAbsenceTemporaire().TotalDays)</p>
             <form method="post">
-                <button class="btn btn-default" type="submit" asp-page-handler="CleanAbsTemp"><i class="fa fa-recycle fa-lg"></i> Purger</button>
+                <button class="btn btn-secondary" type="submit" asp-page-handler="CleanAbsTemp"><i class="fa fa-recycle fa-lg"></i> Purger</button>
             </form>
         }
 
@@ -265,21 +322,63 @@
             <br />
             <p>Il y a @Model.OldConges.Count() congés à purge (plus vieux de @Toolkit.IntervalCongeOld().TotalDays).</p>
             <form method="post">
-                <button class="btn btn-default" type="submit" asp-page-handler="CleanConge"><i class="fa fa-recycle fa-lg"></i> Purger</button>
+                <button class="btn btn-secondary" type="submit" asp-page-handler="CleanConge"><i class="fa fa-recycle fa-lg"></i> Purger</button>
             </form>
-        }        
+        }
 
         <br />
         <p>Envoyer un email pour tester le système SMTP.</p>
         <form method="post">
-            <button class="btn btn-default" type="submit" asp-page-handler="TestEmail"><i class="fa fa-envelope fa-lg"></i> Test</button>
+            <button class="btn btn-secondary" type="submit" asp-page-handler="TestEmail"><i class="fa fa-envelope fa-lg"></i> Test</button>
         </form>
 
         <br />
         <p>Remise à zéro du cache.</p>
         <form method="post">
-            <button class="btn btn-default" type="submit" asp-page-handler="ResetCache"><i class="fa fa-trash-o fa-lg"></i> Reset</button>
+            <button class="btn btn-secondary" type="submit" asp-page-handler="ResetCache"><i class="fa-solid fa-trash-can"></i> Reset</button>
         </form>
+    </div>
+
+    <div role="tabpanel" id="logs" class="tab-pane fade">
+        @if (Model.Logs.Count() <= 0)
+        {
+            <br />
+            <p>Aucun log existant.</p>
+        }
+        else
+        {
+            <br />
+            <form method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Qui ?</th>
+                            <th>Quand ?</th>
+                            <th>Quoi ?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var log in Model.Logs)
+                        {
+                            <tr>
+                                <td>@log.UserId</td>
+                                <td>@log.ActionDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td>@log.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+            @if (Model.Logs.Count() > 150)
+            {
+                <br />
+                <form method="post">
+                    <button class="btn btn-secondary" type="submit" asp-page-handler="DeleteOldLogs"><i class="fa-solid fa-trash-can"></i> Suppression des vieux logs</button>
+                </form>
+                <br />
+            }
+            <br />
+        }
     </div>
 </div>
 
@@ -287,4 +386,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    }
+}

@@ -7,36 +7,38 @@
 <h3>Gestion des services</h3>
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#service0">Mettre à jour le service</a></li>
-    <li><a data-toggle="tab" href="#service1">Les membres du service</a></li>
+<ul class="nav nav-tabs" id="serviceTab">
+    <li class="nav-item"><a href="#" class="text-dark nav-link active" data-bs-toggle="tab" data-bs-target="#service0" aria-selected="true">Mettre à jour le service</a></li>
+    <li class="nav-item"><a href="#" class="text-dark nav-link" data-bs-toggle="tab" data-bs-target="#service1" aria-selected="false">Les membres du service</a></li>
 </ul>
 
-<div class="tab-content">
-    <div id="service0" class="tab-pane fade in active">
+<div class="tab-content" id="serviceTabContent">
+    <div role="tabpanel" id="service0" class="tab-pane fade show active">
+        <br/>
         <form role="form" method="post">
-            <div class="form-group">
-                <label asp-for="Service.Name">Nom du service</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Service.Name">Nom du service</label>
                 <input asp-for="Service.Name" type="text" class="form-control" placeholder="Nom du service" maxlength="49" />
                 <span asp-validation-for="Service.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Service.Description">Description</label>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Service.Description">Description</label>
                 <textarea asp-for="Service.Description" class="form-control" maxlength="254"></textarea>
                 <span asp-validation-for="Service.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ManagerId">Manager du service</label>
-                @Html.DropDownListFor(x => Model.ManagerId, new SelectList(Model.Users, "Email", "Name"), htmlAttributes: new { @class = "form-control", id = "ManagerId" })
+            <div class="mb-3">
+                <label class="form-label" asp-for="ManagerId">Manager du service: </label>
+                @Html.DropDownListFor(x => Model.ManagerId, new SelectList(Model.Users, "Email", "Name"), htmlAttributes: new { @class = "form-select", id = "ManagerId" })
                 <span asp-validation-for="ManagerId" class="text-danger"></span>
             </div>
 
             <input asp-for="Service.Id" type="hidden" class="form-control" />
-            <button type="submit" class="btn btn-default">Modifier</button>
+            <button type="submit" class="btn btn-dark">Modifier</button>
         </form>
     </div>
 
-    <div id="service1" class="tab-pane fade">
+    <div role="tabpanel" id="service1" class="tab-pane fade">
+        <br/>
         @if (Model.Members.Count() <= 0)
         {
             <br />
