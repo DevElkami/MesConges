@@ -49,6 +49,26 @@ namespace TestProject
             Db.Instance.DataBase.UserRepository.Update(user);
             Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).Login, user.Login);
 
+            user.Name = "NameJambain";
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).Name, user.Name);
+
+            user.FamilyName = "FamilyNameJambain";
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).FamilyName, user.FamilyName);
+
+            user.Description = "Blablabla";
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).Description, user.Description);
+
+            user.PhoneNumber = "078956234";
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).PhoneNumber, user.PhoneNumber);
+
+            user.Matricule = "9845615645614564";
+            Db.Instance.DataBase.UserRepository.Update(user);
+            Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).Matricule, user.Matricule);
+
             user.IsDrh = true;
             Db.Instance.DataBase.UserRepository.Update(user);
             Assert.AreEqual(Db.Instance.DataBase.UserRepository.Get(user.Email).IsDrh, true);

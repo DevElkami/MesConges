@@ -5,6 +5,11 @@
 @using WebApplicationConges.Model;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 
+@{
+    string userMail = "";
+    string userName = "";
+}
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,6 +40,26 @@
 
                 // SignalR start connection
                 await Toolkit.Connection.StartAsync();
+            }
+        }
+        catch (Exception)
+        {
+            // Nothing: SignalR is not mandatory
+        }
+    }
+
+    @{        
+        try
+        {
+            System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
+            if (claim != null)
+            {
+                User user = JsonSerializer.Deserialize<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                if (user != null)
+                {
+                    userMail = user.Email;
+                    userName = user.Surname;
+                }
             }
         }
         catch (Exception)
@@ -80,7 +105,14 @@
                         <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/About"><i class="fa fa-info"></i> A propos</a></li>
                         @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Account/SignedOut"><i class="fa fa-sign-out"></i> Se déconnecter</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fa-regular fa-circle-user"></i> @userName</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-page="./Users/Parameters"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Account/SignedOut"><i class="fa fa-sign-out"></i> Se déconnecter</a></li>
+                                </ul>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -88,24 +120,6 @@
         </nav>
     </header>
     <div class="container">
-        @{
-            string userMail = "";
-            try
-            {
-                System.Security.Claims.Claim claim = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser");
-                if (claim != null)
-                {
-                    User user = JsonSerializer.Deserialize<User>(HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
-                    if (user != null)
-                        userMail = user.Email;
-                }
-            }
-            catch (Exception)
-            {
-                // Nothing: SignalR is not mandatory
-            }
-        }
-
         @Html.Hidden("usermail", userMail, new { @id = "usermail" })
         <div class="alert alert-primary align-items-center" id="SignalRDisplay" role="alert" style="display:none;margin-top:20px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
