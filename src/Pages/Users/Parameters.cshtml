@@ -6,14 +6,14 @@
 
 <h3>Vos paramètres</h3>
 <div asp-validation-summary="All" class="text-danger"></div>
-<form role="form" method="post">    
+<form role="form" method="post">
     @if (Connect.UserAccess.Instance is Connect.DbConnection)
     {
         <div class="mb-3">
-        <label class="form-label" asp-for="User.Login">Login</label>
-        <input asp-for="User.Login" type="text" class="form-control" placeholder="Login" maxlength="49" />
-        <span asp-validation-for="User.Login" class="text-danger"></span>
-    </div>
+            <label class="form-label" asp-for="User.Login">Login</label>
+            <input asp-for="User.Login" type="text" class="form-control" placeholder="Login" maxlength="49" />
+            <span asp-validation-for="User.Login" class="text-danger"></span>
+        </div>
 
         <div class="mb-3">
             <label class="form-label" asp-for="Password">Mot de passe</label>
