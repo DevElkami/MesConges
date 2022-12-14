@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -27,7 +26,7 @@ namespace WebApplicationConges.Pages.Users
         {
             try
             {
-                User admin = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                User admin = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 if (admin.IsAdmin)
                 {
                     User = Db.Instance.DataBase.UserRepository.Get(id);

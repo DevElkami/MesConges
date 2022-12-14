@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -37,7 +37,7 @@ namespace WebApplicationConges.Pages
             if (!String.IsNullOrEmpty(ErrorMessage))
                 ModelState.AddModelError(String.Empty, ErrorMessage);
 
-            User manager = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+            User manager = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
             if (manager.IsManager)
             {
                 CongesInProgress = new List<Conge>();
@@ -82,7 +82,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 CongeAccept(current.Email, id);
             }
             catch (Exception except)
@@ -137,7 +137,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 foreach (Conge conge in CongesInProgress)
                     CongeAccept(current.Email, conge.Id);
             }
@@ -182,7 +182,7 @@ namespace WebApplicationConges.Pages
                     Db.Instance.DataBase.CongeRepository.Update(congeRefuse);
 
                     // Envoie d'un mail au membre de l'équipe pour l'avertir que son congé est refusé
-                    User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                    User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                     Toolkit.Notify(Toolkit.NotifyTypeEnum.LeaveRefused, current.Email, congeRefuse.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpRefuseSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpRefuseBody.ToString()] + motif);
                 }
                 else
@@ -210,7 +210,7 @@ namespace WebApplicationConges.Pages
                     Db.Instance.DataBase.CongeRepository.Delete(congeDeleted);
 
                     // Envoie d'un mail au membre de l'équipe pour l'avertir que son congé est annulé
-                    User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                    User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                     Toolkit.Notify(Toolkit.NotifyTypeEnum.LeaveCanceled, current.Email, congeDeleted.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpDeletedSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpDeletedBody.ToString()]);
 
                     Cache.Clear(CalendarModel.MAIN_CALENDAR_KEY);
@@ -254,7 +254,7 @@ namespace WebApplicationConges.Pages
                     Db.Instance.DataBase.CongeRepository.Update(congeDeleted);
 
                     // Envoie d'un mail au membre de l'équipe pour l'avertir que sa demande d'annulation de congé est refusé
-                    User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                    User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                     Toolkit.Notify(Toolkit.NotifyTypeEnum.LeaveRefused, current.Email, congeDeleted.UserId, Toolkit.Configuration[Toolkit.ConfigEnum.SmtpCancelSubject.ToString()], Toolkit.Configuration[Toolkit.ConfigEnum.SmtpCancelRefusedBody.ToString()]);
                 }
                 else

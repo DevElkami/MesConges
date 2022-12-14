@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Cryptography;
+using System.Text.Json;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
 
@@ -81,7 +81,7 @@ namespace WebApplicationConges
 
         public static void Log(HttpContext context, String description)
         {
-            User user = JsonConvert.DeserializeObject<User>(context.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+            User user = JsonSerializer.Deserialize<User>(context.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
             user ??= new User() { Email = "unknown@user" };
             Db.Instance.DataBase.LogRepository.Insert(new Log { UserId = user.Email, ActionDate = DateTime.Now, Description = description });
         }

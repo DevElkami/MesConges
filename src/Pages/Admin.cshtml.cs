@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Xml.Linq;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
@@ -64,7 +64,7 @@ namespace WebApplicationConges.Pages
 
         private User GetCurrentUser()
         {
-            return JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+            return JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
         }
 
         public IActionResult OnGet()
@@ -170,7 +170,7 @@ namespace WebApplicationConges.Pages
             {
                 Toolkit.Log(HttpContext, $"Suppression de l'utilisateur {id}");
 
-                User current = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                User current = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 if (current.Email == id)
                 {
                     ErrorMessage = "Vous ne pouvez pas vous supprimer.";
@@ -368,7 +368,7 @@ namespace WebApplicationConges.Pages
         {
             try
             {
-                User currentUser = JsonConvert.DeserializeObject<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
+                User currentUser = JsonSerializer.Deserialize<User>(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CurrentUser")?.Value);
                 Toolkit.Notify(Toolkit.NotifyTypeEnum.Test, currentUser.Email, currentUser.Email, "Ceci est un test", "Pour vérifier si les emails sont bien envoyés.");
             }
             catch (Exception except)

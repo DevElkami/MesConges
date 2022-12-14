@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WebApplicationConges.Data;
 using WebApplicationConges.Model;
@@ -71,7 +71,7 @@ namespace WebApplicationConges.Pages.Account
             List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Email),
-                    new Claim("CurrentUser", JsonConvert.SerializeObject(user))
+                    new Claim("CurrentUser", JsonSerializer.Serialize(user))
                 };
 
             if (user.IsAdmin)
