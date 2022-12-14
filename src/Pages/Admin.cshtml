@@ -88,10 +88,56 @@
                 <span asp-validation-for="MyConfig.SmtpPort" class="text-danger"></span>
             </div>
 
+            <hr class="my-4">
+
             <div class="mb-3">
                 <label class="form-label" asp-for="MyConfig.FuturUse1">Jours supplémentaires de repos au format 'aaaammjj': 20221125,20230315,20230417</label>
                 <input asp-for="MyConfig.FuturUse1" type="text" class="form-control" autocomplete="off" />
                 <span asp-validation-for="MyConfig.FuturUse1" class="text-danger"></span>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayPublicCalendar" class="form-check-label">Calendrier public</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayPublicCalendar" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayPublicCalendar" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeSansSolde" class="form-check-label">Congés sans solde</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeSansSolde" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeSansSolde" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeRecup" class="form-check-label">Congés de récupération</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeRecup" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeRecup" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeAbsTmp" class="form-check-label">Absence temporaire</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeAbsTmp" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeAbsTmp" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeFamilyEvent" class="form-check-label">Congés d'événements familiaux'</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeFamilyEvent" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeFamilyEvent" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeChildSick" class="form-check-label">Congés enfant malade</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeChildSick" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeChildSick" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check form-switch">
+                <label asp-for="MyConfig.CustomizeDisplay.DisplayCongeInformation" class="form-check-label">Affichage des informations générales des congés</label>
+                <input asp-for="MyConfig.CustomizeDisplay.DisplayCongeInformation" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="MyConfig.CustomizeDisplay.DisplayCongeInformation" class="text-danger"></span>
             </div>
 
             <button class="btn btn-dark" type="submit" asp-page-handler="UpdateConfig">Mettre à jour</button>
@@ -231,7 +277,7 @@
             <div class="col-12">
                 <div class="input-group">
                     <button class="btn btn-secondary" type="submit" asp-page-handler="Replace"><i class="fa-solid fa-upload fa-lg"></i> Mise à jour</button>
-                    <input class="form-control" type="file" accept=".sqlite" name="bddBackups">
+                    <input class="form-control" type="file" accept=".sqlite" name="bddBackups"/>
                 </div>
             </div>
         </form>

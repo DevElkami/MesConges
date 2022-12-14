@@ -13,14 +13,14 @@
         <div class="row mb-4">
             <label class="col-sm-4 col-form-label text-nowrap" asp-for="Input.Login"><p class="fw-bold">Login</p></label>
             <div class="col-sm-8">
-                <input asp-for="Input.Login" type="text" class="form-control" autocomplete="off" placeholder="Votre login" maxlength="49">
+                <input asp-for="Input.Login" type="text" class="form-control" autocomplete="off" placeholder="Votre login" maxlength="49"/>
                 <span asp-validation-for="Input.Login" class="text-danger"></span>
             </div>
         </div>
         <div class="row mb-4">
             <label class="col-sm-4 col-form-label text-nowrap" asp-for="Input.Password"><p class="fw-bold">Mot de passe</p></label>
             <div class="col-sm-8">
-                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Votre mot de passe" maxlength="30">
+                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Votre mot de passe" maxlength="30"/>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
         </div>
