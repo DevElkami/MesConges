@@ -67,7 +67,24 @@ namespace WebApplicationConges.Pages.Conges
                 ModelState.AddModelError(String.Empty, ErrorMessage);
 
             foreach (var cgType in Enum.GetValues(typeof(Conge.CGTypeEnum)))
+            {
+                if ((((Conge.CGTypeEnum)cgType) == Conge.CGTypeEnum.SansSolde) && (!Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayCongeSansSolde))
+                    continue;
+
+                if ((((Conge.CGTypeEnum)cgType) == Conge.CGTypeEnum.ChildSick) && (!Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayCongeChildSick))
+                    continue;
+
+                if ((((Conge.CGTypeEnum)cgType) == Conge.CGTypeEnum.AbsenceTemporaire) && (!Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayCongeAbsTmp))
+                    continue;
+
+                if ((((Conge.CGTypeEnum)cgType) == Conge.CGTypeEnum.FamilyEvent) && (!Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayCongeFamilyEvent))
+                    continue;
+
+                if ((((Conge.CGTypeEnum)cgType) == Conge.CGTypeEnum.Recup) && (!Db.Instance.DataBase.ConfigRepository.Get().CustomizeDisplay.DisplayCongeRecup))
+                    continue;
+
                 CgTypes.Add(new KeyValuePair<String, int>(((Conge.CGTypeEnum)cgType).GetDescription(), (int)cgType));
+            }
 
             IntervalTypes.Add(new KeyValuePair<String, int>("Matin", 0));
             IntervalTypes.Add(new KeyValuePair<String, int>("Après-midi", 1));
