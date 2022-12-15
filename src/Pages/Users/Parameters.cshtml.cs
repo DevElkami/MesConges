@@ -47,10 +47,14 @@ namespace WebApplicationConges.Pages.Users
                 if ((Connect.UserAccess.Instance is Connect.DbConnection) && !String.IsNullOrEmpty(Password))
                     modifiedUser.HashPwd = Toolkit.CreateSHAHash(Password);
 
-                modifiedUser.Login = User.Login;
-                modifiedUser.Name = User.Name;
-                modifiedUser.Surname = User.Surname;
-                modifiedUser.FamilyName = User.FamilyName;
+                if (!String.IsNullOrEmpty(User.Login))
+                    modifiedUser.Login = User.Login;
+                if (!String.IsNullOrEmpty(User.Name))
+                    modifiedUser.Name = User.Name;
+                if (!String.IsNullOrEmpty(User.Surname))
+                    modifiedUser.Surname = User.Surname;
+                if (!String.IsNullOrEmpty(User.FamilyName))
+                    modifiedUser.FamilyName = User.FamilyName;
                 modifiedUser.Description = User.Description;
                 modifiedUser.PhoneNumber = User.PhoneNumber;
 
