@@ -149,12 +149,13 @@ namespace WebApplicationConges.Pages
             {
                 Toolkit.Log(HttpContext, $"Suppression du service {Db.Instance.DataBase.ServiceRepository.Get(id).Name}");
 
-                Db.Instance.DataBase.ServiceRepository.Delete(new Service() { Id = id });
-
-                // On supprime aussi le manager du service si il existait
+                // On supprime le manager du service si il existait (sur les nouvelles versions: ON DELETE CASCADE)
                 Manager manager = Db.Instance.DataBase.ManagerRepository.GetByServiceId(id);
                 if (manager != null)
                     Db.Instance.DataBase.ManagerRepository.Delete(manager);
+
+                // Supression du service
+                Db.Instance.DataBase.ServiceRepository.Delete(new Service() { Id = id });
             }
             catch (Exception except)
             {

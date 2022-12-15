@@ -83,6 +83,7 @@ namespace WebApplicationConges.Data
                         service_id int not null,
                         FOREIGN KEY (service_id)
                             REFERENCES " + Data.ServiceRepository.TABLE_NAME + @"(id)
+                            ON DELETE CASCADE
                       )");
             }
         }
