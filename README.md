@@ -1,3 +1,6 @@
+![](https://github.com/DevElkami/MesConges/actions/workflows/workflow.yml/badge.svg?branch=main)
+![](https://github.com/DevElkami/MesConges/actions/workflows/publish.yml/badge.svg?branch=main)
+
 # Mes congés :sunrise:
 Gestion de congés en opensource (Blazor / ASP.NET Core 6)
 
